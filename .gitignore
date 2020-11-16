@@ -2,6 +2,7 @@
 .idea
 *.log
 tmp/
+log.*
 
 *.py[cod]
 *.egg
@@ -9,3 +10,4 @@ build
 htmlcov
 
 data/
+analysis
