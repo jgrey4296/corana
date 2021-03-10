@@ -11,11 +11,30 @@ logging = root_logger.getLogger(__name__)
 
 
 class AnalysisCase:
+    """
+    Generalized scaffold for running analysis on code.
+    Takes command line arguments :
+    -t        : target directories
+    -r        : random number of files to analyse
+    --randarg : shuffle the files to analyse
+    --filter  : filter out already processed files
+    -a        : name of the accumulated data file
+    """
 
     def __init__(self, sources, exts, extractor,
                  output_lists, output_ext,
                  accumulator=None, accumulator_final=None,
                  init_accum=None):
+        """
+        sources           : list of sources to process (+ cli targets)
+        exts              : list of extensions to process
+        extractor         : extractor function called on a file
+        output_lists      : keys of return data to treat as lists, not as dicts
+        output_ext        : the extension of the processed output
+        accumulator       : function called on processed data and the accumulator data
+        accumulator_final : function called on the final accumulator data
+        init_accum        : start value for accumulator
+        """
         logging.info("Initialising")
         assert(callable(extractor))
         assert(accumulator is None or callable(accumulator))
@@ -71,6 +90,9 @@ class AnalysisCase:
         self._files = filtered
 
     def get_files(self):
+        """
+        DFS the list of sources for files of the correct extension
+        """
         logging.info("Getting Data Files")
         ext = self._extensions
         initial = self._sources
