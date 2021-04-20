@@ -14,7 +14,10 @@ from os import listdir, mkdir
 
 logging = root_logger.getLogger(__name__)
 
+#https://docs.python.org/3/library/dataclasses.html
+from dataclasses import dataclass, field, InitVar
 
+@dataclass
 class AnalysisCase:
     """
     Generalized scaffold for running analysis on code.
@@ -25,54 +28,41 @@ class AnalysisCase:
     --filter  : filter out already processed files
     -a        : name of the accumulated data file
     """
-    DATA_DIR = "data"
+    DATA_DIR     = "data"
     ANALYSIS_DIR = "analysis"
 
-    def __init__(self,
-                 curr_file         : str,
-                 exts              : List[str],
-                 extractor         : Callable,
-                 output_lists      : List[str],
-                 output_ext        : str,
-                 accumulator       : Callable=None,
-                 accumulator_final : Callable=None,
-                 init_accum        : Any=None,
-                 targets           : List[str]=None):
-        """
-        sources           : list of sources to process (+ cli targets)
-        exts              : list of extensions to process
-        extractor         : extractor function called on a file
-        output_lists      : keys of return data to treat as lists, not as dicts
-        output_ext        : the extension of the processed output
-        accumulator       : function called on processed data and the accumulator data
-        accumulator_final : function called on the final accumulator data
-        init_accum        : start value for accumulator
-        """
+    curr_file         : str
+    exts              : List[str]
+    extractor         : Callable
+    output_lists      : List[str]
+    output_ext        : str
+    accumulator       : Callable  = field(default=None)
+    accumulator_final : Callable  = field(default=None)
+    init_accum        : Any       = field(default=None)
+    targets           : List[str] = field(default=None)
+
+    _data_dir         : str       = field(init=False)
+    _out_dir          : str       = field(init=False)
+    _accumulated_data : Any       = field(init=False)
+    _sources          : List[str] = field(init=False, default_factory=list)
+    _extensions       : List[str] = field(init=False, default_factory=list)
+    _output_lists     : List[str] = field(init=False, default_factory=list)
+    _files            : List[str] = field(init=False, default_factory=list)
+
+    def __post_init__(self):
         logging.info("Initialising")
-        assert(callable(extractor))
-        assert(accumulator is None or callable(accumulator))
-        assert(accumulator_final is None or callable(accumulator_final))
+        assert(callable(self.extractor))
+        assert(self.accumulator is None or callable(self.accumulator))
+        assert(self.accumulator_final is None or callable(self.accumulator_final))
 
-        self._curr_file           = curr_file
-        self._data_dir            = join(dirname(curr_file), AnalysisCase.DATA_DIR)
-        self._out_dir             = join(dirname(curr_file), AnalysisCase.ANALYSIS_DIR)
-        self._sources             = []
-        self._extensions          = []
-        self._output_lists        = []
-        self._files               = []
-        self._output_extension    = output_ext
-        self._extractor           = extractor
-        self._accumulator         = accumulator
-        self._accumulator_final   = accumulator_final
-        self._accumulator_initial = init_accum
-
-        self._accumulated_data = None
+        self._data_dir            = join(dirname(self.curr_file), AnalysisCase.DATA_DIR)
+        self._out_dir             = join(dirname(self.curr_file), AnalysisCase.ANALYSIS_DIR)
 
         # Setup specifics:
         self._handle_cli()
-        self._setup_sources(targets)
-        self._setup_extensions(exts)
-        self._setup_output_lists(output_lists)
+        self._setup_sources()
+        self._setup_extensions()
+        self._setup_output_lists()
         self._get_files()
 
         # Ensure an output directory:
@@ -82,11 +72,11 @@ class AnalysisCase:
 
     def __call__(self):
         logging.info("Processing")
-        self._accumulated_data = copy(self._accumulator_initial)
+        self._accumulated_data = copy(self.init_accum)
         # Process each found file:
         for f in self._files:
             # Extract data:
-            data = self._extractor(f, self)
+            data = self.extractor(f, self)
             self._accumulate(data)
             # Convert to string
             data_str = self._convert_data_to_output_format(data)
@@ -119,23 +109,28 @@ class AnalysisCase:
         if self.args.target is not None:
             self._sources += self.args.target
 
-    def _setup_sources(self, targets):
-        if targets is not None:
-            self._sources += targets
+    def _setup_sources(self):
+        if self.targets is not None:
+            self._sources += self.targets
         else:
             self._sources = [self._data_dir]
 
-    def _setup_extensions(self, exts):
-        if isinstance(exts, list) and not isinstance(exts, str):
-            self._extensions += exts
-        else:
-            self._extensions.append(exts)
+    def _setup_extensions(self):
+        exts = self.exts
+        if isinstance(exts, str):
+            exts = [exts]
 
-    def _setup_output_lists(self, output_lists):
-        if output_lists is not None and not isinstance(output_lists, str):
-            self._output_lists += output_lists
-        elif output_lists is not None:
-            self._output_lists.append(output_lists)
+        self._extensions += exts
+
+    def _setup_output_lists(self):
+        output_lists = self.output_lists
+        if output_lists is None:
+            return
+
+        if isinstance(output_lists, str):
+            output_lists = [output_lists]
+
+        self._output_lists += output_lists
 
     def _get_files(self):
         files        = self._dfs_sources()
@@ -200,13 +195,13 @@ class AnalysisCase:
 
 
     def _accumulate(self, data):
-        if self._accumulator is not None:
-            self._accumulated_data = self._accumulator(data, self._accumulated_data, self)
+        if self.accumulator is not None:
+            self._accumulated_data = self.accumulator(data, self._accumulated_data, self)
 
     def _finalise(self):
         # Apply final accumulator function
-        if self._accumulator_final is not None:
-            self._accumulated_data = self._accumulator_final(self._accumulated_data, self)
+        if self.accumulator_final is not None:
+            self._accumulated_data = self.accumulator_final(self._accumulated_data, self)
 
     def _write_output(self, source_path, data_str):
         u_analysis_path, other = self._source_path_to_output_path(source_path)
@@ -219,7 +214,7 @@ class AnalysisCase:
 
     def _source_path_to_output_path(self, source_path):
         """ a/b/c.txt -> q/y/c_analysis.out """
-        ext                  = self._output_extension
+        ext                  = self.output_ext
         src_name             = splitext(split(source_path)[1])[0]
         header               = split(split(source_path)[0])[1]
         analysis_name        = "{}_{}{}".format(header,src_name, ext)
