@@ -1,28 +1,38 @@
 #!/usr/bin/env python3
-import argparse
+from typing import List, Set, Dict, Tuple, Optional, Any
+from typing import Callable, Iterator, Union, Match
+from typing import Mapping, MutableMapping, Sequence, Iterable
+from typing import cast, ClassVar, TypeVar, Generic
+
+from dataclasses import dataclass, field, InitVar
+from enum import Enum
+from fractions import Fraction
+from os import listdir
 from os.path import join, isfile, exists, abspath
 from os.path import split, isdir, splitext, expanduser
-from os import listdir
-from time import sleep
-from fractions import Fraction
 from random import choice, shuffle
+from time import sleep
+import argparse
 import json
-from enum import Enum
 import logging as root_logger
 import requests
 logging = root_logger.getLogger(__name__)
 
+
+@dataclass
 class ParseBase:
     """
     Base class of parse results, tracks line number position, and components
     """
+    _type       : str                  = field(default=None)
+    _name       : str                  = field(default=None)
+    _args       : List[str]            = field(default_factory=list)
+    _components : List[Dict[str, Any]] = field(default_factory=dict)
+    _line_no    : int                  = field(default=-1)
 
-    def __init__(self):
-        self._type = None
-        self._name = None
-        self._components = []
-        self._args = []
-        self._line_no = -1
+    @staticmethod
+    def reconstruct(text):
+        return ParseBase()
 
     def __repr__(self):
         return "({} : {} : {})".format(self._line_no,
