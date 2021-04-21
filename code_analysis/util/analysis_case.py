@@ -226,7 +226,7 @@ class AnalysisCase:
             tmp = list("abcdefg")
             shuffle(tmp)
             analysis_name = "{}_{}_{}{}".format(header,src_name,"".join(tmp), ext)
-            unique_analysis_path = join("analysis",analysis_name)
+            unique_analysis_path = join(self._out_dir,analysis_name)
 
         return unique_analysis_path, orig_analysis_path
 

@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-from typing import List, Set, Dict, Tuple, Optional, Any
-from typing import Callable, Iterator, Union, Match
-from typing import Mapping, MutableMapping, Sequence, Iterable
-from typing import cast, ClassVar, TypeVar, Generic
-
-from dataclasses import dataclass, field, InitVar
-from enum import Enum
-from fractions import Fraction
-from os import listdir
-from os.path import join, isfile, exists, abspath
-from os.path import split, isdir, splitext, expanduser
-from random import choice, shuffle
-from time import sleep
 import argparse
 import json
 import logging as root_logger
+from dataclasses import InitVar, dataclass, field
+from enum import Enum
+from fractions import Fraction
+from os import listdir
+from os.path import (abspath, exists, expanduser, isdir, isfile, join, split,
+                     splitext)
+from random import choice, shuffle
+from time import sleep
+from typing import (Any, Callable, ClassVar, Dict, Generic, Iterable, Iterator,
+                    List, Mapping, Match, MutableMapping, Optional, Sequence,
+                    Set, Tuple, TypeVar, Union, cast)
+
 import requests
+
 logging = root_logger.getLogger(__name__)
 
 
@@ -24,41 +24,41 @@ class ParseBase:
     """
     Base class of parse results, tracks line number position, and components
     """
-    _type       : str                  = field(default=None)
-    _name       : str                  = field(default=None)
-    _args       : List[str]            = field(default_factory=list)
-    _components : List[Dict[str, Any]] = field(default_factory=dict)
-    _line_no    : int                  = field(default=-1)
+    name       : str                  = field(default=None)
+    type       : str                  = field(default=None)
+    args       : List[str]            = field(default_factory=list)
+    components : List[Dict[str, Any]] = field(default_factory=list)
+    line_no    : int                  = field(default=-1)
 
     @staticmethod
     def reconstruct(text):
         return ParseBase()
 
     def __repr__(self):
-        return "({} : {} : {})".format(self._line_no,
-                                       self._type,
-                                       self._name)
+        return "({} : {} : {})".format(self.line_no,
+                                       self.type,
+                                       self.name)
 
     def __str__(self):
-        data = {}
+        data    = {}
+        pattern = "{} : {} : {} := {}"
 
-        if bool(self._args):
-            data.update({ 'args': [str(x) for x in self._args]})
+        if bool(self.args):
+            data.update({ 'args': [str(x) for x in self.args]})
 
-        if bool(self._components):
-            if not hasattr(self._components[0], 'to_dict'):
-                data.update({ 'components' : [str(x) for x in self._components]})
+        if bool(self.components):
+            if not hasattr(self.components[0], 'to_dict'):
+                data.update({ 'components' : [str(x) for x in self.components]})
             else:
-                data.update({ 'components' : [x.to_dict() for x in self._components]})
+                data.update({ 'components' : [x.to_dict() for x in self.components]})
 
-        s = "{} : {} : {} := {}"
 
-        return s.format(self._line_no,
-                        self._type,
-                        self._name,
-                        json.dumps(data))
+        return pattern.format(self.line_no,
+                              self.type,
+                              self.name,
+                              json.dumps(data))
 
     def __lt__(self, other):
         """ Compare by line number position """
         assert(isinstance(other, ParseBase))
-        return self._line_no < other._line_no
+        return self.line_no < other.line_no
