@@ -2,6 +2,8 @@
 import pyparsing as pp
 import versu_struct as VS
 
+import logging as root_logger
+logging = root_logger.getLogger(__name__)
 
 s         = pp.Suppress
 op        = pp.Optional
@@ -44,24 +46,23 @@ SOME    = pp.Keyword('some')
 ALL_WRAP  = op(O_PAR) + ALL
 SOME_WRAP = op(O_PAR) + SOME
 
+# TODO Versu Keywords:
+# to in test pick
+# assert_count_nodes assert_count_terms assert_count_removals assert_count_processes
+# increment decrement change_by create destroy load can_stit stit score_action
+# test_clear_undo test_undo test_find_subs test_process_autonomy test_all test_autonomy test_evaluate
+# assert_count_actions_available test_tick_processes perform_action assert_text_sub assert_count_free_object_pool
+# process_name process_menu test_clear_definitions definition debug_break count abs sign log
+# align_center align_left align_right ignore restriction
+# dot colon bang game_over append_text compute_reasons_for_action untyped_function append_text_capitalize
+# clear_clicks add_logical_breakpoint can_perform data do_patches cached_condition
+# update_achievement_stats praxis placement
+
 
 def build_parser():
     """
     Build a rough parser for versu text
     """
-
-    # Versu Keywords:
-    # to in test pick
-    # assert_count_nodes assert_count_terms assert_count_removals assert_count_processes
-    # increment decrement change_by create destroy load can_stit stit score_action
-    # test_clear_undo test_undo test_find_subs test_process_autonomy test_all test_autonomy test_evaluate
-    # assert_count_actions_available test_tick_processes perform_action assert_text_sub assert_count_free_object_pool
-    # process_name process_menu test_clear_definitions definition debug_break count abs sign log
-    # align_center align_left align_right ignore restriction
-    # dot colon bang game_over append_text compute_reasons_for_action untyped_function append_text_capitalize
-    # clear_clicks add_logical_breakpoint can_perform data do_patches cached_condition
-    # update_achievement_stats praxis placement
-
 
     add_p = pp.Literal('add_') + pp.Word(pp.alphas)
     add_p.setParseAction(lambda x: "".join(x[:]))
@@ -87,23 +88,23 @@ def build_parser():
     block_p.setParseAction(lambda x: VS.VersuBlock(x.rest.strip(), x.head[0]))
     exp_p.setParseAction(lambda x: VS.VersuExpression(x.rest.strip(), x.head[0], hand=x.hand))
     misc_p.setParseAction(lambda x: VS.VersuExpression(x.rest.strip(), "statement"))
-    end_p.setParseAction(lambda x: versu_e.END)
+    end_p.setParseAction(lambda x: VS.versu_e.END)
 
     #double slash comment
     comment_line  = pp.dblSlashComment
     comment_open  = pp.Literal('/*') + pp.restOfLine
     comment_close = pp.SkipTo(pp.Literal('*/'))
 
-    comment_line.setParseAction(lambda x: versu_e.COMMENT)
-    comment_open.setParseAction(lambda x: versu_e.COPEN)
-    comment_close.setParseAction(lambda x: versu_e.CCLOSE)
+    comment_line.setParseAction(lambda x: VS.versu_e.COMMENT)
+    comment_open.setParseAction(lambda x: VS.versu_e.COPEN)
+    comment_close.setParseAction(lambda x: VS.versu_e.CCLOSE)
     comment_parser = pp.Or([pp.dblSlashComment,
                             comment_open,
                             comment_close
                             ])
 
-    O_BRACKET.setParseAction(lambda x: versu_e.ODEF)
-    C_BRACKET.setParseAction(lambda x: versu_e.CDEF)
+    O_BRACKET.setParseAction(lambda x: VS.versu_e.ODEF)
+    C_BRACKET.setParseAction(lambda x: VS.versu_e.CDEF)
     closure_parser = pp.Or([O_BRACKET, C_BRACKET])
 
     main_parser = pp.MatchFirst([comment_parser,

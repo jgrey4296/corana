@@ -51,8 +51,7 @@ def build_parser():
     register_act_stmt = s(register_abl + act_abl) + NAME
     register_wme_stmt = s(register_abl + wme_abl) + NAME
 
-    behavior_stmt = (op(atomic_abl) +
-                     op(joint_abl)).setResultsName("args") + \
+    behavior_stmt = (op(atomic_abl) + op(joint_abl)).setResultsName("args") + \
                      pp.Or([sequential_abl, parallel_abl]).setResultsName('form') + \
                      s(behavior_abl) + pp.Group(NAME).setResultsName("name")
 
@@ -84,8 +83,8 @@ def build_parser():
     spec_stmt.setParseAction(         lambda x: ABS.AblComponent(type=obj_e.SPEC,
                                                             args=[float(x[0])]))
 
-    initial_abl.setParseAction(       lambda x: ABS.AblBehavior("initial_tree", [], True))
-    import_stmt.setParseAction(       lambda x: ABS.AblMisc('import', x[:]))
+    initial_abl.setParseAction(       lambda x: ABS.AblBehavior("initial_tree")
+    import_stmt.setParseAction(       lambda x: ABS.AblMisc('import', args=[x[:]]))
 
     pass_stmt = pp.restOfLine
     pass_stmt.setParseAction(lambda x: ParseBase('Pass'))
