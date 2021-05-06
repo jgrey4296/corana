@@ -4,6 +4,9 @@ from typing import Callable, Iterator, Union, Match
 from typing import Mapping, MutableMapping, Sequence, Iterable
 from typing import cast, ClassVar, TypeVar, Generic
 
+import logging as root_logger
+logging = root_logger.getLogger(__name__)
+
 from dataclasses import dataclass, field, InitVar
 
 from code_analysis.util.parse_base import ParseBase
@@ -25,44 +28,13 @@ class VersuBlock(ParseBase):
         else:
             logging.warning("Non-Enum Block Type: {}".format(str(self.type)))
 
-
-
 @dataclass
 class VersuExpression(ParseBase):
     hand : InitVar[Any] = field(default=None)
 
     def __post_init__(self, hand):
-        self._block = None
         if bool(hand):
             self.args.append('hand_ordered')
 
 
 
-
-##------
-@dataclass
-class TempData:
-    """ Intermediary parse data """
-    comments      : int       = field(default=0)
-    non_exclusion : int       = field(default=0)
-    exclusions    : int       = field(default=0)
-    strings       : List[Any] = field(default_factory=list)
-    in_order      : List[Any] = field(default_factory=list)
-
-    blocks        : List[Any] = field(default_factory=list)
-    functions     : List[Any] = field(default_factory=list)
-    inserts       : List[Any] = field(default_factory=list)
-    types         : List[Any] = field(default_factgory=list)
-    actions       : List[Any] = field(default_factory=list)
-
-@dataclass
-class ParseState:
-    bracket_count  : int       = field(default=0)
-    current        : Any       = field(default=None)
-    line           : int       = field(default=0)
-    in_block       : List[Any] = field(default_factory=list)
-    block_text     : str       = field(default=None)
-    in_def         : Any       = field(default=None)
-    def_prefix     : Any       = field(default=None)
-    last_line      : Any       = field(default=None)
-    fold_into_last : bool      = field(default=False)
