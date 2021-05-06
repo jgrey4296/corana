@@ -10,8 +10,12 @@ from os import listdir
 from random import shuffle
 import pyparsing as pp
 
+from dataclasses import asdict
+
 import code_analysis.util.analysis_case as AC
 from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_data import ParseData
+from code_analysis.util.parse_state import ParseState
 
 # Setup root_logger:
 from os.path import splitext, split
@@ -26,7 +30,7 @@ root_logger.getLogger('').addHandler(console)
 logging = root_logger.getLogger(__name__)
 ##############################
 
-from versu_struct import versu_e, Enum_to_String, TempData, ParseState
+from versu_struct import versu_e, Enum_to_String, VersuBlock, VersuExpression
 from versu_parser import build_parser
 
 Quote_Extractor = pp.ZeroOrMore(pp.Suppress(pp.SkipTo(pp.quotedString)) + pp.quotedString)
@@ -38,115 +42,109 @@ def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
     main_parser = build_parser()
     #Data to return:
-    data = TempData()
+    parse_data = ParseData()
+    #Intermediate parsing state
+    parse_state = ParseState()
 
     #Read the file:
     lines = []
     with open(filename,'rb') as f:
         lines = [x.decode('utf-8','ignore') for x in f.readlines()]
 
-    #Intermediate parsing state:
-    state = ParseState()
+
     #Parse:
     while bool(lines):
-        state['line'] += 1
+        parse_state.inc_line()
         # TODO strip comments
         # TODO construct trie
-        # logging.info("Line: {}".format(state['line']))
+        # logging.info("Line: {}".format(parse_state['line']))
         current = lines.pop(0).strip()
 
         #Handle simple syntax cues
         if current == "":
             continue
-        if state.fold_into_last:
-            current = state.last_line + current
-            state.fold_into_last = False
+        if parse_state.fold_into_last:
+            current = parse_state.last_line + current
+            parse_state.fold_into_last = False
+
         if current == "{":
-            state.in_def = True
-            statedef_prefix = state['last_line']
+            parse_state.in_def = True
+            parse_state.def_prefix = parse_state.last_line
             continue
         elif current == "}":
-            state.in_def = None
+            parse_state.in_def = None
             continue
 
-        if state.in_def and statedef_prefix:
-            current = "{}.{}".format(state.def_prefix,current)
+        if parse_state.in_def and parse_state.def_prefix:
+            current = "{}.{}".format(parse_state.def_prefix, current)
 
         #PARSE
         result = main_parser.parseString(current)[0]
 
         if isinstance(result, ParseBase):
-            result.line_no = state.line
+            result.line_no = parse_state.line
 
         #Handle Blocks:
         if result is versu_e.COPEN: #comment
-            data.comments += 1
-            state.in_block.append(versu_e.COMMENT)
+            parse_data.inc_comment()
+            parse_state.in_block.append(versu_e.COMMENT)
             continue
         elif result is versu_e.CCLOSE: #comment close
-            data.comments += 1
-            state.in_block.pop()
+            parse_data.inc_comment()
+            parse_state.in_block.pop()
             continue
-        elif bool(state.in_block) and state.in_block[-1] is versu_e.COMMENT or result is versu_e.COMMENT:
-            data.comments += 1
+        elif bool(parse_state.in_block) and parse_state.in_block[-1] is versu_e.COMMENT or result is versu_e.COMMENT:
+            parse_data.inc_comment()
             continue
         elif current[-1] == "." or current[-1] == "!":
-            state.last_line = current
-            state.fold_into_last = True
+            parse_state.last_line = current
+            parse_state.fold_into_last = True
             continue
-
         elif isinstance(result, VersuBlock):
-            state.in_block.append(result)
-            data.in_order.append(result)
-            data.blocks.append(result)
+            parse_state.in_block.append(result)
+
+            parse_data.insert(result, "block")
             if result.type == "function":
-                data.functions.append(result)
+                parse_data.insert(result, "function")
 
         elif result is versu_e.END: #block end
-            ending = state.in_block
-            if bool(state.in_block):
-                state.in_block.pop()
+            ending = parse_state.in_block
+            if bool(parse_state.in_block):
+                parse_state.in_block.pop()
             #TODO COPY and END
             end_exp = VersuExpression('end','')
-            end_exp.line_no = state['line']
-            data.in_order.append(end_exp)
+            end_exp.line_no = parse_state.line
+            parse_data.insert(end_exp)
 
         #Handle Expressions:
         elif isinstance(result, VersuExpression):
             #TODO: Add block height
-            data.in_order.append(result)
-            if result.type == 'insert':
-                data.inserts.append(result)
-            elif result.type == "action":
-                data.actions.append(result)
-            elif bool(state.in_block) and isinstance(state.in_block[-1], VersuBlock) and state.in_block[-1].type == "types":
-                data.types.append(result)
+            if bool(parse_state.in_block) and isinstance(parse_state.in_block[-1], VersuBlock) and parse_state.in_block[-1].type == "types":
+                parse_data.insert(result, "type")
+            else:
+                parse_data.insert(result, result.type)
 
 
         #Handle other simple syntax based counts:
-        data.non_exclusions += current.count('.')
-        data.exclusions += current.count('!')
+        parse_data.count(non_exclusion=current.count("."),
+                         exclusion=current.count("!"))
 
         potential_strings = Quote_Extractor.parseString(current)
-        data.strings += potential_strings[:]
+        parse_data.strings += potential_strings[:]
 
 
-        state.last_line = current
+        parse_state.last_line = current
 
     # TODO Export into trie-explorer usable format
 
-
-    data.in_order.sort()
-    return data
+    return parse_data
 
 
 if __name__ == "__main__":
     input_ext    = [".type", ".data", ".praxis"]
-    output_lists = ['in_order']
     output_ext   = ".versu_analysis"
 
     AC.AnalysisCase(__file__,
                     input_ext,
                     extract_from_file,
-                    output_lists,
                     output_ext)()

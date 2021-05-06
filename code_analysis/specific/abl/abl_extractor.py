@@ -19,6 +19,7 @@ import abl_struct as ABS
 import abl_parser as ABP
 import code_analysis.util.analysis_case as AC
 import code_analysis.util.utils as utils
+from code_analysis.util.parse_data import ParseData
 from code_analysis.util.parse_base import ParseBase
 
 LOGLEVEL = root_logger.DEBUG
@@ -37,12 +38,7 @@ main_parser = None
 
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
-    data = {'behaving_entity': "",
-            'registrations': [],
-            'behaviors': [],
-            'behavior_edges' : [],
-            'comments': 0}
-    graph = nx.DiGraph()
+    data = ParseData()
     lines = []
     with open(filename, 'r') as f:
         lines = f.readlines()
@@ -50,6 +46,7 @@ def extract_from_file(filename, ctx):
     state = {'bracket_count' : 0,
              'current' : None,
              'line' : 0}
+
     while bool(lines):
         state['line'] += 1
         # logging.info("line: {}".format(state['line']))
@@ -64,26 +61,16 @@ def extract_from_file(filename, ctx):
 
         try:
             if result is obj_e.COMMENT:
-                data['comments'] += 1
+                data.inc_comment()
             elif isinstance(result, ABS.AblEnt):
-                data['behaving_entity'] = result
+                data.insert(result, "behaving_entity")
             elif isinstance(result, ABS.AblRegistration):
-                data['registrations'].append(result)
+                data.insert(result, "registration")
             elif isinstance(result, ABS.AblBehavior):
+                data.insert(result, "behaviour")
                 state['current'] = result
-                data['behaviors'].append(state['current'])
-                if result.name not in graph:
-                    graph.add_node(result.name)
             elif isinstance(result, ABS.AblComponent):
                 state['current'].add_component(result)
-                if result.type in [obj_e.PRECON, obj_e.SPEC]:
-                    continue
-                name = result.name
-                if name is None:
-                    name = str(result.type)
-                if name not in graph:
-                    graph.add_node(name)
-                graph.add_edge(state['current'].name, name)
             elif not isinstance(result, ParseBase):
                 logging.warning("Unrecognised parse result: {}".format(result))
 
@@ -91,31 +78,16 @@ def extract_from_file(filename, ctx):
             breakpoint()
             logging.info("Error")
 
-    # Convert graph into edgelist for data
-    data['behavior_edges'] += list(nx.generate_edgelist(graph, data=False))
-
-    # Draw graph
-    # prog=[‘neato’|’dot’|’twopi’|’circo’|’fdp’|’nop’]
-
-
-    if bool(graph):
-        pgv_graph = nx.nx_agraph.to_agraph(graph)
-        pgv_graph.layout(prog='dot')
-        pgv_graph.draw(join(ctx._out_dir,
-                            "{}.png".format(split(splitext(filename)[0])[1])))
-
     return data
 
 
 if __name__ == "__main__":
     main_parser = ABP.build_parser()
     input_ext = ".abl"
-    output_lists = ["behaviors"]
     output_ext = ".abl_analysis"
 
 
     AC.AnalysisCase(__file__,
                     input_ext,
                     extract_from_file,
-                    output_lists,
                     output_ext)()
