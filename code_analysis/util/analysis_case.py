@@ -14,8 +14,8 @@ from os import listdir, mkdir
 
 logging = root_logger.getLogger(__name__)
 
-#https://docs.python.org/3/library/dataclasses.html
 from dataclasses import dataclass, field, InitVar
+from code_analysis.util.parse_data import ParseData
 
 @dataclass
 class AnalysisCase:
@@ -34,20 +34,17 @@ class AnalysisCase:
     curr_file         : str
     exts              : List[str]
     extractor         : Callable
-    output_lists      : List[str]
-    output_ext        : str
-    accumulator       : Callable  = field(default=None)
-    accumulator_final : Callable  = field(default=None)
-    init_accum        : Any       = field(default=None)
-    targets           : List[str] = field(default=None)
+    output_ext        : str           = field(default=".json")
+    accumulator       : Callable      = field(default=None)
+    accumulator_final : Callable      = field(default=None)
+    accumulated_data  : Dict[Any,Any] = field(default_factory=dict)
+    targets           : List[str]     = field(default=None)
 
     _data_dir         : str       = field(init=False)
     _out_dir          : str       = field(init=False)
-    _accumulated_data : Any       = field(init=False)
     _sources          : List[str] = field(init=False, default_factory=list)
-    _extensions       : List[str] = field(init=False, default_factory=list)
-    _output_lists     : List[str] = field(init=False, default_factory=list)
     _files            : List[str] = field(init=False, default_factory=list)
+    _args             : Any       = field(init=False, default=None)
 
     def __post_init__(self):
         logging.info("Initialising")
@@ -62,7 +59,6 @@ class AnalysisCase:
         self._handle_cli()
         self._setup_sources()
         self._setup_extensions()
-        self._setup_output_lists()
         self._get_files()
 
         # Ensure an output directory:
@@ -72,22 +68,22 @@ class AnalysisCase:
 
     def __call__(self):
         logging.info("Processing")
-        self._accumulated_data = copy(self.init_accum)
         # Process each found file:
         for f in self._files:
             # Extract data:
             data = self.extractor(f, self)
+            assert(isinstance(data, ParseData))
             self._accumulate(data)
             # Convert to string
-            data_str = self._convert_data_to_output_format(data)
+            data_str = data.dumps()
             # Write it out
             self._write_output(f, data_str)
 
         self._finalise()
 
-        if bool(self._accumulated_data):
-            data_str = self._convert_data_to_output_format(self._accumulated_data)
-            with open(join("analysis", self.args.accum_name), "w") as f:
+        if bool(self.accumulated_data):
+            data_str = self._convert_accum_data_to_output_format(self.accumulated_data)
+            with open(join("analysis", self._args.accum_name), "w") as f:
                 f.write(data_str)
 
 
@@ -101,13 +97,13 @@ class AnalysisCase:
         parser.add_argument('-r', '--randn', help="Count of random targets to use")
         parser.add_argument('--randarg', action="store_true", help="Shuffle targets")
         parser.add_argument('--filter', action="store_true", help="Filter already processed to prevent duplication")
-        self.args = parser.parse_args()
+        self._args = parser.parse_args()
 
-        if self.args.output is not None:
-            self._out_dir = abspath(expanduser(self.args.output))
+        if self._args.output is not None:
+            self._out_dir = abspath(expanduser(self._args.output))
 
-        if self.args.target is not None:
-            self._sources += self.args.target
+        if self._args.target is not None:
+            self._sources += self._args.target
 
     def _setup_sources(self):
         if self.targets is not None:
@@ -120,17 +116,8 @@ class AnalysisCase:
         if isinstance(exts, str):
             exts = [exts]
 
-        self._extensions += exts
+        self.exts = exts
 
-    def _setup_output_lists(self):
-        output_lists = self.output_lists
-        if output_lists is None:
-            return
-
-        if isinstance(output_lists, str):
-            output_lists = [output_lists]
-
-        self._output_lists += output_lists
 
     def _get_files(self):
         files        = self._dfs_sources()
@@ -138,7 +125,7 @@ class AnalysisCase:
         filtered     = self._filter_out_processed(subselection)
 
         logging.info("Found {} {} files\nUsing {}".format(len(files),
-                                                          self._extensions,
+                                                          self.exts,
                                                           len(filtered)))
         if len(filtered) != len(files):
             logging.info("\t{}".format("\n\t".join(filtered)))
@@ -154,7 +141,7 @@ class AnalysisCase:
         DFS the list of sources for files of the correct extension
         """
         logging.info("Getting Data Files")
-        ext = self._extensions
+        ext = self.exts
         initial = self._sources
 
         files = []
@@ -165,24 +152,24 @@ class AnalysisCase:
             if isfile(current) and splitext(current)[1] in ext:
                 files.append(current)
             elif isdir(current):
-                sub = [join(current,x) for x in listdir(current)]
+                sub = [join(current, x) for x in listdir(current)]
                 queue += sub
 
         return files
 
     def _subselect_files(self, files):
         # Choose subselection of files if necessary
-        if self.args.randn:
-            files = [choice(files) for x in range(int(self.args.randn))]
+        if self._args.randn:
+            files = [choice(files) for x in range(int(self._args.randn))]
 
-        if self.args.randarg:
+        if self._args.randarg:
             shuffle(files)
 
         return files
 
     def _filter_out_processed(self, files):
         #filter already processed
-        if self.args.filter:
+        if self._args.filter:
             filtered_files = []
             for x in files:
                 u_path, o_path = self._source_path_to_output_path(x)
@@ -196,12 +183,15 @@ class AnalysisCase:
 
     def _accumulate(self, data):
         if self.accumulator is not None:
-            self._accumulated_data = self.accumulator(data, self._accumulated_data, self)
+            self.accumulated_data = self.accumulator(data,
+                                                      self.accumulated_data,
+                                                      self)
+            assert(isinstance(self.accumulated_data, dict))
 
     def _finalise(self):
         # Apply final accumulator function
         if self.accumulator_final is not None:
-            self._accumulated_data = self.accumulator_final(self._accumulated_data, self)
+            self.accumulated_data = self.accumulator_final(self.accumulated_data, self)
 
     def _write_output(self, source_path, data_str):
         u_analysis_path, other = self._source_path_to_output_path(source_path)
@@ -230,9 +220,7 @@ class AnalysisCase:
 
         return unique_analysis_path, orig_analysis_path
 
-
-
-    def _convert_data_to_output_format(self, data: Dict[Any, Any]):
+    def _convert_accum_data_to_output_format(self, data: Dict[Any, Any]):
         """
         Convert dict to output text.
         Each entry has a line, even lists
@@ -243,12 +231,15 @@ class AnalysisCase:
         assert(isinstance(data, dict))
         #expect a dictionary for data
         output_str = ""
-        loop_on_keys = self._output_lists
+        loop_on_keys = self.output_lists
 
         for k,v in data.items():
             if k in loop_on_keys:
+                output_str += "{}:\n".format(str(k))
                 for item in v:
                     output_str += "{}\n".format(str(item))
+
+                output_str += "END {}\n".format(str(k))
             else:
                 output_str += "{} : {}\n".format(k,str(v))
 
