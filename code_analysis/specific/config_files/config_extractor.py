@@ -84,7 +84,6 @@ def accumulator(new_data, accumulator_data, ctx):
 
 if __name__ == "__main__":
     input_ext = [".ini", ".txt"]
-    output_lists = []
     output_ext = ".config_analysis"
     accum_data = {
         'strings' : {},
@@ -97,7 +96,6 @@ if __name__ == "__main__":
     AC.AnalysisCase(__file__,
                     input_ext,
                     extract_from_file,
-                    output_lists,
                     output_ext,
                     accumulator=accumulator
                     )()
