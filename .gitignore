@@ -11,3 +11,5 @@ htmlcov
 
 data/
 analysis
+
+flycheck_*
