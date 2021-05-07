@@ -38,7 +38,7 @@ main_parser = None
 
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
-    data = ParseData()
+    data = ParseData(filename)
     lines = []
     with open(filename, 'r') as f:
         lines = f.readlines()
@@ -75,6 +75,7 @@ def extract_from_file(filename, ctx):
                 logging.warning("Unrecognised parse result: {}".format(result))
 
         except AttributeError as err:
+            logging.warning(str(err))
             breakpoint()
             logging.info("Error")
 
@@ -89,5 +90,4 @@ if __name__ == "__main__":
 
     AC.AnalysisCase(__file__,
                     input_ext,
-                    extract_from_file,
-                    output_ext)()
+                    extract_from_file)()

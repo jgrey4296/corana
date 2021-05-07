@@ -6,6 +6,8 @@ from typing import cast, ClassVar, TypeVar, Generic
 
 import pyparsing as pp
 
+from code_analysis.util.parse_base import ParseBase
+
 import abl_struct as ABS
 obj_e = ABS.ABL_E
 
@@ -83,7 +85,7 @@ def build_parser():
     spec_stmt.setParseAction(         lambda x: ABS.AblComponent(type=obj_e.SPEC,
                                                             args=[float(x[0])]))
 
-    initial_abl.setParseAction(       lambda x: ABS.AblBehavior("initial_tree")
+    initial_abl.setParseAction(       lambda x: ABS.AblBehavior("initial_tree"))
     import_stmt.setParseAction(       lambda x: ABS.AblMisc('import', args=[x[:]]))
 
     pass_stmt = pp.restOfLine

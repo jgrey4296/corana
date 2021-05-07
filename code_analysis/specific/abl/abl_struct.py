@@ -12,12 +12,33 @@ from code_analysis.util.parse_base import ParseBase
 ABL_E = Enum('ABL_E', 'ENT ACT WME CONFLICT BEH COM SPAWN MENTAL PRECON SPEC INIT STEP COMMENT')
 obj_e = ABL_E
 
+enum_to_str = {
+    obj_e.ENT      : "entity",
+    obj_e.ACT      : "act",
+    obj_e.WME      : "wme",
+    obj_e.CONFLICT : "conflict",
+    obj_e.BEH      : "behaviour",
+    obj_e.COM      : "com",
+    obj_e.SPAWN    : "spawngoal",
+    obj_e.MENTAL   : "mental_act",
+    obj_e.PRECON   : "precondition",
+    obj_e.SPEC     : "specificity",
+    obj_e.INIT     : "init",
+    obj_e.STEP     : "step",
+    obj_e.COMMENT  : "comment"
+}
+
+
 @dataclass
 class AblEnt(ParseBase):
 
     def __post_init__(self):
         self.type = obj_e.ENT
 
+    def to_dict(self):
+        obj = super().to_dict()
+        obj['type'] = enum_to_str[self.type]
+        return obj
 
 @dataclass
 class AblRegistration(ParseBase):
@@ -25,17 +46,22 @@ class AblRegistration(ParseBase):
     def __post_init__(self):
         assert(self.type in [obj_e.WME, obj_e.ACT, obj_e.CONFLICT])
 
+    def to_dict(self):
+        obj = super().to_dict()
+        obj['type'] = enum_to_str[self.type]
+        return obj
+
 
 @dataclass
 class AblBehavior(ParseBase):
 
-    def __post_init__(self, init=False):
+    def __post_init__(self):
         self.type = obj_e.BEH
-        self.init = init
 
-    def add_component(self, comp):
-        self.components.append(comp)
-
+    def to_dict(self):
+        obj = super().to_dict()
+        obj['type'] = enum_to_str[self.type]
+        return obj
 
 @dataclass
 class AblComponent(ParseBase):
@@ -48,31 +74,14 @@ class AblComponent(ParseBase):
                              obj_e.STEP])
 
     def to_dict(self):
-        _type = ""
-        if self.type == obj_e.MENTAL:
-            _type = "MentalAct"
-        elif self.type == obj_e.PRECON:
-            _type = "Precondition"
-        elif self.type == obj_e.STEP:
-            _type = "Step"
-        elif self.type == obj_e.SPEC:
-            _type = "Specificity"
-        elif self.type == obj_e.SPAWN and 'subgoal' in self.args:
-            _type = "SubGoal"
-        elif self.type == obj_e.SPAWN and 'act' in self.args:
-            _type = "Act"
-        else:
-            _type = "SpawnGoal"
+        _type = enum_to_str[self.type]
 
-        name = ""
-        if self.name is not None:
-            name = "{}".format(self.name)
+        base_dict = super().to_dict()
+        base_dict["type"] = _type
+        if self.name is None:
+            base_dict["name"] = "Anon"
 
-        args = [str(x) for x in self.args if x not in ["act", "spawngoal", "subgoal"]]
-
-        return { 'type' : _type, 'name': name, 'args': args }
-
-
+        return base_dict
 
 @dataclass
 class AblMisc(ParseBase):
