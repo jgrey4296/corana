@@ -64,16 +64,30 @@ def build_parser():
     Build a rough parser for versu text
     """
 
+    # TODO: sentences.
+    # (([a-zA-Z()_0-9{}] | string) [.!])+
+    #
+    # nested sentences
+    # word [sentence]
+    #
+    # comparisons
+    # word [=<>] word
+    #
+    # and | or
+
+    # what is the purpose of these?
     add_p = pp.Literal('add_') + pp.Word(pp.alphas)
     add_p.setParseAction(lambda x: "".join(x[:]))
 
     on_p = pp.Literal('on_') + pp.Word(pp.alphas)
     on_p.setParseAction(lambda x: "".join(x[:]))
 
+    # Recognise starts of blocks:
     block_p = pp.Or([TYPES, FUN, RANDOM,
                      PATCH, PROCESS, on_p,
                      ALL, SOME]).setResultsName('head') + pp.restOfLine.setResultsName('rest')
 
+    # Recognise expressions:
     exp_p = op(HAND).setResultsName('hand') \
         + pp.Or([ACTION, INSERT, CALL,
                  DEL, TEXT, IMPORT, IF_p,
@@ -81,6 +95,7 @@ def build_parser():
                  LOOP, MENU, ASSERT, ELSE,
                  DOM, add_p]).setResultsName('head') + pp.restOfLine.setResultsName('rest')
 
+    # anything else:
     misc_p = pp.restOfLine.setResultsName('rest')
     end_p      = s(END)
 

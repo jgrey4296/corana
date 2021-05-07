@@ -42,7 +42,7 @@ def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
     main_parser = build_parser()
     #Data to return:
-    parse_data = ParseData()
+    parse_data = ParseData(filename)
     #Intermediate parsing state
     parse_state = ParseState()
 
@@ -142,9 +142,7 @@ def extract_from_file(filename, ctx):
 
 if __name__ == "__main__":
     input_ext    = [".type", ".data", ".praxis"]
-    output_ext   = ".versu_analysis"
 
     AC.AnalysisCase(__file__,
                     input_ext,
-                    extract_from_file,
-                    output_ext)()
+                    extract_from_file)()
