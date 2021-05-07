@@ -36,7 +36,7 @@ class AnalysisCase:
     extractor         : Callable
     output_ext        : str           = field(default=".json")
     accumulator       : Callable      = field(default=None)
-    accumulator_final : Callable      = field(default=None)
+    finalise          : Callable      = field(default=None)
     accumulated_data  : Dict[Any,Any] = field(default_factory=dict)
     targets           : List[str]     = field(default=None)
 
@@ -50,7 +50,7 @@ class AnalysisCase:
         logging.info("Initialising")
         assert(callable(self.extractor))
         assert(self.accumulator is None or callable(self.accumulator))
-        assert(self.accumulator_final is None or callable(self.accumulator_final))
+        assert(self.finalise is None or callable(self.finalise))
 
         self._data_dir            = join(dirname(self.curr_file), AnalysisCase.DATA_DIR)
         self._out_dir             = join(dirname(self.curr_file), AnalysisCase.ANALYSIS_DIR)
@@ -190,8 +190,8 @@ class AnalysisCase:
 
     def _finalise(self):
         # Apply final accumulator function
-        if self.accumulator_final is not None:
-            self.accumulated_data = self.accumulator_final(self.accumulated_data, self)
+        if self.finalise is not None:
+            self.accumulated_data = self.finalise(self.accumulated_data, self)
 
     def _write_output(self, source_path, data_str):
         u_analysis_path, other = self._source_path_to_output_path(source_path)

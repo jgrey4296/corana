@@ -32,7 +32,7 @@ class ParseBase:
     type       : str                  = field(default=None)
     line_no    : int                  = field(default=-1)
     args       : List[str]            = field(default_factory=list)
-    components : List[ParseBase] = field(default_factory=list)
+    components : List['ParseBase'] = field(default_factory=list)
     uuid       : UUID                 = field(init=False, default_factory=uuid1)
 
     @staticmethod
