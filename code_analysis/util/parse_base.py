@@ -98,5 +98,8 @@ class ParseBase:
         return self.line_no < other.line_no
 
 
-    def add_component(self, comp):
-        self.components.append(comp)
+    def add_component(self, comp, as_list=None):
+        if comp:
+            self.components.append(comp)
+        if as_list:
+            self.components += as_list
