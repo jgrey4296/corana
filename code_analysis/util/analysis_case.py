@@ -38,7 +38,7 @@ class AnalysisCase:
     accumulator       : Callable      = field(default=None)
     finalise          : Callable      = field(default=None)
     accumulated_data  : Dict[Any,Any] = field(default_factory=dict)
-    targets           : List[str]     = field(default=None)
+    targets           : List[str]     = field(default_factory=list)
 
     _data_dir         : str       = field(init=False)
     _out_dir          : str       = field(init=False)
@@ -106,7 +106,7 @@ class AnalysisCase:
             self._sources += self._args.target
 
     def _setup_sources(self):
-        if self.targets is not None:
+        if bool(self.targets):
             self._sources += self.targets
         else:
             self._sources = [self._data_dir]
@@ -146,6 +146,7 @@ class AnalysisCase:
 
         files = []
         queue = initial[:]
+        logging.info("Searching: {}".format(queue))
         while bool(queue):
             current = queue.pop(0)
             logging.debug("Getting from: {}".format(current))

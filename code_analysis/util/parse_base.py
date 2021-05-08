@@ -22,18 +22,24 @@ logging = root_logger.getLogger(__name__)
 
 PATTERN = "{} : {} : {} := {}"
 
+UUIDstr = str
+COMP = Union[UUIDstr, "ParseBase"]
+ARG  = Union[str, Tuple[str, str]]
+
 @dataclass
 class ParseBase:
     """
     Base class of parse results, tracks line number position, and components
     """
 
-    name       : str                  = field(default=None)
-    type       : str                  = field(default=None)
-    line_no    : int                  = field(default=-1)
-    args       : List[str]            = field(default_factory=list)
-    components : List['ParseBase'] = field(default_factory=list)
-    uuid       : UUID                 = field(init=False, default_factory=uuid1)
+    name        : str               = field(default=None)
+    type        : str               = field(default=None)
+    line_no     : int               = field(default=-1)
+    args        : List[ARG]         = field(default_factory=list)
+    components  : List[UUIDstr]     = field(default_factory=list)
+
+    uuid        : UUID              = field(init=False, default_factory=uuid1)
+    _components : List['ParseBase'] = field(init=False, default_factory=list)
 
     @staticmethod
     def reconstruct(text):
@@ -78,14 +84,14 @@ class ParseBase:
                               json.dumps(data))
 
     def to_dict(self):
-        components = [x.to_dict() for x in self.components]
+        assert(all([isinstance(x, str) for x in self.components]))
 
-        return {"name" : self.name,
-                "type" : self.type,
-                "line_no" : self.line_no,
-                "args" : self.args,
-                "components" : components,
-                "uuid" : str(self.uuid)
+        return {"name"       : self.name,
+                "type"       : self.type,
+                "line_no"    : self.line_no,
+                "args"       : self.args,
+                "components" : self.components,
+                "uuid"       : str(self.uuid)
                 }
 
     def dumps(self):
@@ -100,6 +106,17 @@ class ParseBase:
 
     def add_component(self, comp, as_list=None):
         if comp:
-            self.components.append(comp)
+            self._components.append(comp)
+            self.components.append(str(comp.uuid))
         if as_list:
-            self.components += as_list
+            self._components += [x for x in as_list if x is not None]
+            self.components += [str(x.uuid) for x in as_list if x is not None]
+
+
+    def flatten(self):
+        total = [self]
+
+        for x in self._components:
+            total += x.flatten()
+
+        return total

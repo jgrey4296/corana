@@ -14,35 +14,42 @@ from dataclasses import dataclass, field, InitVar
 
 from code_analysis.util.parse_base import ParseBase
 
-subgroup_default = lambda: defaultdict(lambda: [])
+subgroup_default = lambda: defaultdict(lambda: set())
 count_default = lambda: defaultdict(lambda: 0)
+
+UUIDstr = str
 
 @dataclass
 class ParseData:
     """ Aggregate parse data """
-    source_file   : str                   = field()
-    flags         : List[str]             = field(default_factory=list)
+    source_file   : str                       = field()
+    flags         : Set[str]                  = field(default_factory=set)
 
     # Counts:
-    counts        : Dict[Any, int]        = field(init=False, default_factory=count_default)
+    counts        : Dict[str, int]            = field(init=False, default_factory=count_default)
     # Elements:
-    strings       : List[Any]             = field(init=False, default_factory=list)
-    subgroups     : Dict[str, List[str]]  = field(init=False, default_factory=subgroup_default)
-    ordered       : List[Tuple[str, int]] = field(init=False, default_factory=list)
-    total         : Dict[str, ParseBase]  = field(init=False, default_factory=dict)
+    strings       : List[Any]                 = field(init=False, default_factory=list)
+    subgroups     : Dict[str, Set[UUIDstr]]   = field(init=False, default_factory=subgroup_default)
+    ordered       : List[Tuple[UUIDstr, int]] = field(init=False, default_factory=list)
+    total         : Dict[UUIDstr, ParseBase]  = field(init=False, default_factory=dict)
 
     def inc_comment(self):
         self.counts["comments"] += 1
 
     def insert(self, element: ParseBase, *args):
+        if element is None:
+            return
+
         str_uuid = str(element.uuid)
-        if str_uuid not in self.total:
-            self.total[str_uuid] = element
+        if str_uuid not in self.total and element.line_no != -1:
             self.ordered.append((str_uuid, element.line_no))
 
+        all_components = element.flatten()
+        all_comp_uuids = [str(x.uuid) for x in all_components]
+        self.total.update({str(x.uuid) : x for x in all_components})
+
         for x in args:
-            if str_uuid not in self.subgroups[x]:
-                self.subgroups[x].append(str_uuid)
+            self.subgroups[x].update(all_comp_uuids)
 
     def count(self, **kwargs):
         for k,v in kwargs.items():
@@ -52,16 +59,16 @@ class ParseData:
         """ Return an output format representation of the object """
         ordered   = sorted(self.ordered, key=lambda x: x[1])
         total     = [x.to_dict() for x in self.total.values()]
+        subgroups = {x: list(y) for x,y in self.subgroups.items()}
 
         return json.dumps({"counts"    : self.counts,
                            "strings"   : self.strings,
-                           "subgroups" : self.subgroups,
+                           "subgroups" : subgroups,
                            "ordered"   : ordered,
                            "total"     : total,
-                           "flags"     : self.flags},
+                           "flags"     : list(self.flags),
+                           "source_file" : self.source_file},
                           indent=4)
 
     def flag(self, *args):
-        for flag in args:
-            if flag not in self.flags:
-                self.flags.append(flag)
+        self.flags.update(args)
