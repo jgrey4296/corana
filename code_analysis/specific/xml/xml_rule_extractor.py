@@ -6,7 +6,7 @@ output to similarly named files in analysis directory
 
 from enum import Enum
 from os import listdir
-from os.path import join, isfile, exists, abspath
+from os.path import join, isfile, exists, abspath, dirname
 from os.path import split, isdir, splitext, expanduser
 from random import shuffle
 import csv
@@ -43,7 +43,7 @@ logging = root_logger.getLogger(__name__)
 # Enums:
 
 def extract_from_file(filename, ctx):
-    logging.info("Extracting from: {}".format(filename))
+    logging.info("Extracting from: {}".format(split(filename)[1]))
     data = None
 
     with open(filename, 'rb') as f:
@@ -65,11 +65,11 @@ def extract_from_file(filename, ctx):
 
 
 if __name__ == "__main__":
-    target = join("data","xml","CiFStates")
+    target = join(dirname(__file__), "data", "CiFStates")
     input_ext = ".xml"
 
 
     AC.AnalysisCase(__file__,
                     input_ext,
                     extract_from_file,
-                    target=[target])()
+                    targets=[target])()
