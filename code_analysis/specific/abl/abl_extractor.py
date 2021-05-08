@@ -71,6 +71,7 @@ def extract_from_file(filename, ctx):
                 state['current'] = result
             elif isinstance(result, ABS.AblComponent):
                 state['current'].add_component(result)
+                data.insert(result)
             elif not isinstance(result, ParseBase):
                 logging.warning("Unrecognised parse result: {}".format(result))
 
