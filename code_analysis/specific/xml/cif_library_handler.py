@@ -6,6 +6,12 @@ from code_analysis.util.parse_base import ParseBase
 
 import code_analysis.util.xml_utils as XU
 
+from cif_shared_handlers import predicate_handler, rule_handler, performance_handler
+
+import logging as root_logger
+logging = root_logger.getLogger(__name__)
+
+
 RULE_RE = re.compile("rule")
 TOC_RE  = re.compile("toc[0-9]")
 
@@ -51,29 +57,6 @@ def cif_library_handler(filename, soup):
 
 
 
-def predicate_handler(soup):
-    assert(soup.name.lower() == "predicate")
-    args = [(x,y) for x,y in soup.attrs.items()]
-    data = ParseBase(type="predicate",
-                     args=args)
-    return data
-
-
-
-def rule_handler(soup):
-    assert("rule" in soup.name.lower())
-    args = [(x,y) for x,y in soup.attrs.items()]
-    data = ParseBase(name=soup.name,
-                     type="rule",
-                     args=args)
-
-    for child in soup.children:
-        if isinstance(child, str):
-            continue
-        assert(child.name.lower() == "predicate")
-        data.add_component(predicate_handler(child))
-
-    return data
 
 def effect_handler(soup):
     assert(soup.name.lower() == "effect")
@@ -91,13 +74,6 @@ def effect_handler(soup):
 
     return data
 
-def performance_handler(soup):
-    assert(soup.name.lower() == "performancerealization")
-    args = [(x,y) for x,y in soup.attrs.items()]
-    data = ParseBase(type="performance_realization",
-                     args=args,
-                     name=soup.string)
-    return data
 
 def instantiation_handler(soup):
     assert(soup.name.lower() == "instantiation")
@@ -110,7 +86,11 @@ def instantiation_handler(soup):
                      type="instantiation",
                      args=args)
 
-    XU.verify_schema(soup, ["lineofdialogue", "toc1", "toc2", "toc3", "conditionalrules"])
+    XU.verify_schema(soup, ["lineofdialogue",
+                            "toc1",
+                            "toc2",
+                            "toc3",
+                            "conditionalrules"])
 
     lines = soup.find_all("lineofdialogue", recursive=False)
     tocs = soup.find_all(TOC_RE, recursive=False)
@@ -164,7 +144,8 @@ def micro_handler(soup):
     data = ParseBase(name=soup.find("name").string,
                      type="microtheory")
 
-    other_than_name = [rule_wrap_handler(x) for x in soup.children if x.name != "name"]
+    other_than_name = [rule_wrap_handler(x) for x in soup.children
+                       if x.name != "name"]
     data.add_component(None, as_list=other_than_name)
 
     return data
