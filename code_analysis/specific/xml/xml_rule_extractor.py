@@ -16,6 +16,7 @@ import spacy
 
 import code_analysis.util.analysis_case as AC
 import code_analysis.util.utils as utils
+import code_analysis.util.xml_utils as XU
 
 #Choose:
 #https://docs.python.org/3/library/xml.etree.elementtree.html
@@ -51,6 +52,8 @@ def extract_from_file(filename, ctx):
 
     soup = BeautifulSoup(text, features='lxml')
 
+    ctx._misc['schema'] = XU.infer_schema(soup, schema=ctx._misc['schema'])
+
     # Handle File Type
     if soup.find('cifstate') is not None:
         data = cif_state_handler(filename, soup)
@@ -63,6 +66,10 @@ def extract_from_file(filename, ctx):
 
     return data
 
+def finalise_schema(_, ctx):
+    schema = ctx._misc['schema']
+    schema = {x : list(y) for x,y in schema.items()}
+    ctx._misc['schema'] = schema
 
 if __name__ == "__main__":
     target = join(dirname(__file__), "data", "CiFStates")
@@ -72,4 +79,6 @@ if __name__ == "__main__":
     AC.AnalysisCase(__file__,
                     input_ext,
                     extract_from_file,
-                    targets=[target])()
+                    targets=[target],
+                    _misc={'schema': None},
+                    finalise=finalise_schema)()
