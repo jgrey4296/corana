@@ -44,21 +44,7 @@ def sample(predictions, temperature=1.0):
     probabilities = np.random.multinomial(1, preds, 1)
     return np.argmax(probas)
 
-def xml_search_components(data, soup, initial):
-    """ Summarize a file's tags and attributes, hierarchically """
-    queue = set(initial)
-    handled = set()
-    while bool(queue):
-        logging.info("Queue len: {}".format(len(queue)))
-        current = queue.pop()
-        if current is None or current in handled:
-            continue
-        handled.add(current)
-        sub_components = list({y.name for x in soup.find_all(current) for y in x.contents if y.name is not None})
-        attrs = set([x for y in soup.find_all(current) for x in y.attrs.keys()])
-        queue.update(sub_components)
-        data['components_{}'.format(current)] = sub_components
-        if bool(attrs):
-            data['attrs_{}'.format(current)] = attrs
 
-    return data
+def guarded_log(msg, val):
+    if isinstance(val, str) and bool(val.strip()):
+        logging.info(msg.format(val))

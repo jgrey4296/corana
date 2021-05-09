@@ -11,6 +11,7 @@ import logging as root_logger
 from os.path import join, isfile, exists, abspath, dirname
 from os.path import split, isdir, splitext, expanduser
 from os import listdir, mkdir
+import json
 
 logging = root_logger.getLogger(__name__)
 
@@ -45,6 +46,8 @@ class AnalysisCase:
     _sources          : List[str] = field(init=False, default_factory=list)
     _files            : List[str] = field(init=False, default_factory=list)
     _args             : Any       = field(init=False, default=None)
+
+    _misc             : Dict[Any,Any] = field(default_factory=dict)
 
     def __post_init__(self):
         logging.info("Initialising")
@@ -86,6 +89,8 @@ class AnalysisCase:
             with open(join("analysis", self._args.accum_name), "w") as f:
                 f.write(data_str)
 
+        with open(join(self._out_dir, "analysis_misc.json"),'w') as f:
+            json.dump(self._misc, f)
 
 
     def _handle_cli(self):
