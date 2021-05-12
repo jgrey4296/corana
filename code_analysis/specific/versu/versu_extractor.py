@@ -91,6 +91,7 @@ def extract_from_file(filename, ctx):
             continue
         elif result is versu_e.CCLOSE: #comment close
             parse_data.inc_comment()
+            # TODO ensure you pop a comment
             parse_state.in_block.pop()
             continue
         elif bool(parse_state.in_block) and parse_state.in_block[-1] is versu_e.COMMENT or result is versu_e.COMMENT:

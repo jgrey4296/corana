@@ -34,13 +34,20 @@ sequential_abl  = pp.Keyword("sequential")
 spawn_abl       = pp.Keyword("spawngoal")
 specificity_abl = pp.Keyword("specificity")
 subgoal_abl     = pp.Keyword("subgoal")
-with_abl        = pp.Keyword("with")
 wme_abl         = pp.Keyword("wme")
 initial_abl     = pp.Keyword("initial_tree")
 succeed_abl     = pp.Keyword("succeed_step")
 fail_abl        = pp.Keyword("fail_step")
 conflict_abl    = pp.Keyword('conflict')
 import_abl      = pp.Keyword('import')
+
+
+with_abl         = pp.Keyword("with")
+priority_abl     = pp.Keyword('priority')
+persistent_abl   = pp.Keyword('persistent')
+success_test_abl = pp.Keyword('success_test')
+ignore_failure_abl = pp.Keyword('ignore_failure')
+teammembers_abl    = pp.Keyword('teammembers')
 
 parallel_abl.setParseAction(lambda x: "Parallel")
 sequential_abl.setParseAction(lambda x: "Sequential")
@@ -66,6 +73,9 @@ def build_parser():
     spec_stmt         = s(specificity_abl) + NUM
     conflict_stmt     = s(conflict_abl) + NAME + NAME
     import_stmt       = s(import_abl) + pp.restOfLine
+
+    # TODO add wme definition
+    # TODO add with statements
 
     # Parse Actions
     beh_ent_stmt.setParseAction(      lambda x: ABS.AblEnt(x[0]))
