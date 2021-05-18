@@ -21,11 +21,12 @@ class PostProcessor:
     create diagrams, etc
     """
 
-    root        : str      = field()
+    curr_file   : str      = field()
     processor   : Callable = field()
     accumulator : Callable = field(default=None)
     finalise    : Callable = field(default=None)
 
+    _root         : str = field(init=False)
     _analysis_dir : str = field(init=False)
     _out_dir      : str = field(init=False)
     _accumulate_data : Dict[Any,Any] = field(init=False, default_factory=dict)
@@ -33,8 +34,9 @@ class PostProcessor:
     _files        : List[str] = field(init=False)
 
     def __post_init__(self, other):
-        self._analysis_dir = join(dirname(self.root), "analysis")
-        self._out_dir      = join(dirname(self.root), "post_analysis")
+        self._root = dirname(self.curr_file)
+        self._analysis_dir = join(dirname(self._root), "analysis")
+        self._out_dir      = join(dirname(self._root), "post_analysis")
 
         if not exists(self._analysis_dir):
             raise Exception("Analysis Directory doesn't exist: {}".format(self._analysis_dir))
@@ -56,7 +58,7 @@ class PostProcessor:
             # TODO reconstruct parse objects
 
             # process
-            result = self.processor(data)
+            result = self.processor(data, self)
 
             self._output(result)
             self._accumulate(result)

@@ -19,6 +19,9 @@ from code_analysis.util.parse_base import ParseBase
 from code_analysis.util.parse_data import ParseData
 from code_analysis.util.parse_state import ParseState
 
+import handlers
+
+
 LOGLEVEL = root_logger.DEBUG
 LOG_FILE_NAME = "log.{}".format(splitext(split(__file__)[1])[0])
 root_logger.basicConfig(filename=LOG_FILE_NAME, level=LOGLEVEL, filemode='w')
@@ -43,9 +46,9 @@ def extract_from_file(filename, ctx):
               'line' : 0}
 
     if "dota" in filename:
-        extract_from_dota_patch_notes(data, soup)
+        handlers.handle_dota_patch_notes(data, soup)
     else:
-        extract_from_release_info(data, soup)
+        handlers.handle_df_patch_notes(data, soup)
 
     return data
 

@@ -4,7 +4,7 @@ logging = root_logger.getLogger(__name__)
 
 from code_analysis.util.parse_state import ParseState
 
-def extract_from_dota_patch_notes(data, soup):
+def handle_dota_patch_notes(data, soup):
 
     # TODO verify dota parsing
     # TODO use dota parsing
@@ -49,7 +49,7 @@ def extract_from_dota_patch_notes(data, soup):
 
     return data
 
-def extract_from_release_info(data, soup):
+def handle_df_patch_notes(data, soup):
     # TODO verify release info parse
     # TODO create timeline
     title = soup.find('h1')

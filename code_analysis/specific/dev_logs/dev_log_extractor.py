@@ -4,20 +4,24 @@ extract names of behaviours mentioned
 output to similarly named files in analysis directory
 """
 import datetime
+# Setup root_logger:
+import logging as root_logger
 import re
 from enum import Enum
-from os.path import join, isfile, exists, abspath
-from os.path import split, isdir, splitext, expanduser
 from os import listdir
+from os.path import (abspath, exists, expanduser, isdir, isfile, join, split,
+                     splitext)
 from random import shuffle
-import pyparsing as pp
-from bs4 import BeautifulSoup
-import spacy
 
 import code_analysis.util.analysis_case as AC
+import pyparsing as pp
+import spacy
+from bs4 import BeautifulSoup
 from code_analysis.util.parse_base import ParseBase
 from code_analysis.util.parse_data import ParseData
 from code_analysis.util.parse_state import ParseState
+
+import handler
 
 # Setup root_logger:
 import logging as root_logger
@@ -30,7 +34,6 @@ console.setLevel(root_logger.INFO)
 root_logger.getLogger('').addHandler(console)
 logging = root_logger.getLogger(__name__)
 ##############################
-# Enums:
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -43,38 +46,13 @@ def extract_from_file(filename, ctx):
         soup = BeautifulSoup(text, features='lxml')
 
     assert(soup is not None)
-    extract_from_dev_log(soup, data)
+    handler.handle_html_dev_log(soup, data)
 
     return data
-
-def extract_from_dev_log(soup, data):
-    dev_list = soup.find('ul')
-
-    try:
-        #Add (date : text)
-        for li in dev_list.children:
-            span = li.find('span')
-            if span is None or span == -1:
-                continue
-            date = span.string
-            text = li.get_text()
-            text = text.replace(date,"")
-            text = text.replace('\n',' ')
-            data[date] = text
-    except AttributeError:
-        breakpoint()
-
 
 
 if __name__ == "__main__":
     input_ext = ".html"
-
-    init_accum = {
-        '__total_count' : 0,
-        '__sen_counts'  : {},
-        '__unique_words' : set()
-        }
-
 
     AC.AnalysisClass(__file__,
                      input_ext,

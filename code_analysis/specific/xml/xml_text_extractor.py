@@ -60,23 +60,24 @@ def extract_from_file(filename, ctx):
     elif "twine" in filename:
         data = parse_twine(data, soup)
     elif "unrest" in filename:
-        data = pase_unrest(data, soup)
+        data = parse_unrest(data, soup)
     else:
-        data = utils.xml_search_components(data, soup, [x.name for x in soup.contents])
+        logging.warning(f"Unrecognized: {filename}")
+        data.flag("discard")
 
     return data
 
 
 
 if __name__ == "__main__":
-    base = ["data", "xml"]
-    targets = [join(*base, x) for x in ["uscode",
-                                        "king_james_bible",
-                                        "red_shirt",
-                                        "king_dragon_pass",
-                                        "dwarf_fortress",
-                                        "unrest",
-                                        "twine"]]
+    base = join(dirname(__file__), "data")
+    targets = [join(base, x) for x in ["uscode",
+                                       "king_james_bible",
+                                       "red_shirt",
+                                       "king_dragon_pass",
+                                       "dwarf_fortress",
+                                       "unrest",
+                                       "twine"]]
     input_ext = [".xml", ".html"]
 
     AC.AnalysisCase(__file__,

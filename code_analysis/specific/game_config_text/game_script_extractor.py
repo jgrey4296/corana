@@ -58,7 +58,8 @@ def extract_from_file(filename, ctx):
     elif "witcher" in filename:
         data.update(handlers.handle_witcher(data, lines))
     else:
-        logging.info("Handling generic")
+        logging.warning(f"Unrecognized: {filename}")
+        data.flag("discard")
 
     return data
 
@@ -70,7 +71,7 @@ def extract_from_file(filename, ctx):
 
 
 if __name__ == "__main__":
-    input_ext = ".txt"
+    input_ext = [".txt", ".psc", ".ws"]
 
     AC.AnalysisCase(__file__,
                     input_ext,
