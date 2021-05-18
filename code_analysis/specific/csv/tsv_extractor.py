@@ -43,7 +43,8 @@ def extract_from_file(filename, ctx):
         text = [x.decode('utf-8','ignore') for x in f.readlines()]
 
     if "dialogue" in filename:
-        data = handlers.handle_dialogue(text)
+        # data = handlers.handle_dialogue(text)
+        data.flag('discard')
 
     return data
 
