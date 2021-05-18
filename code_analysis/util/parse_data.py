@@ -24,6 +24,7 @@ class ParseData:
     """ Aggregate parse data """
     source_file   : str                       = field()
     flags         : Set[str]                  = field(default_factory=set)
+    misc          : Dict[str, Any]            = field(default_factory=dict)
 
     # Counts:
     counts        : Dict[str, int]            = field(init=False, default_factory=count_default)
