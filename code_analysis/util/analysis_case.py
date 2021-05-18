@@ -76,6 +76,10 @@ class AnalysisCase:
             # Extract data:
             data = self.extractor(f, self)
             assert(isinstance(data, ParseData))
+            if 'discard' in data.flags:
+                logging.info(f"Discarding: {data.source_file}")
+                continue
+
             self._accumulate(data)
             # Convert to string
             data_str = data.dumps()
