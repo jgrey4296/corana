@@ -13,8 +13,13 @@ from os import listdir
 from random import shuffle
 import pyparsing as pp
 
-import analysis_case as AC
-import utils
+import code_analysis.util.analysis_case as AC
+from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_data import ParseData
+from code_analysis.util.parse_state import ParseState
+
+import handlers
+
 
 # Setup root_logger:
 from os.path import splitext, split
@@ -32,39 +37,20 @@ logging = root_logger.getLogger(__name__)
 
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
+    data = ParseData(filename)
+
     with open(filename, 'rb') as f:
         text = [x.decode('utf-8','ignore') for x in f.readlines()]
 
     if "dialogue" in filename:
-        data = handle_dialogue(text)
-
-    return data
-
-def handle_dialogue(text):
-    data = {}
-    csv_obj = csv.reader(text, delimiter="\t", quotechar='"')
-
-    rows = [x for x in csv_obj]
-
-    variables = list(set([y[0] for x in rows for y in re.findall("%(\w+)(\([\w,]*\))?%", x[0])]))
-
-    data['length'] = len(rows)
-    data['speech_acts'] = list(set([y for x in rows for y in x[1].split(',') if bool(y)]))
-    data['num_speech_acts'] = len(data['speech_acts'])
-    data['variables'] = variables
-
-    # TODO parse text?
+        data = handlers.handle_dialogue(text)
 
     return data
 
 
 if __name__ == "__main__":
     input_ext = ".tsv"
-    output_lists = []
-    output_ext = ".tsv_analysis"
 
     AC.AnalysisCase(__file__,
                     input_ext,
-                    extract_from_file,
-                    output_lists,
-                    output_ext)()
+                    extract_from_file)()

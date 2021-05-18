@@ -11,8 +11,10 @@ from os import listdir
 from random import shuffle
 import pyparsing as pp
 
-import analysis_case as AC
-import utils
+import code_analysis.util.analysis_case as AC
+from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_data import ParseData
+from code_analysis.util.parse_state import ParseState
 
 # Setup root_logger:
 import logging as root_logger
@@ -34,33 +36,30 @@ RIGHT_DBL_QUOTE = "”"
 DBL_QUOTE = '"'
 
 
-# Enums:
-
-def build_parser():
-    return None
-
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
-    data = {'__unique_words' : set(),
-            '__sen_counts' : {},
-            '__entities' : set(),
-            '__pronouns' : {},
-            '__nouns'    : set(),
-            '__verb_pairs' : set(),
-            '__actions'  :  set(),
-            '__deontics' : {},
-            '__speech' : []
-            }
+    data = ParseData(filename)
+    # data = {'__unique_words' : set(),
+    #         '__sen_counts' : {},
+    #         '__entities' : set(),
+    #         '__pronouns' : {},
+    #         '__nouns'    : set(),
+    #         '__verb_pairs' : set(),
+    #         '__actions'  :  set(),
+    #         '__deontics' : {},
+    #         '__speech' : []
+    #         }
     lines = []
     with open(filename,'r') as f:
         lines = f.readlines()
 
-    state = { 'bracket_count' : 0,
-              'current' : None,
-              'line' : 0,
-              'potential_speech' : None,
-              'sentence_length' : 0
-    }
+    state = ParseState()
+    # state = { 'bracket_count' : 0,
+    #           'current' : None,
+    #           'line' : 0,
+    #           'potential_speech' : None,
+    #           'sentence_length' : 0
+    # }
     while bool(lines):
         state['line'] += 1
         current = lines.pop(0)
@@ -138,11 +137,7 @@ def extract_from_file(filename, ctx):
 
 if __name__ == "__main__":
     input_ext = [".txt", ".nomic"]
-    output_lists = []
-    output_ext = ".deontic_analysis"
 
     AC.AnalysisCase(__file__,
                     input_ext,
-                    extract_from_file,
-                    output_lists,
-                    output_ext)()
+                    extract_from_file)()

@@ -14,8 +14,10 @@ import pyparsing as pp
 # Setup root_logger:
 import logging as root_logger
 
+from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_data import ParseData
+from code_analysis import util
 import analysis_case as AC
-import utils
 
 LOGLEVEL = root_logger.DEBUG
 LOG_FILE_NAME = "log.{}".format(splitext(split(__file__)[1])[0])
@@ -31,7 +33,7 @@ D3_TYPE = Enum("D3 Type", "STRINGS ATTACKS DILEMMAS EVENTS NAMES OTHER")
 
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
-    data = { }
+    data = ParseData(filename)
     config = configparser.ConfigParser(allow_no_value=True, interpolation=None)
     with open(filename, 'rb') as f:
         text = f.read().decode('utf-8','ignore')
@@ -65,37 +67,10 @@ def extract_from_file(filename, ctx):
 
     return data
 
-def accumulator(new_data, accumulator_data, ctx):
-
-    # strings
-
-    # attacks
-
-    # dilemmas
-
-    # events
-
-    # names
-
-
-
-    return accumulator_data
-
-
 if __name__ == "__main__":
     input_ext = [".ini", ".txt"]
-    output_ext = ".config_analysis"
-    accum_data = {
-        'strings' : {},
-        'attacks' : {},
-        'dilemmas' : {},
-        'events' : {},
-        'names' : {}
-        }
 
     AC.AnalysisCase(__file__,
                     input_ext,
-                    extract_from_file,
-                    output_ext,
-                    accumulator=accumulator
+                    extract_from_file
                     )()

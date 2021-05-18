@@ -3,35 +3,28 @@ Get cif rules files from data dir,
 
 output to similarly named files in analysis directory
 """
-
+import csv
+import logging as root_logger
+import re
 from enum import Enum
 from os import listdir
-from os.path import join, isfile, exists, abspath, dirname
-from os.path import split, isdir, splitext, expanduser
+from os.path import (abspath, dirname, exists, expanduser, isdir, isfile, join,
+                     split, splitext)
 from random import shuffle
-import csv
-import pyparsing as pp
-import re
-import spacy
 
 import code_analysis.util.analysis_case as AC
 import code_analysis.util.utils as utils
 import code_analysis.util.xml_utils as XU
-
-#Choose:
-#https://docs.python.org/3/library/xml.etree.elementtree.html
 import lxml
+import pyparsing as pp
+import spacy
 from bs4 import BeautifulSoup
 
-from promweek_handler import promweek_handler
 from cif_library_handler import cif_library_handler
 from cif_state_handler import cif_state_handler
+from promweek_handler import promweek_handler
 
 
-nlp = spacy.load("en_core_web_sm")
-# Setup root_logger:
-from os.path import splitext, split
-import logging as root_logger
 LOGLEVEL = root_logger.DEBUG
 LOG_FILE_NAME = "log.{}".format(splitext(split(__file__)[1])[0])
 root_logger.basicConfig(filename=LOG_FILE_NAME, level=LOGLEVEL, filemode='w')
@@ -41,7 +34,7 @@ console.setLevel(root_logger.INFO)
 root_logger.getLogger('').addHandler(console)
 logging = root_logger.getLogger(__name__)
 ##############################
-# Enums:
+nlp = spacy.load("en_core_web_sm")
 
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(split(filename)[1]))
@@ -74,7 +67,6 @@ def finalise_schema(_, ctx):
 if __name__ == "__main__":
     target = join(dirname(__file__), "data", "CiFStates")
     input_ext = ".xml"
-
 
     AC.AnalysisCase(__file__,
                     input_ext,

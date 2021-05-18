@@ -13,8 +13,10 @@ import pyparsing as pp
 
 nlp = spacy.load("en_core_web_sm")
 
-import analysis_case as AC
-import utils
+import code_analysis.util.analysis_case as AC
+from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_data import ParseData
+from code_analysis.util.parse_state import ParseState
 
 # Setup root_logger:
 import logging as root_logger
@@ -37,38 +39,37 @@ DBL_QUOTE = '"'
 
 # Enums:
 
-def build_parser():
-    return None
-
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
-    data = { '__unique_words' : set(),
-             '__total_count' : 0,
-             '__sen_counts'  : {},
-             '__nouns'       : set(),
-             '__pronouns'    : {},
-             '__speech'      : [],
-             '__colours'     : set(),
-             '__honorifics'  : set(),
-             '__clothes'     : [],
-             '__environments' : [],
-             '__actions'     : set(),
-             '__genders'     : [],
-             '__death'       : [],
-             '__entities'    : set(),
-             '__verb_pairs'  : set()
-    }
+    data = ParseData(filename)
+    #          '__unique_words' : set(),
+    #          '__total_count' : 0,
+    #          '__sen_counts'  : {},
+    #          '__nouns'       : set(),
+    #          '__pronouns'    : {},
+    #          '__speech'      : [],
+    #          '__colours'     : set(),
+    #          '__honorifics'  : set(),
+    #          '__clothes'     : [],
+    #          '__environments' : [],
+    #          '__actions'     : set(),
+    #          '__genders'     : [],
+    #          '__death'       : [],
+    #          '__entities'    : set(),
+    #          '__verb_pairs'  : set()
+
     lines = []
     with open(filename,'rb') as f:
         lines = [x for x in f.read().decode('utf-8','ignore').split('\n')]
 
-    state = { 'bracket_count' : 0,
-              'current' : None,
-              'line' : 0,
-              'potential_speech' : None,
-              'sentence_start' : 0,
-              'sentence_length' : 0
-              }
+    state = ParseState()
+    # state = { 'bracket_count' : 0,
+    #           'current' : None,
+    #           'line' : 0,
+    #           'potential_speech' : None,
+    #           'sentence_start' : 0,
+    #           'sentence_length' : 0
+    #           }
     while bool(lines):
         state['line'] += 1
         current = lines.pop(0)

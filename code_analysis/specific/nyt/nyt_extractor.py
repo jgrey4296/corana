@@ -3,23 +3,23 @@ Get headlines from nyt jsons from data dir,
 
 output to similarly named files in analysis directory
 """
-import numpy as np
 import datetime
-import spacy
-from textblob import TextBlob
 import json
-from random import choice
-from enum import Enum
-from os.path import join, isfile, exists, abspath
-from os.path import split, isdir, splitext, expanduser
-from os import listdir
-from random import shuffle
-import pyparsing as pp
-from os.path import splitext, split
 import logging as root_logger
+from enum import Enum
+from os import listdir
+from os.path import (abspath, exists, expanduser, isdir, isfile, join, split,
+                     splitext)
+from random import choice, shuffle
 
-import analysis_case as AC
-import utils
+import code_analysis.util.analysis_case as AC
+import numpy as np
+import pyparsing as pp
+import spacy
+from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_data import ParseData
+from code_analysis.util.parse_state import ParseState
+from textblob import TextBlob
 
 # Setup root_logger:
 LOGLEVEL = root_logger.DEBUG
@@ -36,35 +36,6 @@ nlp = spacy.load("en_core_web_sm")
 
 only_allow = ["article"]
 date_fmt = "%Y-%m-%dT%H:%M:%SZ"
-
-class NYT_Entry(utils.ParseBase):
-
-    def __init__(self, doc_type,
-                 date, url,
-                 lead_paragraph, print_page, id_,
-                 headline=None, desk=None):
-        super().__init__()
-        self._type = doc_type
-        self._headline = headline
-        self._date = date
-        self._url = url
-        self._paragraph = lead_paragraph
-        self._page = print_page
-        self._id = id_
-
-    def __str__(self):
-        s = "{} : {} : {} : {}".format(self._line_no,
-                                        self._date,
-                                        self._type,
-                                        self._page)
-
-        return s
-
-    def parse_date(self):
-        date_str = self._date
-        the_date = datetime.datetime.strptime(date_str, date_fmt)
-        return the_date
-
 
 def make_entry(current):
     lookup_keys = ['document_type', 'pub_date', 'web_url', 'lead_paragraph', 'print_page', '_id']
@@ -189,14 +160,9 @@ def extract_from_file(filename, ctx):
 
 
 if __name__ == "__main__":
-
     target = join("/Volumes", "DOCUMENTS", "nyt_data")
-    output_lists = ['entries']
-    output_ext = ".nyt_analysis"
 
     AC.AnalysisCase(__file__,
                     ".json",
                     extract_from_file,
-                    output_lists,
-                    output_ext,
                     targets=[target])()
