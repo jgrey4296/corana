@@ -1,16 +1,9 @@
-.DS_Store
 .idea
-*.log
-tmp/
-log.*
 
-*.py[cod]
-*.egg
 build
 htmlcov
 
 data/
 analysis
 
-flycheck_*
 misc_data
