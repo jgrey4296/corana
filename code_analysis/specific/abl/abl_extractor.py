@@ -95,7 +95,6 @@ def extract_from_file(filename, ctx):
 if __name__ == "__main__":
     single_line_parser, multi_line_parser = ABP.build_parser()
     input_ext = ".abl"
-    output_ext = ".abl_analysis"
 
 
     AC.AnalysisCase(__file__,
