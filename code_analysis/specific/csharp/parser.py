@@ -11,3 +11,6 @@ logging = root_logger.getLogger(__name__)
 s = pp.Suppress
 op = pp.Optional
 opLn = s(op(pp.LineEnd()))
+
+def build_parser():
+    return None
