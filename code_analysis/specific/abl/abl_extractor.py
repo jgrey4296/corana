@@ -21,6 +21,7 @@ import code_analysis.util.analysis_case as AC
 import code_analysis.util.utils as utils
 from code_analysis.util.parse_data import ParseData
 from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_state import ParseState
 
 LOGLEVEL = root_logger.DEBUG
 LOG_FILE_NAME = "log.{}".format(splitext(split(__file__)[1])[0])
@@ -34,57 +35,65 @@ logging = root_logger.getLogger(__name__)
 # Enums:
 obj_e = ABS.ABL_E
 
-main_parser = None
+single_line_parser = None
+multi_line_parser = None
+
+def handle_result(pstate, pdata, result):
+    try:
+        if result is obj_e.COMMENT:
+            data.inc_comment()
+        elif isinstance(result, ABS.AblEnt):
+            data.insert(result, "behaving_entity")
+        elif isinstance(result, ABS.AblRegistration):
+            data.insert(result, "registration")
+        elif isinstance(result, ABS.AblBehavior):
+            data.insert(result, "behaviour")
+            state.current = result
+        elif isinstance(result, ABS.AblComponent):
+            state.current.add_component(result)
+            data.insert(result)
+        elif isinstance(result, ABS.AblMisc):
+            data.insert(result)
+        elif not isinstance(result, ParseBase):
+            logging.warning("Unrecognised parse result: {}".format(result))
+
+    except AttributeError as err:
+        logging.warning(str(err))
+        breakpoint()
+        logging.info("Error")
+
+
+
 
 def extract_from_file(filename, ctx):
     logging.info("Extracting from: {}".format(filename))
-    data = ParseData(filename)
     lines = []
     with open(filename, 'r') as f:
         lines = f.readlines()
 
-    state = {'bracket_count' : 0,
-             'current' : None,
-             'line' : 0}
-
+    data  = ParseData(filename)
+    state = ParseState()
     while bool(lines):
-        state['line'] += 1
+        state.inc_line()
         # logging.info("line: {}".format(state['line']))
         current = lines.pop(0)
 
-        result = main_parser.parseString(current)[0]
-        if not result:
-            continue
+        start_line = state.line
+        result = single_line_parser.parseString(current)[0]
+        while bool(lines) and not isinstance(result, ParseBase):
+            current += lines.pop(0)
+            result = multi_line_parser.parseString(current)[0]
+            state.inc_line()
 
-        if isinstance(result, ParseBase):
-            result.line_no = state['line']
+        handle_result(state, data, result)
+        result.line_no = start_line
 
-        try:
-            if result is obj_e.COMMENT:
-                data.inc_comment()
-            elif isinstance(result, ABS.AblEnt):
-                data.insert(result, "behaving_entity")
-            elif isinstance(result, ABS.AblRegistration):
-                data.insert(result, "registration")
-            elif isinstance(result, ABS.AblBehavior):
-                data.insert(result, "behaviour")
-                state['current'] = result
-            elif isinstance(result, ABS.AblComponent):
-                state['current'].add_component(result)
-                data.insert(result)
-            elif not isinstance(result, ParseBase):
-                logging.warning("Unrecognised parse result: {}".format(result))
-
-        except AttributeError as err:
-            logging.warning(str(err))
-            breakpoint()
-            logging.info("Error")
 
     return data
 
 
 if __name__ == "__main__":
-    main_parser = ABP.build_parser()
+    single_line_parser, multi_line_parser = ABP.build_parser()
     input_ext = ".abl"
     output_ext = ".abl_analysis"
 

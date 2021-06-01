@@ -9,7 +9,7 @@ from enum import Enum
 
 from code_analysis.util.parse_base import ParseBase
 
-ABL_E = Enum('ABL_E', 'ENT ACT WME CONFLICT BEH COM SPAWN MENTAL PRECON SPEC INIT STEP COMMENT')
+ABL_E = Enum('ABL_E', 'ENT ACT WME CONFLICT BEH COM SPAWN MENTAL PRECON SPEC INIT STEP COMMENT PRIORITY SUCCTEST SPAWNTARGET')
 obj_e = ABL_E
 
 enum_to_str = {
@@ -25,7 +25,10 @@ enum_to_str = {
     obj_e.SPEC     : "specificity",
     obj_e.INIT     : "init",
     obj_e.STEP     : "step",
-    obj_e.COMMENT  : "comment"
+    obj_e.COMMENT  : "comment",
+    obj_e.PRIORITY : "priority",
+    obj_e.SUCCTEST : "success_test",
+    obj_e.SPAWNTARGET : "spawn at"
 }
 
 
