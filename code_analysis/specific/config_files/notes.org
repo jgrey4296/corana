@@ -1,0 +1,10 @@
+#+TITLE:config_files notes
+* Attacks
+** Base
+** Africa
+* Dilemmas
+** Base
+** Africa
+* Events
+** Base
+** Africa

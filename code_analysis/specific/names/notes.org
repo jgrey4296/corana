@@ -1,0 +1,12 @@
+#+TITLE:names notes
+|            | Avg | Proj | Total |
+|------------+-----+------+-------|
+| Files      |     |      |       |
+| lines      |     |      |       |
+| FirstNames |     |      |       |
+| Surnames   |     |      |       |
+* Democracy
+* Stellaris/CK2/EUIV
+* Fallout
+* People
+* Redshirt

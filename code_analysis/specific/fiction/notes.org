@@ -1,0 +1,12 @@
+#+TITLE:fiction notes
+* Counts
+|            | Avg | Project | Total |
+|------------+-----+---------+-------|
+| Files      |     |         |       |
+| Length     |     |         |       |
+| if-idf     |     |         |       |
+| characters |     |         |       |
+| Nouns      |     |         |       |
+| verbs      |     |         |       |
+| vocab      |     |         |       |
+| quotes     |     |         |       |

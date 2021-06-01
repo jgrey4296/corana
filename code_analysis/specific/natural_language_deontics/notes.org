@@ -1,0 +1,11 @@
+#+TITLE:natural_language_deontics notes
+* Counts
+|              |   |   |   |
+|--------------+---+---+---|
+| Files        |   |   |   |
+| Lines        |   |   |   |
+| Should       |   |   |   |
+| Could        |   |   |   |
+| May          |   |   |   |
+| Must         |   |   |   |
+| prohibitions |   |   |   |

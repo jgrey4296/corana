@@ -1,0 +1,8 @@
+#+TITLE:dialogue notes
+* Counts
+|           | Avg | Project | Total |
+|-----------+-----+---------+-------|
+| Files     |     |         |       |
+| Strings   |     |         |       |
+| Divisions |     |         |       |
+| Length    |     |         |       |

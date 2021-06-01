@@ -1,0 +1,646 @@
+* Data Notes
+look at [[https://www.lyonwj.com/2016/06/26/graph-of-thrones-neo4j-social-network-analysis/][Graph of Thrones]]
+http://useofforceproject.org/database
+
+** Summary
+| Extractor   | Status | Parser | Accumulator    | File Format | TODOs              | Data                     | Notes                |
+|             |        |        |                |             |                    | Extracted                |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Abl         |        | X      |                |             |                    | Comments                 | Ready for stats?     |
+|             |        |        |                |             |                    | Behaving_entity          |                      |
+|             |        |        |                |             |                    | WMEs                     |                      |
+|             |        |        |                |             |                    | Acts                     |                      |
+|             |        |        |                |             |                    | Conflicts                |                      |
+|             |        |        |                |             |                    | Behaviours               |                      |
+|             |        |        |                |             |                    | Beh' components          |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| C#          | todo   |        |                |             |                    |                          | Nothing Yet          |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Config      |        | X      |                |             |                    | Keys                     | Equation analysis of |
+|             |        |        |                |             |                    | Values                   | influence values     |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| CSV         |        | X      |                |             | speech_act_seqs    | Keys,                    |                      |
+|             |        |        |                |             |                    | specific keys            |                      |
+|             |        |        |                |             |                    | Edges+Equations          |                      |
+|             |        |        |                |             |                    | for Policies and sim     |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Dev Log     |        | X      | X              |             |                    | Statements for each date | Add Spacy?           |
+|             |        |        |                |             |                    | Unique Words             |                      |
+|             |        |        |                |             |                    | Sentence Lengths         |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| EULAs       | todo   |        |                |             |                    |                          | Nothing Yet          |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Json        | todo   |        |                |             |                    |                          | Nothing Yet          |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Lua         |        | X      |                |             |                    | comments                 | Assemble brains      |
+|             |        |        |                |             |                    | classes                  | and state graphs?    |
+|             |        |        |                |             |                    | functions                |                      |
+|             |        |        |                |             |                    | recipes                  |                      |
+|             |        |        |                |             |                    | states                   |                      |
+|             |        |        |                |             |                    | events                   |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Narrative   |        | X      |                |             | coref resolution   | speech                   |                      |
+|             |        |        |                |             | dramatis extractor | pronouns                 |                      |
+|             |        |        |                |             |                    | nouns                    |                      |
+|             |        |        |                |             |                    | verb pairs               |                      |
+|             |        |        |                |             |                    | unique words             |                      |
+|             |        |        |                |             |                    | actions                  |                      |
+|             |        |        |                |             |                    | sentence length          |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| NLDeontic   |        | X      |                |             | deontic sentences  | speech                   |                      |
+|             |        |        |                |             |                    | unique words             |                      |
+|             |        |        |                |             |                    | nouns                    |                      |
+|             |        |        |                |             |                    | pronouns                 |                      |
+|             |        |        |                |             |                    | verbs                    |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Games       | todo   |        |                |             |                    |                          | Nothing Yet          |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| NYT         |        | X      |                |             | unique words       | articles                 |                      |
+|             |        |        |                |             | verb pairs         | dates                    |                      |
+|             |        |        |                |             |                    | entities                 |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Patch Notes |        | X      |                |             |                    | various headings         |                      |
+|             |        |        |                |             |                    | release date, version,   |                      |
+|             |        |        |                |             |                    | fixes                    |                      |
+|             |        |        |                |             |                    | additions                |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| TSV         |        | X      |                |             |                    | speech acts              |                      |
+|             |        |        |                |             |                    | counts                   |                      |
+|             |        |        |                |             |                    | variables                |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Versu       |        | X      |                |             |                    | blocks                   |                      |
+|             |        |        |                |             |                    | statements               |                      |
+|             |        |        |                |             |                    | functions                |                      |
+|             |        |        |                |             |                    | inserts                  |                      |
+|             |        |        |                |             |                    | types                    |                      |
+|             |        |        |                |             |                    | strings                  |                      |
+|             |        |        |                |             |                    | comments                 |                      |
+|             |        |        |                |             |                    | actions                  |                      |
+|             |        |        |                |             |                    | exclusion/non counts     |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| Witcher     | todo   |        |                |             |                    |                          | nothing yet          |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| XML Rules   |        | X      | grouped counts |             |                    | predicates,              | mapped, needs        |
+|             |        |        |                |             |                    | rules                    | to be extracted      |
+|             |        |        |                |             |                    | edges                    |                      |
+|             |        |        |                |             |                    | strings                  |                      |
+|-------------+--------+--------+----------------+-------------+--------------------+--------------------------+----------------------|
+| XML Text    |        | X      |                |             | usc                | KJV verse                | needs more           |
+|             |        |        |                |             | king dragon pass   | trump days               |                      |
+|             |        |        |                |             | roberts rule       |                          |                      |
+|             |        |        |                |             | unrest             |                          |                      |
+|             |        |        |                |             | twine              |                          |                      |
+
+** [[file:code_analysis/specific/abl/abl_extractor.py][Abl Extractor]]
+:Status:
+Ready to count Acts/WMEs/Mental Ats
+and create behaviour graph
+:END:
+*** Analysis Intentions
+How commented are abl agents?
+What is the balance between sequential and parallel actions?
+What does the graph look like for an agent?
+What is the balance of behaviours : acts : wmes ?
+*** Parser extracts:
+Abl Entities,
+Action and WME Registrations
+Behaviours
+Mental Acts, Preconditions, Steps,
+Specificity, Subgoal and Spawngoals,
+and acts.
+*** Sources
+**** Eisbot
+**** SSim
+**** Facade
+***** Grace
+***** Trip
+** C Sharp
+*** Analysis Questions
+What are the main components of the Rimworld simulation?
+*** Sources
+**** Rimworld
+** [[file:code_analysis/specific/config_files/config_extractor.py][Config Extractor]]
+*** Analysis Questions
+What patterns are there in dilemmas?
+What patterns are there in event influences?
+*** Sources
+**** Democracy 3 and Democracy 3 Africa
+***** D3A : strings_ENG.ini
+Of Interest:
+minister _loyalty, _effectiveness
+opinion_of_government
+security effectiveness
+cynicism
+***** Attacks
+filter duplicates
+
+prereqs
+success / failure text
+
+***** Dilemmas
+filter duplicates
+
+description
+
+option\d : description
+***** Events
+filter duplicates
+
+name,
+description
+influences
+***** Names
+
+** [[file:code_analysis/specific/csv/csv_extractor.py][CSV Extractor]]
+Loads csv files and summarizes them
+*** Analysis Questions
+What does the d3 simulation graph look like?
+What patterns are there in weights?
+What patterns are there in the Stop and Frisk Data?
+What does disease transmission show?
+What variation are there in policy making rules?
+What policy rules are beneficial?
+What reasons do ministers resign for?
+*** Sources
+**** Democracy 3 and D3 Africa
+**** Reality Commons
+***** Badge
+***** SQF
+***** Social Evolution
+**** BBC Sound Effects
+**** How Cold is that Library
+**** Collaborative Policy
+**** Ministerial Resignations
+** [[file:code_analysis/specific/dev_logs/dev_log_extractor.py][Dev Log Extractor]]
+*** Analysis Questions
+How does DF development speed vary?
+How often are features added versus removed?
+What elements get mentioned repeatedly?
+*** Sources
+[[http://www.bay12games.com/dwarves/mantisbt/view_all_bug_page.php?page_number=1][DF Bug List]]
+**** Dwarf Fortress
+Covers 2004 - 2020 from [[http://www.bay12games.com/dwarves/index.html][Bay 12 games]]
+** EULAS
+*** Analysis Questions
+What Headings are there?
+What sentence structure?
+*** Sources
+**** Adobe
+**** Amazon
+**** Apple
+**** Far Cry
+**** Google
+**** Hulu
+**** Microsoft
+**** Tumblr
+** Json
+*** Sources
+**** Sunless Sea
+** [[file:code_analysis/specific/lua/lua_extractor.py][Lua Extractor]]
+Extracts Classes, Functions,
+and Don't Start Recipes from lua files
+*** Analysis Questions
+How large are the simulations?
+What enums are used?
+How many functions?
+How many creatures are there?
+How many different items?
+How many different tasks?
+How many states and events?
+What do the function graphs look like?
+What sort of buildings are there?
+*** Sources
+**** df9
+Lua Source for DoubleFine's Spacebase DF-9
+**** Don't Starve
+Lua Source for Klei's Don't Starve
+**** Invisible Inc
+**** Prison Architect
+**** The Guild 2
+** [[file:code_analysis/specific/fiction/narrative_extractor.py][Narrative Extractor]]
+Get Characters, positions in story
+*** Analysis Questions
+What characters are there?
+How often do they appear?
+How often do characters interact?
+Do character Honorifics change?
+Do characters die?
+What clothing do characters wear?
+What is mentioned often?
+What environments are mentioned?
+What do characters do besides fight?
+What is the gender balance?
+What colours are mentioned?
+*** Sources
+**** 40k
+**** Discworld
+** [[file:code_analysis/specific/natural_language_deontics/deontic_extractor.py][Natural Language Deontic Extractor]]
+*** Analysis Questions
+What topics are mentioned?
+What deontic statements are there?
+What phrases are mentioned?
+What behaviours are described?
+What scripts are given?
+*** Sources
+**** nomic
+**** emily post
+** [[file:code_analysis/specific/game_config_text/game_script_extractor.py][Non-Specific Game Script Extractor]]
+*** Analysis Questions
+What concepts are mentioned?
+How large are the simulations?
+What graphs do they form?
+What diseases, deaths, names etc are defined?
+*** Sources
+**** Crusader kings 2
+**** EU 4
+**** distant worlds
+**** stellaris
+**** Democracy 3 and Democracy 3 Africa
+**** Prison Architect
+** [[file:code_analysis/specific/nyt_extractor.py][NYT Extractor]]
+Processes for dealing with New York Times Archive Snippets
+*** Analysis Questions
+What sentence structures are used?
+When do particular words appear?
+When do particular people appear?
+Who interacts?
+How much news is there per year?
+How long do events get mentioned for?
+Does style change over time?
+What locations are mentioned?
+What sort of events are mentioned?
+** [[file:code_analysis/specific/patch_notes/patch_notes_extractor.py][Patch Notes Extractor]]
+Extracts dev logs from html of [[https://dwarffortresswiki.org/][DF Wiki]] and [[https://dota2.gamepedia.com/Patches][Dota Gamepedia]]
+*** Analysis Questions
+What areas are changed most often?
+What areas are only changed once?
+How often are changes made?
+How much are values changed by?
+How often are characters added?
+How often are cosmetic items added?
+*** Sources
+**** Dwarf Fotress
+Covers DF 0.21.93.19a to 0.28.181.40d
+**** Dota 2 from Dota Wiki
+** [[file:code_analysis/specific/tsv_extractor.py][TSV Extractor]]
+*** Analysis Questions
+How do quests chain together?
+What do quest graph look like?
+Are there choices?
+What is the level distribution?
+What rewards are used?
+What is the distribution of locations?
+What is the distribution of dialogue acts?
+What is the distribution of variables?
+*** Sources
+**** WoW wiki Quests
+**** Prom Week Dialogue Acts
+** [[file:code_analysis/specific/versu/versu_extractor.py][Versu Extractor]]
+Parses Praxis files (data/type/praxis extensions)
+Extracts Types, Processes, Functions,
+Calls, Actions, States, Inserts
+*** Analysis Questions
+What is the set of EL sentences?
+What are the most used sentences?
+How often are assertions / processes used?
+What states and actions are available?
+How many types are there?
+How large are types?
+How many variations of types are there?
+What is the graph of functions
+*** Sources
+**** Linden Lab Versu scripts
+
+** [[file:code_analysis/specific/witcher_extractor.py][WitcherScript Extractor]]
+Parses witcherscript files (.ws) from the Witcher 3
+*** Analysis Questions
+What NPC type/actions are there?
+What other enums are there?
+What does the behaviour tree look like?
+What options in combat to NPCs have?
+What variations are there for the living world?
+What do quests contain?
+
+*** Sources
+**** Witcher Script files
+
+** [[file:code_analysis/specific/xml/xml_rule_extractor.py][XML Rule Extractor]]
+Produces summaries from CiF and Promweek xml files
+*** Analysis Questions
+How many rules are there?
+How many traits?
+How many characters?
+How many microtheories?
+What are the combinations of weights?
+How many games?
+How many performances for each game?
+
+*** Sources
+**** CiF
+Get Rules
+** [[file:code_analysis/specific/xml/xml_text_extractor.py][XML Text Extractor]]
+Produce Summaries of Text wrapped in XML
+*** Analysis Questions
+What variations are there in ai failures?
+What weights are there for redshirt?
+What progression of jobs are there for redshirt?
+What activities do people do in redshirt?
+
+In the U.S.C, R.R.O and K.J.B:
+What sentence structures are there?
+What deontic statements are there?
+What definitions are there?
+How long are sentences?
+
+In Twine, KoDP, Unrest:
+What do the graphs look like?
+What language is used?
+What locations are used?
+
+For Trump Timeline:
+What language is used?
+What is repeated?
+What people are mentioned?
+How often do things happen?
+
+*** Sources
+**** AI Failures
+**** King of Dragon Pass
+**** KJB                                                                        :ready_to_analyse:
+Getting idents and text
+
+Get sections, names, deontics, grammar
+**** Redshirt
+Of particular interest: the Jobs file
+**** roberts rules
+still to handle bullets, lists, and combine pages properly
+**** Trump Timeline                                                             :ready_to_analyse:
+Retrieving all information and links.
+**** Twine Games
+**** UnRest
+**** USC
+Get Categories, rules, deontics, sanctions,
+sections, lengths, cross references
+**** Wow Quests                                                                 :ready_to_analyse:
+Retrieving all information, parsing lists correctly.
+* [[https://web.stanford.edu/~jurafsky/ws97/manual.august1.html][SWBD-DAMSL]]
+** Form 1
+| SWBD-DAMSL                   | SWBD          | Example                                         |    Cnt |    % |
+|------------------------------+---------------+-------------------------------------------------+--------+------|
+| Statement-non-opinion        | sd            | Me,  I'm in the legal department.               | 72,824 |  36% |
+| Acknowledge (Backchannel)    | b             | Uh-huh.                                         | 37,096 |  19% |
+| Statement-opinion            | sv            | I think it's great                              | 25,197 |  13% |
+| Agree/Accept                 | aa            | That's exactly it.                              | 10,820 |   5% |
+| Abandoned or Turn-Exit       | % -           | So, -                                           | 10,569 |  5\% |
+| Appreciation                 | ba            | I can imagine.                                  |  4,633 |   2% |
+| Yes-No-Question              | qy            | Do you have to have any special training?       |  4,624 |   2% |
+| Non-verbal                   | x             | [Laughter], [Throat_clearing]                   |  3,548 |   2% |
+| Yes answers                  | ny            | Yes.                                            |  2,934 |   1% |
+| Conventional-closing         | fc            | Well, it's been nice talking to you.            |  2,486 |   1% |
+| Uninterpretable              | %             | But, uh, yeah                                   |  2,158 |  1\% |
+| Wh-Question                  | qw            | Well,  how old are you?                         |  1,911 |   1% |
+| No answers                   | nn            | No.                                             |  1,340 |   1% |
+| Response Acknowledgement     | bk            | Oh, okay.                                       |  1,277 |   1% |
+| Hedge                        | h             | I don't know if I'm making any sense or not.    |  1,182 |   1% |
+| Declarative Yes-No-Question  | qy^d          | So you can afford to get a house?               |  1,174 |   1% |
+| Other                        | o,fo,bc,by,fw | Well give me a break, you know.                 |  1,074 |   1% |
+| Backchannel in question form | bh            | Is that right?                                  |  1,019 |   1% |
+| Quotation                    | ^q            | You can't be pregnant and have cats             |    934 |  .5% |
+| Summarize/reformulate        | bf            | Oh, you mean you switched schools for the kids. |    919 |  .5% |
+| Affirmative non-yes answers  | na,ny^e       | It is.                                          |    836 |  .4% |
+| Action-directive             | ad            | Why don't you go first                          |    719 |  .4% |
+| Collaborative Completion     | ^2            | Who aren't contributing.                        |    699 |  .4% |
+| Repeat-phrase                | b^m           | Oh, fajitas                                     |    660 |  .3% |
+| Open-Question                | qo            | How about you?                                  |    632 |  .3% |
+| Rhetorical-Questions         | qh            | Who would steal a newspaper?                    |    557 |  .2% |
+| Hold before answer/agreement | ^h            | I'm drawing a blank.                            |    540 |  .3% |
+| Reject                       | ar            | Well, no                                        |    338 |  .2% |
+| Negative non-no answers      | ng,nn^e       | Uh,  not a whole lot.                           |    292 |  .1% |
+| Signal-non-understanding     | br            | Excuse me?                                      |    288 |  .1% |
+| Other answers                | no            | I don't know                                    |    279 |  .1% |
+| Conventional-opening         | fp            | How are you?                                    |    220 |  .1% |
+| Or-Clause                    | qrr           | or is it more of a company?                     |    207 |  .1% |
+| Dispreferred answers         | arp,nd        | Well, not so much that.                         |    205 |  .1% |
+| 3rd-party-talk               | t3            | My goodness, Diane, get down from there.        |    115 |  .1% |
+| Offers, Options Commits      | oo,cc,co      | I'll have to check that out                     |    109 |  .1% |
+| Self-talk                    | t1            | What's the word I'm looking for                 |    102 |  .1% |
+| Downplayer                   | bd            | That's all right.                               |    100 |  .1% |
+| Maybe/Accept-part            | aap/am        | Something like that                             |     98 | <.1% |
+| Tag-Question                 | ^g            | Right?                                          |     93 | <.1% |
+| Declarative Wh-Question      | qw^d          | You are what kind of buff?                      |     80 | <.1% |
+| Apology                      | fa            | I'm sorry.                                      |     76 | <.1% |
+| Thanking                     | ft            | Hey thanks a  lot                               |     67 | <.1% |
+
+** Form 2
+| DAMSL                                       | SWBD                                             |
+|---------------------------------------------+--------------------------------------------------|
+| Communicative-Status                        |                                                  |
+| Uninterpretable                             | % with no a final "-/"                           |
+| Non-verbal                                  | laughter, coughs, etc)                           |
+| Abandoned                                   | % together with -\/                              |
+| Self-talk                                   | t1                                               |
+| 3rd-party-talk                              | t3                                               |
+|---------------------------------------------+--------------------------------------------------|
+| Information-level                           |                                                  |
+| Task                                        | DEFAULT                                          |
+| Task-management                             | ^t                                               |
+| Communication-management                    | ^c (but ^c is only a subpart of Comm-management) |
+| Other                                       | NOT CURRENTLY MARKED                             |
+|---------------------------------------------+--------------------------------------------------|
+| Forward-Communicative-Function              |                                                  |
+| Statement                                   | s                                                |
+| Assert                                      | (not marked)                                     |
+| Reassert                                    | (not marked)                                     |
+| Statement-non-opinion                       | sd                                               |
+| Statement-opinion                           | sv                                               |
+| Influencing-addressee-fut-actn              |                                                  |
+| Open-option                                 | oo                                               |
+| Directive                                   |                                                  |
+| Info-request                                | qy, qw, qo, qr, qrr, ^d, ^g                      |
+| Yes-No-question                             | qy                                               |
+| Wh-Question                                 | qw                                               |
+| Open-Question                               | qo                                               |
+| Or-Question                                 | qr                                               |
+| Or-Clause                                   | qrr                                              |
+| Declarative-Question                        | ^d                                               |
+| Tag-Question                                | ^g                                               |
+| Action-directive                            | ad                                               |
+|---------------------------------------------+--------------------------------------------------|
+| Committing-speaker-future-action            |                                                  |
+| Offer                                       | co                                               |
+| Commit                                      | cc                                               |
+| Other-forward-function                      |                                                  |
+| Conventional-opening                        | fp                                               |
+| Conventional-closing                        | fc                                               |
+| Explicit-performative                       | fx                                               |
+| Exclamation                                 | fe                                               |
+| Other-forward-function                      | fo                                               |
+| Thanking                                    | ft                                               |
+| You're-Welcome                              | fw                                               |
+| Apology                                     | fa                                               |
+|---------------------------------------------+--------------------------------------------------|
+| Backwards-Communicative-Function            |                                                  |
+| Agreement                                   |                                                  |
+| Accept                                      | aa                                               |
+| Accept-part                                 | aap                                              |
+| Maybe                                       | am                                               |
+| Reject-part                                 | arp                                              |
+| Reject                                      | ar                                               |
+| Hold before answer/agreement                | ^h                                               |
+| Understanding                               |                                                  |
+| Signal-non-understanding                    | br, br^m                                         |
+| Signal-understanding                        |                                                  |
+| Acknowledge                                 | b,bh                                             |
+| Acknowledge-answer                          | bk                                               |
+| Repeat-phrase                               | ^m                                               |
+| Completion                                  | ^2                                               |
+| Summarize/reformulate                       | bf                                               |
+| Appreciation                                | ba                                               |
+| Sympathy                                    | by                                               |
+| Downplayer                                  | bd                                               |
+| Correct-misspeaking                         | bc                                               |
+| Answer                                      | DEFAULT-for-qw,ny,nn,na,nd,ng,no,sd^e,sv^e,^h    |
+| Yes answers                                 | ny                                               |
+| No answers                                  | nn                                               |
+| Affirmative non-yes answers                 | na                                               |
+| Negative non-no answers                     | ng                                               |
+| Other answers                               | no                                               |
+| No plus expansion                           | nn^e                                             |
+| Yes plus expansion                          | ny^e                                             |
+| Statement expanding y/n answer              | sd^e,sv^e                                        |
+| Expansions of y/n answers                   | ^e                                               |
+| Dispreferred answers                        | nd                                               |
+|---------------------------------------------+--------------------------------------------------|
+| Other                                       |                                                  |
+| Information-relation                        | NOT CODED                                        |
+| Quoted material                             | ^q                                               |
+| Hedge                                       | h                                                |
+| Segment (multi-utterance)                   | +                                                |
+| Double labels                               | x;y, [where x is the preferred label]            |
+| Transcription errors: slash units           | o@, [anycode]@, +@                               |
+| Transcription errors:  typographical errors | *                                                |
+
+** Form 3
+|---------+-----------------------------------------------------------------------------------------------------|
+| %       | indeterminate, interrupted, or contains just a floor holder (see manual)                            |
+| (^u     | [on anything] unrelated response (first utt is NOT response to previous q)                          |
+| *       | comment  (followed by "*[[comment...]]" after transcription to explain)                                 |
+| +       | continued from previous by same speaker                                                             |
+| @,o@,+@ | incorrect transcription (can add comment to specify problem further)                                |
+| ^2      | collaborative completion                                                                            |
+| ^c      | about-communication                                                                                 |
+| ^d      | declarative question (question asked like a structural statement)                                   |
+| ^e      | [on statements] elaborated reply to y/n question                                                    |
+| ^g      | tag question (question asked like a structural statement with a question tag at end)                |
+| ^h      | hold (often but not always after a question) ('let me think'; question in response to a question)   |
+| ^m      | mimic other                                                                                         |
+| ^q      | quotation                                                                                           |
+| ^r      | repeat self                                                                                         |
+| ^t      | about-task                                                                                          |
+| a       | Agreements                                                                                          |
+| aa      | Accept         "ok" , "i agree"                                                                     |
+| aap     | Accept-part                                                                                         |
+| ad      | Action-directive  "Go ahead", "We could go back to television shows"                                |
+| am      | Maybe                                                                                               |
+| ar      | Reject "no",                                                                                        |
+| arp     | Reject-part                                                                                         |
+| b       | Backchannel/Backwards-Looking                                                                       |
+| b       | default agreement or continuer (uh-huh, right, yeah)                                                |
+| b^m     | Repeat-phrase                                                                                       |
+| ba      | assessment/appreciation ("I can imagine")                                                           |
+| bc      | Correct-misspeaking                                                                                 |
+| bd      | Downplaying-reponse-to-sympathy/compliments ("That's all right","that happens")                     |
+| bf      | reFormulate/summarize; paraphrase/summary of other's utterance (as opposed to a mimic)              |
+| bh      | rhetorical question continuer ("Oh really?")                                                        |
+| bk      | ACKNOWLEDGE-ANSWER    "Oh, okay"                                                                    |
+| br      | Signal-non-understanding (request for repeat)                                                       |
+| br^c    | non-understanding due to problems with phone line                                                   |
+| br^m    | Signal-non-understanding via mimic                                                                  |
+| by      | sYmpathetic comment ("I'm sorry to hear about that")                                                |
+| cc      | Commit                                                                                              |
+| co      | Offer                                                                                               |
+| f       | Forward-Looking                                                                                     |
+| fa      | Apology "Apologies" (this is not the "I'm sorry" of sympathy which is "by")                         |
+| fc      | Conventional-closing                                                                                |
+| fe      | Exclamation "Ouch"                                                                                  |
+| fo      | Other-forward-function                                                                              |
+| fp      | Conventional-opening                                                                                |
+| ft      | Thanks "Thank you"                                                                                  |
+| fw      | Welcome "You're welcome"                                                                            |
+| fx      | Explicit-performative  ("you're filed" )                                                            |
+| na      | a descriptive/narrative statement which acts as an affirmative answer to a question                 |
+| nd      | aNswer Dispreferred (Well...)                                                                       |
+| ng      | a descriptive/narrative statement which acts as a negative answer to a question                     |
+| nn      | no or variations (only)                                                                             |
+| no      | a response to a question that is neither affirmative nor negative (often "I don't know")            |
+| ny      | yes or variations (only)                                                                            |
+| o       | other                                                                                               |
+| oo      | Open-option  "We could have lamb or chicken"                                                        |
+| q       | Question                                                                                            |
+| qh      | rhetorical question                                                                                 |
+| qo      | open ended question                                                                                 |
+| qr      | alternative (`or') question                                                                         |
+| qrr     | an or-question clause tacked onto a yes-no question                                                 |
+| qw      | wh-question                                                                                         |
+| qy      | yes/no question                                                                                     |
+| s       | Statement                                                                                           |
+| sd      | descriptive and/or narrative (listener has no basis to dispute)                                     |
+| sv      | viewpoint, from personal opinions to proposed general facts  (listener could have basis to dispute) |
+| t1      | self-talk                                                                                           |
+| t3      | 3rd-party-talk                                                                                      |
+| x       | nonspeech                                                                                           |
+|---------+-----------------------------------------------------------------------------------------------------|
+* Multi-Pass Sieve for Coreference Resolution Notes (cite:Raghunathan2010)
+** Candidate Selection
+Sort list of candidates by:
+1) Same Sentence, Left-To-Right BFS of trees
+   (L2R favours subjects, BFS favours salience)
+   (Repeat for each clause)
+   2a) For nominal mentions:  Previous Sentence, Right-To-Left, BFS
+   (Favours salience, and proximity)
+   2b) For pronominal mentionals: Left-To-Right
+   (Favours subjects)
+** Attribute Union
+Union all detected attributes of mentions
+** Mention Selection
+Per layer, Resolve only mentions first in textual order for cluster
+** Search Pruning
+Disable mentions starting with indefinite articles and pronouns
+*Except* in the first pass
+** Layers:
+*** Exact Match
+Including modifiers and determiners
+*** Precise Constructs
+1) Appositive constructions
+   eg: [Israel's Deputy Defense Minister], [Ephraim Sneh], said...
+2) Predicate nominative: copulative subject-object relation
+   eg: [The New York-based College Board] is [a non profit organization]...
+3) Role Appositive: Antecedent is headed by a noun and appears as a modifier in a NP
+   eg: [[actress] Rebecca Schaeffer]
+   Only if antecedent is animate, a person, and gender is defined.
+4) Relative Pronoun
+   eg: [the finance street [which] has already formed]
+5) Acronym: Both mentions tagged as NNP and one is an acronym of the other
+   eg: [Agence France Presse]... [AFP]
+6) Demonym:
+   eg: [Israel]... [Israeli]
+*** Strict Head Matching
+Match all in order to yield a link:
+1) Match any head in antecedent cluster
+2) Word Inclusion (all non-stop words)
+   eg: intervene in the [Florida Supreme Court]'s move... by [the Florida court]...
+3) Compatible modifiers only
+   mentions modifiers are all included in modifiers of antecedent candidate
+   only modifiers that are nouns or adjectives
+4) Not I within I : Cannot be a child NP in the others NP constituent
+*** Variants of Strict Head removing select constraints
+*** Relaxed Head Matching
+Allow mention head to match any word in the cluster of the candidate antecedent
+eg: Sanders matches to cluster { Sauls, the judge, Circuit Judge N. Sanders Sauls }
+Requires Mention and Antecedent be named entities of matching type
+*** Pronouns
+Enforce agreement on attributes:
+1) Number / Plurality
+2) Gender
+3) Person (apart from within quotes)
+4) Animacy

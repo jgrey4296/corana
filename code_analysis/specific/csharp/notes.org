@@ -1,0 +1,8 @@
+#+TITLE:csharp notes
+* Counts
+|            | Avg | Project | Total |
+|------------+-----+---------+-------|
+| Files      |     |         |       |
+| Lines      |     |         |       |
+| Classes    |     |         |       |
+| Components |     |         |       |

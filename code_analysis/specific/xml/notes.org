@@ -1,0 +1,23 @@
+#+TITLE:xml notes
+* Counts
+|            | Avg | Project | Total |
+|------------+-----+---------+-------|
+| files      |     |         |       |
+| length     |     |         |       |
+| rules      |     |         |       |
+| predicates |     |         |       |
+| characters |     |         |       |
+| games      |     |         |       |
+| strings    |     |         |       |
+|            |     |         |       |
+* Dwarf Fortress
+* CiF
+* Dragon Pass
+* Bible
+* Red Shirt
+* Trump Timeline
+* Twine
+* Tyranny
+* Unrest
+* USCODE
+* WOW

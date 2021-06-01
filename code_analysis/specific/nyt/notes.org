@@ -1,0 +1,11 @@
+#+TITLE:nyt notes
+* Counts
+|            |   |   |   |
+|------------+---+---+---|
+| Entries    |   |   |   |
+| Lengths    |   |   |   |
+| Titles     |   |   |   |
+| Blurbs     |   |   |   |
+| Authors    |   |   |   |
+| Categories |   |   |   |
+|            |   |   |   |

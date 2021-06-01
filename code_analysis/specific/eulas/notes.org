@@ -1,0 +1,6 @@
+#+TITLE:eulas notes
+* Counts
+|          | Avg | Total |
+|----------+-----+-------|
+| Length   |     |       |
+| Mentions |     |       |

@@ -1,0 +1,14 @@
+#+TITLE:versu notes
+* Counts
+|            | Avg | Group | Total |
+|------------+-----+-------+-------|
+| Files      |     |       |       |
+| Lines      |     |       |       |
+| Strings    |     |       |       |
+| Exclusions |     |       |       |
+| Characters |     |       |       |
+| types      |     |       |       |
+| functions  |     |       |       |
+| processes  |     |       |       |
+| states     |     |       |       |
+| ifelse     |     |       |       |

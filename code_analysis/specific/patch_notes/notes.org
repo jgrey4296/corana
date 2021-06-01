@@ -1,0 +1,9 @@
+#+TITLE:patch_notes notes
+* Counts
+|          | Avg | Proj | Total |
+|----------+-----+------+-------|
+| Files    |     |      |       |
+| Years    |     |      |       |
+| Lines    |     |      |       |
+| Areas    |     |      |       |
+| Releases |     |      |       |

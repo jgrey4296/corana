@@ -1,0 +1,15 @@
+#+TITLE:lua notes
+* Counts
+|            | Avg | project | total |
+|------------+-----+---------+-------|
+| Files      |     |         |       |
+| lines      |     |         |       |
+| classes    |     |         |       |
+| strings    |     |         |       |
+| components |     |         |       |
+| fsms       |     |         |       |
+| events     |     |         |       |
+| objects    |     |         |       |
+* DF9
+* Dont starve
+* The Guild

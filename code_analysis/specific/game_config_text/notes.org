@@ -1,0 +1,13 @@
+#+TITLE:game_config_text notes
+* Counts
+|       | Avg | Project | Total |
+|-------+-----+---------+-------|
+| Files |     |         |       |
+| Lines |     |         |       |
+|       |     |         |       |
+* CK2, EUIV, Stellaris
+* Democracy
+* Distant Worlds
+* Geck
+* Witcher
+* Red Shirt

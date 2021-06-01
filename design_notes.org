@@ -1,0 +1,157 @@
+#+TITLE: Design Notes
+* Analysis Case
+#+NAME: Analysis Case
+#+begin_src plantuml :results value verbatim :preview t
+python -> AnalysisCase : Init
+AnalysisCase -> AnalysisCase : setup directories
+CLI -> AnalysisCase : Get Output/Target/Accum/randn/filter
+AnalysisCase -> AnalysisCase : DFS for Sources
+== Initialised ==
+python -> AnalysisCase : Call
+== ∀files ∈ sources ==
+AnalysisCase -> AnalysisCase : extractor(file, self)
+AnalysisCase -> AnalysisCase : Maybe Discard
+AnalysisCase -> AnalysisCase : Maybe Accumulate
+AnalysisCase -> AnalysisCase : Data -> Json
+AnalysisCase -> AnalysisCase : write out
+== All Sources Processed ==
+AnalysisCase -> AnalysisCase : Maybe Finalise
+AnalysisCase -> AnalysisCase : Write out Final data
+AnalysisCase -> AnalysisCase : Write out Misc Data
+AnalysisCase ->[ : finished
+
+
+#+end_src
+
+#+RESULTS: Analysis Case
+#+begin_example
+     ┌──────┐          ┌────────────┐                            ┌───┐
+     │python│          │AnalysisCase│                            │CLI│
+     └──┬───┘          └─────┬──────┘                            └─┬─┘
+        │        Init        │                                     │
+        │ ───────────────────>                                     │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ setup directories              │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │ Get Output/Target/Accum/randn/filter│
+        │                    │ <────────────────────────────────────
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ DFS for Sources                │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │                                     │
+        │                    │╔═════════════╗                      │
+════════╪════════════════════╪╣ Initialised ╠══════════════════════╪═══════
+        │                    │╚═════════════╝                      │
+        │                    │                                     │
+        │        Call        │                                     │
+        │ ───────────────────>                                     │
+        │                    │                                     │
+        │                    │                                     │
+        │                  ╔═╧════════════════╗                    │
+════════╪══════════════════╣ ∀files ∈ sources ╠════════════════════╪═══════
+        │                  ╚═╤════════════════╝                    │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ extractor(file, self)          │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ Maybe Discard                  │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ Maybe Accumulate               │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ Data -> Json                   │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ write out                      │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │                                     │
+        │                ╔═══╧═══════════════════╗                 │
+════════╪════════════════╣ All Sources Processed ╠═════════════════╪═══════
+        │                ╚═══╤═══════════════════╝                 │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ Maybe Finalise                 │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ Write out Final data           │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │                    │────┐                                │
+        │                    │    │ Write out Misc Data            │
+        │                    │<───┘                                │
+        │                    │                                     │
+        │  finished          │                                     │
+ <────────────────────────────                                     │
+     ┌──┴───┐          ┌─────┴──────┐                            ┌─┴─┐
+     │python│          │AnalysisCase│                            │CLI│
+     └──────┘          └────────────┘                            └───┘
+#+end_example
+* Extractors
+#+NAME: Extractor Pattern
+#+begin_src plantuml :results value verbatim :preview t
+python -> extractor : call(filename, AnalysisCase)
+extractor -> extractor : build_parser
+extractor -> file : open
+file -> extractor : readlines into lines
+== ∀line ∈ lines ==
+extractor -> extractor : parse
+extractor -> extractor : handle
+extractor -> extractor : insert into AnalysisCase
+== finished ==
+#+end_src
+
+#+RESULTS: Extractor Pattern
+#+begin_example
+     ┌──────┐                    ┌─────────┐                      ┌────┐
+     │python│                    │extractor│                      │file│
+     └──┬───┘                    └────┬────┘                      └─┬──┘
+        │ call(filename, AnalysisCase)│                             │
+        │ ────────────────────────────>                             │
+        │                             │                             │
+        │                             │────┐                        │
+        │                             │    │ build_parser           │
+        │                             │<───┘                        │
+        │                             │                             │
+        │                             │             open            │
+        │                             │ ────────────────────────────>
+        │                             │                             │
+        │                             │          readlines          │
+        │                             │ <────────────────────────────
+        │                             │                             │
+        │                             │                             │
+        │                     ╔═══════╧═══════╗                     │
+════════╪═════════════════════╣ ∀line ∈ lines ╠═════════════════════╪════════
+        │                     ╚═══════╤═══════╝                     │
+        │                             │                             │
+        │                             │────┐                        │
+        │                             │    │ parse                  │
+        │                             │<───┘                        │
+        │                             │                             │
+        │                             │────┐                        │
+        │                             │    │ handle                 │
+        │                             │<───┘                        │
+        │                             │                             │
+        │                             │────┐
+        │                             │    │ insert into AnalysisCase
+        │                             │<───┘
+        │                             │                             │
+        │                             │                             │
+        │                       ╔═════╧════╗                        │
+════════╪═══════════════════════╣ finished ╠════════════════════════╪════════
+        │                       ╚═════╤════╝                        │
+     ┌──┴───┐                    ┌────┴────┐                      ┌─┴──┐
+     │python│                    │extractor│                      │file│
+     └──────┘                    └─────────┘                      └────┘
+#+end_example

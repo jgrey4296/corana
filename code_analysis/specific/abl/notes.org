@@ -1,0 +1,24 @@
+#+TITLE:abl notes
+* Counts
+|                  | Avg | Project | Total |
+|------------------+-----+---------+-------|
+| File Counts      |     |         |       |
+| Line Counts      |     |         |       |
+| Behaviour Counts |     |         |       |
+| Comments         |     |         |       |
+| Acts             |     |         |       |
+| Wmes             |     |         |       |
+| Conflicts        |     |         |       |
+| imports          |     |         |       |
+| sequentials      |     |         |       |
+| parallels        |     |         |       |
+| joints           |     |         |       |
+| subgoals         |     |         |       |
+| mental acts      |     |         |       |
+| waits            |     |         |       |
+| specificity      |     |         |       |
+| priority         |     |         |       |
+| initial trees    |     |         |       |
+* Graphs
+* Project Specific
+* Human View

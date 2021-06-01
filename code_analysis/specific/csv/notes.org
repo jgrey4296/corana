@@ -1,0 +1,11 @@
+#+TITLE:csv notes
+* Counts
+|       | Avg | Project | Total |
+|-------+-----+---------+-------|
+| Files |     |         |       |
+| Size  |     |         |       |
+* Democracy
+* BBC
+* Dem Socialism Simulator
+* Prom Week
+* SWDA
