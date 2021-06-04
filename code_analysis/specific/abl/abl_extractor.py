@@ -42,10 +42,12 @@ multi_line_parser = None
 def handle_result(pstate, pdata, presult):
     logging.debug(f"Handling Result: {presult}")
     try:
-        assert(json.dumps(presult.to_dict()))
         if presult is obj_e.COMMENT:
             pdata.inc_comment()
-        elif isinstance(presult, ABS.AblEnt):
+            return
+
+        assert(json.dumps(presult.to_dict()))
+        if isinstance(presult, ABS.AblEnt):
             pdata.insert(presult, "behaving_entity")
         elif isinstance(presult, ABS.AblRegistration):
             pdata.insert(presult, "registration")
@@ -57,7 +59,9 @@ def handle_result(pstate, pdata, presult):
             pdata.insert(presult)
         elif isinstance(presult, ABS.AblMisc):
             pdata.insert(presult)
-        elif not isinstance(presult, ParseBase):
+        elif isinstance(presult, ParseBase):
+            pdata.insert(presult)
+        else:
             logging.warning("Unrecognised parse result: {}".format(presult))
 
     except AttributeError as err:
@@ -66,10 +70,8 @@ def handle_result(pstate, pdata, presult):
         logging.info("Error")
 
 
-
-
 def extract_from_file(filename, ctx):
-    logging.info("Extracting from: {}".format(filename))
+    logging.info(f"Extracting from: {filename}")
     lines = []
     with open(filename, 'r') as f:
         lines = f.readlines()
@@ -82,14 +84,14 @@ def extract_from_file(filename, ctx):
         current = lines.pop(0).strip()
         if not bool(current):
             continue
-        # TODO handle comment
 
         start_line = state.line
         try:
             result = single_line_parser.parseString(current)[0]
+            if not isinstance(result, ParseBase):
+                logging.debug("Shifting to multi line parser")
             while not isinstance(result, ParseBase) and bool(lines) :
-                # TODO handle comment
-                current += lines.pop(0)
+                current += lines.pop(0).strip()
                 result = multi_line_parser.parseString(current)[0]
                 state.inc_line()
 
