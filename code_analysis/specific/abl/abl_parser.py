@@ -15,7 +15,7 @@ N               = lambda x,y : y.setResultsName(x)
 s               = pp.Suppress
 op              = pp.Optional
 lineEnd         = pp.lineEnd
-NAME            = pp.Word(pp.alphanums + "_")
+NAME            = pp.Word(pp.alphanums + "_-")
 NUM             = pp.Word(pp.nums + ".")
 SEMICOLON       = s(pp.Literal(";"))
 O_BRACKET       = s(pp.Literal('{'))
@@ -44,10 +44,12 @@ fail_abl        = pp.Keyword("fail_step")
 conflict_abl    = pp.Keyword('conflict')
 import_abl      = pp.Keyword('import')
 wait_abl        = pp.Keyword('wait')
+team_eff_abl    = pp.Keyword("team_effect_only")
 
 
 with_abl           = pp.Keyword("with")
 priority_abl       = pp.Keyword('priority')
+priority_mod_abl   = pp.Keyword("priority_modifier")
 persistent_abl     = pp.Keyword('persistent')
 success_test_abl   = pp.Keyword('success_test')
 ignore_failure_abl = pp.Keyword('ignore_failure')
@@ -83,6 +85,9 @@ def build_with_stmt(results):
     target   = results.target[0]
     obj_args = []
 
+    if 'head' not in results:
+        return target
+
     for obj in results.head[:]:
         # convert the head components to simple strings
         if isinstance(obj, str):
@@ -112,13 +117,10 @@ import_stmt.setParseAction(        lambda x: ABS.AblMisc('import', args=[y.strip
 mental_stmt        = s(mental_abl) + O_BRACKET + N("contents", pp.Optional(pp.SkipTo(C_BRACKET, include=True)))
 mental_stmt.setParseAction(        lambda x: ABS.AblComponent(type=obj_e.MENTAL, args=[x.contents]))
 
-multi_line_open    = pp.SkipTo(O_BRACKET)
-multi_line_open.setParseAction(    lambda x: False)
-
 precondition_stmt  = s(precond_abl) + O_BRACKET + N("contents", pp.Optional(pp.SkipTo(C_BRACKET, include=True)))
 precondition_stmt.setParseAction(  lambda x: ABS.AblComponent(type=obj_e.PRECON, args=[x.contents]))
 
-priority_stmt      = s(priority_abl) + NUM
+priority_stmt      = s(pp.Or([priority_abl, priority_mod_abl])) + NUM
 priority_stmt.setParseAction(      lambda x: ABS.AblComponent(type=obj_e.PRIORITY, args=[float(x[0])]))
 
 register_act_stmt  = s(register_abl + act_abl) + NAME + with_abl + NAME
@@ -126,9 +128,6 @@ register_act_stmt.setParseAction(  lambda x: ABS.AblRegistration(x[0], obj_e.ACT
 
 register_wme_stmt  = s(register_abl + wme_abl) + NAME + with_abl + NAME
 register_wme_stmt.setParseAction(  lambda x: ABS.AblRegistration(x[0], obj_e.WME))
-
-single_mental_stmt = s(mental_abl) + O_BRACKET + N("contents", pp.Optional(pp.SkipTo(C_BRACKET, include=True)))
-single_mental_stmt.setParseAction( lambda x: ABS.AblComponent(type=obj_e.MENTAL, args=[x.contents]))
 
 spawn_at_stmt      = s(pp.Literal('at')) + NAME
 spawn_at_stmt.setParseAction(      lambda x: ["spawntarget", x[1]])
@@ -148,9 +147,9 @@ success_test_stmt.setParseAction(  lambda x: ABS.AblComponent(type=obj_e.SUCCTES
 var_def            = NAME + NAME + pp.SkipTo(SEMICOLON, include=True)
 var_def.setParseAction(            lambda x: x[:])
 
-with_head          = s(with_abl) + O_PAR + pp.delimitedList(pp.Or([success_test_stmt, priority_stmt, ignore_failure_abl, persistent_abl])) + C_PAR
+with_head          = s(with_abl) + O_PAR + pp.delimitedList(pp.Or([success_test_stmt, priority_stmt, ignore_failure_abl, persistent_abl, team_eff_abl])) + C_PAR
 
-with_stmt          = N("head", with_head) + N("target", pp.Or([spawn_stmt, wait_abl, step_stmt])) + SEMICOLON
+with_stmt          = op(N("head", with_head)) + N("target", pp.Or([spawn_stmt, wait_abl, step_stmt])) + SEMICOLON
 with_stmt.setParseAction(build_with_stmt)
 
 wme_def            = s(wme_abl) + NAME + O_BRACKET + N("defs", pp.OneOrMore(var_def)) + C_BRACKET
@@ -159,9 +158,17 @@ wme_def.setParseAction(            lambda x: ABS.AblComponent(x[0], type=obj_e.W
 pass_stmt = pp.restOfLine.copy()
 pass_stmt.setParseAction(lambda x: ParseBase('Pass', args=x[:]))
 
-com_parser = pp.dblSlashComment.copy()
-com_parser.setParseAction(lambda x: obj_e.COMMENT)
+com_parser = pp.javaStyleComment
 
+multi_line_open    = pp.Or([pp.Literal("/**"),
+                            pp.Regex(".+{$")])
+multi_line_open.setParseAction(    lambda x: False)
+
+continue_ml = pp.restOfLine.copy()
+continue_ml.setParseAction(lambda x: False)
+
+end_ml = pp.Regex(".*}$")
+end_ml.setParseAction(lambda x: ParseBase("Pass", args=x[:]))
 
 def build_parser():
     """ Build a rough parser for abl """
@@ -170,17 +177,19 @@ def build_parser():
 def build_single_line_parser():
 
     # Final Assembly
-    single_line_parser = pp.MatchFirst([com_parser,
-                                        import_stmt,
+    single_line_parser = pp.MatchFirst([import_stmt,
                                         initial_abl,
                                         beh_ent_stmt,
                                         register_act_stmt,
                                         register_wme_stmt,
                                         conflict_stmt,
                                         behavior_stmt,
-                                        with_stmt,
+                                        precondition_stmt,
                                         multi_line_open,
+                                        with_stmt,
+                                        mental_stmt,
                                         pass_stmt])
+    single_line_parser.ignore(com_parser)
 
     return single_line_parser
 
@@ -191,8 +200,8 @@ def build_multi_line_parser():
                                        mental_stmt,
                                        precondition_stmt,
                                        with_stmt,
-                                       pass_stmt])
-
-
+                                       end_ml,
+                                       continue_ml])
+    multi_line_parser.ignore(com_parser)
 
     return multi_line_parser
