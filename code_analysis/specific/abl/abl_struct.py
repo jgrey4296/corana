@@ -71,10 +71,12 @@ class AblComponent(ParseBase):
 
     def __post_init__(self):
         assert(self.type in [obj_e.SPAWN,
-                             obj_e.MENTAL,
-                             obj_e.PRECON,
-                             obj_e.SPEC,
-                             obj_e.STEP])
+                          obj_e.MENTAL,
+                          obj_e.PRECON,
+                          obj_e.SPEC,
+                          obj_e.STEP,
+                          obj_e.PRIORITY,
+                          obj_e.SUCCTEST]), self.type
 
     def to_dict(self):
         _type = enum_to_str[self.type]
