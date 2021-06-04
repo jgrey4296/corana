@@ -112,7 +112,7 @@ class AnalysisCase:
             self._out_dir = abspath(expanduser(self._args.output))
 
         if self._args.target is not None:
-            self._sources += self._args.target
+            self.targets += self._args.target
 
     def _setup_sources(self):
         if bool(self.targets):
@@ -159,7 +159,7 @@ class AnalysisCase:
         while bool(queue):
             current = queue.pop(0)
             logging.debug("Getting from: {}".format(current))
-            if isfile(current) and splitext(current)[1] in ext:
+            if isfile(current) and splitext(current)[1] in ext and current not in files:
                 files.append(current)
             elif isdir(current):
                 sub = [join(current, x) for x in listdir(current)]
