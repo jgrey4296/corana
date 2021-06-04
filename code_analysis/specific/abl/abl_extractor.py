@@ -15,6 +15,7 @@ import networkx as nx
 import pygraphviz as pgv
 import pyparsing as pp
 
+import json
 import abl_struct as ABS
 import abl_parser as ABP
 import code_analysis.util.analysis_case as AC
@@ -38,24 +39,26 @@ obj_e = ABS.ABL_E
 single_line_parser = None
 multi_line_parser = None
 
-def handle_result(pstate, pdata, result):
+def handle_result(pstate, pdata, presult):
+    logging.debug(f"Handling Result: {presult}")
     try:
-        if result is obj_e.COMMENT:
-            data.inc_comment()
-        elif isinstance(result, ABS.AblEnt):
-            data.insert(result, "behaving_entity")
-        elif isinstance(result, ABS.AblRegistration):
-            data.insert(result, "registration")
-        elif isinstance(result, ABS.AblBehavior):
-            data.insert(result, "behaviour")
-            state.current = result
-        elif isinstance(result, ABS.AblComponent):
-            state.current.add_component(result)
-            data.insert(result)
-        elif isinstance(result, ABS.AblMisc):
-            data.insert(result)
-        elif not isinstance(result, ParseBase):
-            logging.warning("Unrecognised parse result: {}".format(result))
+        assert(json.dumps(presult.to_dict()))
+        if presult is obj_e.COMMENT:
+            pdata.inc_comment()
+        elif isinstance(presult, ABS.AblEnt):
+            pdata.insert(presult, "behaving_entity")
+        elif isinstance(presult, ABS.AblRegistration):
+            pdata.insert(presult, "registration")
+        elif isinstance(presult, ABS.AblBehavior):
+            pdata.insert(presult, "behaviour")
+            pstate.current = presult
+        elif isinstance(presult, ABS.AblComponent):
+            pstate.current.add_component(presult)
+            pdata.insert(presult)
+        elif isinstance(presult, ABS.AblMisc):
+            pdata.insert(presult)
+        elif not isinstance(presult, ParseBase):
+            logging.warning("Unrecognised parse result: {}".format(presult))
 
     except AttributeError as err:
         logging.warning(str(err))
@@ -76,17 +79,25 @@ def extract_from_file(filename, ctx):
     while bool(lines):
         state.inc_line()
         # logging.info("line: {}".format(state['line']))
-        current = lines.pop(0)
+        current = lines.pop(0).strip()
+        if not bool(current):
+            continue
+        # TODO handle comment
 
         start_line = state.line
-        result = single_line_parser.parseString(current)[0]
-        while bool(lines) and not isinstance(result, ParseBase):
-            current += lines.pop(0)
-            result = multi_line_parser.parseString(current)[0]
-            state.inc_line()
+        try:
+            result = single_line_parser.parseString(current)[0]
+            while not isinstance(result, ParseBase) and bool(lines) :
+                # TODO handle comment
+                current += lines.pop(0)
+                result = multi_line_parser.parseString(current)[0]
+                state.inc_line()
 
-        handle_result(state, data, result)
-        result.line_no = start_line
+            result.line_no = start_line
+            handle_result(state, data, result)
+        except Exception as err:
+            breakpoint()
+            logging.info("Error: {}".format(err))
 
 
     return data
