@@ -60,6 +60,9 @@ def handle_result(pstate, pdata, presult):
         elif isinstance(presult, ABS.AblMisc):
             pdata.insert(presult)
         elif isinstance(presult, ParseBase):
+            arg_empty = all([x in ["", "}"] for x in presult.args])
+            if presult.name == "Pass" and arg_empty:
+                return
             pdata.insert(presult)
         else:
             logging.warning("Unrecognised parse result: {}".format(presult))
