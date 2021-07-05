@@ -12,12 +12,30 @@
 |            |     |         |       |
 * Dwarf Fortress
 * CiF
+** Individual games
+** Performances
+** Microtheories
+* Dungeon of the endless
+** Simulation sizes
+
 * Dragon Pass
 * Bible
 * Red Shirt
+** Simulation structure
+** activities
+** events
+** jobs
+** locations
+** npcs
+
 * Trump Timeline
 * Twine
+** graphs
+
 * Tyranny
+** graphs
+** text
+
 * Unrest
 * USCODE
 * WOW

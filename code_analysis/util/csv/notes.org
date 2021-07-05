@@ -5,7 +5,16 @@
 | Files |     |         |       |
 | Size  |     |         |       |
 * Democracy
+** Simulation Structure
+
 * BBC
+** Categories
+
 * Dem Socialism Simulator
+** Simulation Structure
+
 * Prom Week
+** Speech Act Types
+
 * SWDA
+** Speech Act Types

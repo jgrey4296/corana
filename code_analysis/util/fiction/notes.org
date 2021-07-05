@@ -10,3 +10,4 @@
 | verbs      |     |         |       |
 | vocab      |     |         |       |
 | quotes     |     |         |       |
+* Noun-Verb Pairings

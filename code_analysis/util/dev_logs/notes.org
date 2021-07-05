@@ -1,6 +1,8 @@
-#+TITLE:eulas notes
+#+TITLE:dev_logs notes
 * Counts
 |          | Avg | Total |
 |----------+-----+-------|
-| Length   |     |       |
+| Size     |     |       |
 | Mentions |     |       |
+* Dwarf Fortress
+** Individual Entries

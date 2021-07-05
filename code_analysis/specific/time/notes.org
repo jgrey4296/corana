@@ -1,0 +1,6 @@
+#+TITLE:./sql notes
+[[https://www.northernlion-db.com/SqlDump/Description][Instructions]]
+
+[[https://www.northernlion-db.com/SqlDump/Tables][Layout]]
+
+[[https://www.northernlion-db.com/SqlDump/Details][Detailed Layout]]

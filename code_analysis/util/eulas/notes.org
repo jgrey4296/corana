@@ -1,6 +1,8 @@
-#+TITLE:dev_logs notes
+#+TITLE:eulas notes
 * Counts
 |          | Avg | Total |
 |----------+-----+-------|
-| Size     |     |       |
+| Length   |     |       |
 | Mentions |     |       |
+* N-Grams
+* Sentence Structures
