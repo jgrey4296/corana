@@ -15,12 +15,14 @@ import networkx as nx
 import pygraphviz as pgv
 import pyparsing as pp
 
+import json
 import abl_struct as ABS
 import abl_parser as ABP
 import code_analysis.util.analysis_case as AC
 import code_analysis.util.utils as utils
 from code_analysis.util.parse_data import ParseData
 from code_analysis.util.parse_base import ParseBase
+from code_analysis.util.parse_state import ParseState
 
 LOGLEVEL = root_logger.DEBUG
 LOG_FILE_NAME = "log.{}".format(splitext(split(__file__)[1])[0])
@@ -34,59 +36,81 @@ logging = root_logger.getLogger(__name__)
 # Enums:
 obj_e = ABS.ABL_E
 
-main_parser = None
+single_line_parser = None
+multi_line_parser = None
+
+def handle_result(pstate, pdata, presult):
+    logging.debug(f"Handling Result: {presult}")
+    try:
+        if presult is obj_e.COMMENT:
+            pdata.inc_comment()
+            return
+
+        assert(json.dumps(presult.to_dict()))
+        if isinstance(presult, ABS.AblEnt):
+            pdata.insert(presult, "behaving_entity")
+        elif isinstance(presult, ABS.AblRegistration):
+            pdata.insert(presult, "registration")
+        elif isinstance(presult, ABS.AblBehavior):
+            pdata.insert(presult, "behaviour")
+            pstate.current = presult
+        elif isinstance(presult, ABS.AblComponent):
+            pstate.current.add_component(presult)
+            pdata.insert(presult)
+        elif isinstance(presult, ABS.AblMisc):
+            pdata.insert(presult)
+        elif isinstance(presult, ParseBase):
+            arg_empty = all([x in ["", "}"] for x in presult.args])
+            if presult.name == "Pass" and arg_empty:
+                return
+            pdata.insert(presult)
+        else:
+            logging.warning("Unrecognised parse result: {}".format(presult))
+
+    except AttributeError as err:
+        logging.warning(str(err))
+        breakpoint()
+        logging.info("Error")
+
 
 def extract_from_file(filename, ctx):
-    logging.info("Extracting from: {}".format(filename))
-    data = ParseData(filename)
+    logging.info(f"Extracting from: {filename}")
     lines = []
     with open(filename, 'r') as f:
         lines = f.readlines()
 
-    state = {'bracket_count' : 0,
-             'current' : None,
-             'line' : 0}
-
+    data  = ParseData(filename)
+    state = ParseState()
     while bool(lines):
-        state['line'] += 1
+        state.inc_line()
         # logging.info("line: {}".format(state['line']))
-        current = lines.pop(0)
-
-        result = main_parser.parseString(current)[0]
-        if not result:
+        current = lines.pop(0).strip()
+        if not bool(current):
             continue
 
-        if isinstance(result, ParseBase):
-            result.line_no = state['line']
-
+        start_line = state.line
         try:
-            if result is obj_e.COMMENT:
-                data.inc_comment()
-            elif isinstance(result, ABS.AblEnt):
-                data.insert(result, "behaving_entity")
-            elif isinstance(result, ABS.AblRegistration):
-                data.insert(result, "registration")
-            elif isinstance(result, ABS.AblBehavior):
-                data.insert(result, "behaviour")
-                state['current'] = result
-            elif isinstance(result, ABS.AblComponent):
-                state['current'].add_component(result)
-                data.insert(result)
-            elif not isinstance(result, ParseBase):
-                logging.warning("Unrecognised parse result: {}".format(result))
+            result = single_line_parser.parseString(current)[0]
+            if not isinstance(result, ParseBase):
+                logging.debug("Shifting to multi line parser")
+            while not isinstance(result, ParseBase) and bool(lines) :
+                current += lines.pop(0).strip()
+                result = multi_line_parser.parseString(current)[0]
+                state.inc_line()
 
-        except AttributeError as err:
-            logging.warning(str(err))
+            result.line_no = start_line
+            handle_result(state, data, result)
+        except Exception as err:
             breakpoint()
-            logging.info("Error")
+            logging.info("Error: {}".format(err))
+
 
     return data
 
 
 if __name__ == "__main__":
-    main_parser = ABP.build_parser()
+    single_line_parser, multi_line_parser = ABP.build_parser()
     input_ext = ".abl"
-    output_ext = ".abl_analysis"
 
 
     AC.AnalysisCase(__file__,
