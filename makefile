@@ -1,75 +1,157 @@
-##
-# Code Analysis
-#
-# @file
-# @version 0.1
+SHELL		:= /usr/local/bin/bash
+LOGLEVEL	:= WARNING
 
-# Reminder: make TARGET args="-r 5" etc
+PY_TOP		:= ./code_analysis
+BUILD		:= ./build
 
-abl:
-	python code_analysis/specific/abl/abl_extractor.py ${args} ${args}
+# Testing variables:
+TESTDIRS        :=
+TEST_TARGET		?= ${PY_TOP}
+TEST_PAT		:=
+TEST_FILE_PAT	:= "test_*.py"
 
-config:
-	python code_analysis/specific/config_files/config_extractor.py ${args}
+# Clean variables:
+LOGS			!= find ${PY_TOP} -name '*log.*'
+CACHES			!= find ${PY_TOP} -regextype posix-egrep -regex .*\(.mypy_cache\|__pycache__\|flycheck_.+\)$)
 
-csharp:
-	python code_analysis/specific/csharp/csharp_extractor.py ${args}
+# Documentation variables:
+doc_target		?= "html"
+SPHINXOPTS		?=
+SPHINXBUILD		?= sphinx-build
+DOCSOURCEDIR     = docs
+DOCBUILDDIR      = ${BUILD}/docs
 
-csv:
-	python code_analysis/specific/csv/csv_extractor.py ${args}
 
-tsv:
-	python code_analysis/specific/csv/tsv_extractor.py ${args}
+# If defined, use these overrides
+ifneq (${pat}, )
+	TEST_PAT = -k ${pat}
+endif
 
-dev:
-	python code_analysis/specific/dev_logs/dev_log_extractor.py ${args}
+ifneq (${fpat}, )
+	TEST_FILE_PAT := ${fpat}
+endif
 
-dialogue:
-	python code_analysis/specific/dialogue/dialogue_extractor.py ${args}
 
-eula:
-	python code_analysis/specific/eulas/eula_extractor.py ${args}
+.PHONY: help Makefile all pylint clean browse long test dtest faily repl vrepl repld check
 
-dramatis:
-	python code_analysis/specific/fiction/dramatis_extractor.py ${args}
+# Documentation ###############################################################
+# Put it first so that "make" without argument is like "make help".
+help:
+	@$(SPHINXBUILD) -M help "$(DOCSOURCEDIR)" "$(DOCBUILDDIR)" $(SPHINXOPTS) $(O)
+# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+# run with `make sphinx doc_target=html` =clean etc
 
-narrative:
-	python code_analysis/specific/fiction/narrative_extractor.py ${args}
+sphinx: Makefile
+	@$(SPHINXBUILD) -M ${doc_target} "$(DOCSOURCEDIR)" "$(DOCBUILDDIR)" $(SPHINXOPTS) $(O)
 
-game:
-	python code_analysis/specific/game_config_text/game_script_extractor.py ${args}
+browse:
+	open "$(DOCBUILDDIR)/html/index.html"
 
-index:
-	python code_analysis/specific/indexes/index_extractor.py ${args}
+docs: sphinx browse
 
-json:
-	python code_analysis/specific/json/json_extractor.py ${args}
 
-lua:
-	python code_analysis/specific/lua/lua_extractor.py ${args}
+# Rest ########################################################################
+all: verbose long
 
-names:
-	python code_analysis/specific/names/name_extractor.py ${args}
+# Building ####################################################################
+nodep:
+	pip install --no-deps -e .
 
-deontic:
-	python code_analysis/specific/natural_language_deontics/deontic_extractor.py ${args}
+editlib:
+	pip install -e .
 
-patch:
-	python code_analysis/specific/patch_notes/patch_notes_extractor.py ${args}
+install:
+	pip install --use-feature=in-tree-build --src ${BUILD}/pip_temp -U .
 
-sql:
-	python code_analysis/specific/sql/sql_extractor.py ${args}
+wheel:
+	pip wheel --use-feature=in-tree-build -w ${BUILD}/wheel --use-pep517 --src ${BUILD}/pip_temp .
 
-versu:
-	python code_analysis/specific/versu/versu_extractor.py ${args}
+srcbuild:
+	pip install --use-feature=in-tree-build -t ${BUILD}/pip_src --src ${BUILD}/pip_temp -U .
 
-xmlrule:
-	python code_analysis/specific/xml/xml_rule_extractor.py ${args}
+uninstall:
+	pip uninstall -y code_analysis
 
-xmltext:
-	python code_analysis/specific/xml/xml_text_extractor.py ${args}
+requirements:
+	pip freeze --all --exclude-editable -r requirements.txt > requirements.txt
 
-nyt:
-	python code_analysis/specific/nyt/nyt_extractor.py ${args}
+freeze:
+	bash -ic "conda list --export > ./conda_env.txt"
+	pip list --format=freeze > ./requirements.txt
+
+# Testing #####################################################################
+long:
+	python -m unittest discover -s ${TEST_TARGET} -p "*_tests.py"
+
+test:
+	python -m unittest discover -v -s ${TEST_TARGET} -p ${TEST_FILE_PAT} -t ${PY_TOP} ${TEST_PAT}
+
+dtest: ${TESTDIRS}
+	@echo "Tested: "
+	@for entry in ${TESTDIRS}; do echo $$entry ; done
+
+$(TESTDIRS):
+	@echo "--------------------"
+	@echo "Target: ${PY_TOP}/$@"
+	python -m unittest discover -v -s "${PY_TOP}/$@" -p ${TEST_FILE_PAT} -t ${PY_TOP}
+	@echo "Target: ${PY_TOP}/$@"
+
+faily:
+	@echo "Testing with early fail"
+	python -m unittest discover -v -f -s ${TEST_TARGET} ${TEST_PAT} -t ${PY_TOP} -p ${TEST_FILE_PAT}
+
+
+
+
+# Reports #####################################################################
+check:
+	@echo "Shell	= " ${SHELL}
+	@echo "Top		= " ${PY_TOP}
+	@echo "Search	= " ${TEST_TARGET}
+	@echo "Pattern	= " ${TEST_PAT}
+
+
+line_report:
+	@echo "Counting Lines into linecounts.stats"
+	find ${PY_TOP} -name "*.py" -not -name "test_*.py" -not -name "*__init__.py" -print0 | xargs -0 wc -l | sort > linecounts.report
+
+class_report:
+	@echo "Getting Class Relations"
+	find ${PY_TOP} -name "*.py" -not -name "flycheck*" | xargs awk '/^class/ {print $0}' > class.report
+
+
+export_env:
+	conda env export --from-history > code_analysis.yaml
+
+# Linting #####################################################################
+pylint:
+	@echo "Linting"
+	pylint --rcfile=./.pylintrc ${PY_TOP} --ignore=${ig} --ignore-patterns=${igpat}
+
+elint:
+	@echo "Linting -E"
+	pylint --rcfile=./.pylintrc ${PY_TOP} --ignore=${ig} --ignore-patterns=${igpat} -E
+
+# Cleaning ####################################################################
+init:
+	@echo "Auto-creating empty __init__.py's"
+	find ${PY_TOP} -type d -print0 | xargs -0 -I {} touch "{}/__init__.py"
+
+clean:
+	@echo "Cleaning"
+	@$(SPHINXBUILD) -M clean "$(DOCSOURCEDIR)" "$(DOCBUILDDIR)" $(SPHINXOPTS) $(O)
+ifeq (${LOGS}, )
+	@echo "No Logs to delete"
+else
+	-rm ${LOGS}
+endif
+ifeq (${CACHES}, )
+	@echo "No Caches to delete"
+else
+	-rm -r ${CACHES}
+endif
+	-rm -rf ${BUILD}
 
 # end
+zip:
+	echo "TODO: auto-zip all data directories together"

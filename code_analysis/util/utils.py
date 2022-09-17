@@ -48,3 +48,40 @@ def sample(predictions, temperature=1.0):
 def guarded_log(msg, val):
     if isinstance(val, str) and bool(val.strip()):
         logging.info(msg.format(val))
+
+def get_data_files(initial, ext=None, normalize=False):
+    """
+    Getting all files of an extension
+    """
+    logging.info("Getting Data Files")
+    if ext is None:
+        ext = []
+
+    if not isinstance(ext, list):
+        ext = [ext]
+    if not isinstance(initial, list):
+        initial = [initial]
+
+    unrecognised_types = set()
+    files = []
+    queue = [abspath(expanduser(x)) for x in initial]
+    while bool(queue):
+        current = queue.pop(0)
+        ftype = splitext(current)[1].lower()
+        match_type = not bool(ext) or ftype in ext
+        missing_type = ftype not in unrecognised_types
+
+        if isfile(current) and match_type:
+            files.append(current)
+        elif isfile(current) and not match_type and missing_type:
+            logging.warning("Unrecognized file type: {}".format(splitext(current)[1].lower()))
+            unrecognised_types.add(ftype)
+        elif isdir(current):
+            sub = [join(current,x) for x in listdir(current)]
+            queue += sub
+
+
+    logging.info("Found {} {} files".format(len(files), ext))
+    if normalize:
+        files = [norm_unicode("NFD", x) for x in files]
+    return files
