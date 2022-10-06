@@ -1,3 +1,0 @@
-/time/df_patch:
-Extracted from dwarffortress wiki patch notes using xpath query in xidel:
-//table/following-sibling::*[//div[@class='printfooter']/preceding::node()]

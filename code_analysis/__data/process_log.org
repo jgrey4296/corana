@@ -1,0 +1,41 @@
+#+title: Data Processing Log
+
+* /time/df_patch:
+Extracted from dwarffortress wiki patch notes using the xidel query:
+#+begin_src xpath
+//table/following-sibling::*[//div[@class='printfooter']/preceding::node()]
+#+end_src
+
+* /time/df_devlogs
+Extracted from the raw devlogs using xpath query in xidel:
+#+begin_src xpath
+//li
+#+end_src
+then removing newlines, reformatting with xmllint, and running the regexs:
+#+begin_src regex
+s/xlmns=".*?"//g
+s/<img.+?\/>//g
+#+end_src
+
+* /time/trump_timeline
+extract the body of the html with:
+#+begin_src xpath
+//body
+#+end_src
+then regex:
+#+begin_src regex
+s/<img.+?\/>//
+#+end_src
+
+* /time/dota
+extract the body with xidel:
+#+begin_src xpath
+//div[@id='mw-content-text']
+#+end_src
+Then format the resulting xml with `xmllint --format`
+
+* /time/gladiabots.html
+extract the body with xidel:
+#+begin_src xpath
+//div[@id='mw-content-text']
+#+end_src
