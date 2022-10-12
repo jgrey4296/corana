@@ -7,3 +7,11 @@ data/
 analysis
 
 misc_data
+
+reports/
+
+*/__data/large
+*/__data/originals
+*/__data/zips
+*/__data/*.zip
+*/__data/extractions
