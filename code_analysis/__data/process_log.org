@@ -7,11 +7,11 @@ Extracted from dwarffortress wiki patch notes using the xidel query:
 #+end_src
 
 * /time/df_devlogs
-Extracted from the raw devlogs using xpath query in xidel:
+- Extracted from the raw devlogs using xpath query in xidel:
 #+begin_src xpath
 //li
 #+end_src
-then removing newlines, reformatting with xmllint, and running the regexs:
+- removed newlines, reformatting with xmllint, and running the regexs:
 #+begin_src regex
 s/xlmns=".*?"//g
 s/<img.+?\/>//g
@@ -39,3 +39,11 @@ extract the body with xidel:
 #+begin_src xpath
 //div[@id='mw-content-text']
 #+end_src
+
+* qud-wiki
+- extract:
+//div[@class='mw-content-text']
+- then split each year:
+util/xml/split-xml.py -f h3 -s h3
+
+* rimworld-wiki
