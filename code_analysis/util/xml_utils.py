@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+##-- imports
 
 from bs4 import BeautifulSoup
 from collections import defaultdict
+
+##-- end imports
 
 def verify_schema(soup, schema):
     assert(isinstance(schema, list))

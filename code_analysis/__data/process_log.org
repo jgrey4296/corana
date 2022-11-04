@@ -47,3 +47,7 @@ extract the body with xidel:
 util/xml/split-xml.py -f h3 -s h3
 
 * rimworld-wiki
+
+* disco elysium
+use https://github.com/dumblob/mysql2sqlite.git
+to convert to sqlite

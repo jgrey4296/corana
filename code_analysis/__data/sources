@@ -50,6 +50,7 @@ https://github.com/moise-lang/moise.git
 
 ** PDDL:
 https://github.com/SoarGroup/Domains-Planning-Domain-Definition-Language.git
+https://github.com/AI-Planning/classical-domains.git
 
 ** Soar:
 https://github.com/SoarGroup/Agents.git
@@ -58,6 +59,9 @@ https://github.com/SoarGroup/Agents.git
 Private Repo
 
 * Games
+** Disco Elysium
+https://github.com/Leerion/discoElysiumExplorer.git
+
 ** beholder:
 decompiled game files
 
@@ -93,6 +97,12 @@ Game Data
 
 ** Fallout:
 Extracted Game Data
+https://github.com/robguilarr/parse_fallout_data.git
+https://github.com/sowcow/fallout-dialogs.git
+
+** Fallout4:
+https://github.com/niminuko/fo4-dialogue-analysis.git
+https://github.com/niminuko/fo4-dialogue-tables.git
 
 ** fallout_shelter:
 decompiled game files

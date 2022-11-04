@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+##-- imports
 from typing import List, Set, Dict, Tuple, Optional, Any
 from typing import Callable, Iterator, Union, Match
 from typing import Mapping, MutableMapping, Sequence, Iterable
@@ -8,6 +9,8 @@ from dataclasses import dataclass, field, InitVar
 from enum import Enum
 
 from code_analysis.util.parse_base import ParseBase
+
+##-- end imports
 
 ABL_E = Enum('ABL_E', 'ENT ACT WME CONFLICT BEH COM SPAWN MENTAL PRECON SPEC INIT STEP COMMENT PRIORITY SUCCTEST SPAWNTARGET')
 obj_e = ABL_E

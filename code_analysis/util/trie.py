@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+##-- imports
 import argparse
 from os.path import join, isfile, exists, abspath
 from os.path import split, isdir, splitext, expanduser
@@ -10,6 +11,8 @@ import json
 from enum import Enum
 import logging as root_logger
 import requests
+##-- end imports
+
 logging = root_logger.getLogger(__name__)
 
 class Trie:

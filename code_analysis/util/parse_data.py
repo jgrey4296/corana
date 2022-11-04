@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+##-- imports
 from typing import List, Set, Dict, Tuple, Optional, Any
 from typing import Callable, Iterator, Union, Match
 from typing import Mapping, MutableMapping, Sequence, Iterable
@@ -8,12 +9,14 @@ import json
 from collections import defaultdict
 from uuid import UUID
 import logging as root_logger
-logging = root_logger.getLogger(__name__)
 
 from dataclasses import dataclass, field, InitVar
 
 from code_analysis.util.parse_base import ParseBase
 
+##-- end imports
+
+logging = root_logger.getLogger(__name__)
 subgroup_default = lambda: defaultdict(lambda: set())
 count_default = lambda: defaultdict(lambda: 0)
 
