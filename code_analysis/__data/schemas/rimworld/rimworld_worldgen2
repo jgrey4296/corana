@@ -1,0 +1,9 @@
+Defs
+Defs/WorldGenStepDef
+Defs/WorldGenStepDef/defName
+Defs/WorldGenStepDef/order
+Defs/WorldGenStepDef/worldGenStep
+Defs/WorldGenStepDef/worldGenStep/ancientSitesPer100kTiles
+Defs/WorldGenStepDef/worldGenStep/maximumSegmentCurviness
+Defs/WorldGenStepDef/worldGenStep/maximumSiteCurve
+Defs/WorldGenStepDef/worldGenStep/minimumChain

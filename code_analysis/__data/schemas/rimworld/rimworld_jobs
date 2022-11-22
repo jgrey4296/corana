@@ -1,0 +1,9 @@
+Defs
+Defs/JobDef
+Defs/JobDef/allowOpportunisticPrefix
+Defs/JobDef/casualInterruptible
+Defs/JobDef/checkOverrideOnDamage
+Defs/JobDef/defName
+Defs/JobDef/driverClass
+Defs/JobDef/neverFleeFromEnemies
+Defs/JobDef/reportString

@@ -1,78 +1,116 @@
 # -*- mode:org; -*-
 #+title: Data Sources
 
-* AI
+* Code
 ** ABL:
 Facade / Mateas and Stern
 UCSC EIS Holodeck project
 UCSC EIS Eisbot / Ben Webber
 UCSC EIS SSIM project
+** csharp
+*** beholder:
+decompiled game files
+*** caves_of_qud:
+decompiled game files
+*** cultist_sim:
+decompiled game files
+*** fallout_shelter:
+decompiled game files
 
-** ASP:
-http://www.hakank.org/answer_set_programming/
+*** kentucky_route_zero:
+decompiled game files
+*** oxygen_not_included:
+decompiled game files
 
-** Building Problem Solvers
-https://www.qrg.northwestern.edu/BPS/directory.html
+*** rimworld:
+decompiled game files
+*** streets_of_rogue:
+decompiled game files
 
-** Cartago:
-https://github.com/CArtAgO-lang/cartago.git
+*** subsurface_circular:
+decompiled game files
 
-** Ceptre:
-https://github.com/chrisamaphone/interactive-lp.git
 
-** Clips:
-https://github.com/smarr/CLIPS.git
 
-** cplus:
-https://github.com/azreasoners/Cplus2ASP.git
 
-** Dendral
 
-** instal:
-https://github.com/instsuite/instal-stable.git
-
-** jacamo:
+** java
+*** jacamo:
 https://github.com/jacamo-lang/jacamo.git
+*** Micropolis
+https://github.com/SimHacker/micropolis
+https://github.com/dheid/micropolis
+https://www.donhopkins.com/home/micropolis/
 
-** jason:
-https://github.com/jason-lang/jason.git
 
-** MAD:
-http://www.cs.utexas.edu/~tag/mad/
-
-** Microtalespin:
+** lisp
+*** Microtalespin:
 https://github.com/rntz/microtalespin.git / Warren Sack
 
-** moise:
-https://github.com/moise-lang/moise.git
 
-** Monroe Plan Corpus
-
-** PDDL:
+*** PDDL:
 https://github.com/SoarGroup/Domains-Planning-Domain-Definition-Language.git
 https://github.com/AI-Planning/classical-domains.git
 
-** Soar:
-https://github.com/SoarGroup/Agents.git
 
-** Versu:
-Private Repo
+*** Monroe Plan Corpus
 
-* Games
-** Disco Elysium
-https://github.com/Leerion/discoElysiumExplorer.git
 
-** beholder:
-decompiled game files
-
-** caves_of_qud:
-decompiled game files
-
-** CK2:
+*** Building Problem Solvers
+https://www.qrg.northwestern.edu/BPS/directory.html
+** lua
+*** the_guild_2:
 Game Data
 
-** cultist_sim:
-decompiled game files
+
+*** prison_architect:
+Game Data
+
+
+*** Invisible Inc:
+Game Data
+
+
+*** Don't Starve:
+Game Data
+
+
+*** Spacebase DF9:
+Game Data
+
+** Netlogo
+https://github.com/lvanhee/COVID-sim
+** paradox
+*** stellaris:
+Game Data
+
+
+*** EUIV:
+Game Data
+
+
+*** CK2:
+Game Data
+
+** skyrim:
+Game Data
+
+** unknown
+*** Dendral
+
+** witcher3:
+Game Data
+https://github.com/Traderain/WitcherScript
+
+** Python
+*** vampire
+https://web.archive.org/web/20070219192741fw_/http://users.skynet.be/fa299024/vampire/vamputil.py
+
+* Database
+** BBC Sound Effects:
+https://www.reddit.com/r/DataHoarder/comments/8dn03t/16000_bbc_sound_effects_wavs_now_available_online/
+http://bbcsfx.acropolis.org.uk/
+
 
 ** Democracy 3 Africa:
 Game Files
@@ -83,150 +121,120 @@ Game Files
 ** Democratic Socialism simulator:
 https://www.molleindustria.org/blog/democratic-socialism-simulator-release-notes/
 
+** Disco Elysium
+https://github.com/Leerion/discoElysiumExplorer.git
+
+** Dwarf fortress bugs
+https://www.bay12games.com/dwarves/mantisbt/view_all_bug_page.php
+
+** Ministerial resignations
+https://gavin-freeguard.medium.com/chart-hit-or-how-years-of-preparation-made-the-ministerial-resignation-chart-an-overnight-success-3f55f76e70de
+
+** NorthernLion Database:
+https://www.northernlion-db.com/Downloads
+https://www.northernlion-db.com/SqlDump/Description
+
+** Slave Trade
+https://www.slavevoyages.org/
+
+* Dialogue
+** df9
+** Dins curse
+** Distant worlds
+** dont starve
+** firewatch
+** infinity engine
+** invisible inc
+** kentucky route zero
+** maia
+** mass effect
+** oxenfree
+
+** pillars of eternity
+** prom_week_dialogue_annotated_for_speech_acts.tsv:
+James Ryan, UCSC
+
+** redshirt
+
+** Scotus Dialogue:
+https://confluence.cornell.edu/display/llresearch/Supreme+Court+Dialogs+Corpus
+
+** stasis
+
+** State of the Union Texts:
+http://www.c-span.org/executive/stateoftheunion.asp
+
+** streets of rogue
+
+** subsurface circular
+
+** SWDA:
+http://compprag.christopherpotts.net/swda.html
+** tacoma
+
+** tyranny
+* Fiction
+
+** 40k
+
+** bester
+
+** brunner
+
+** discworld
+
+** le guin
+
+** mars
+
+* Games
+** anodyne
+** avadon
+** democracy
+** df9
+** dins curse
 ** distant_worlds:
 Game Data
 
-** Don't Starve:
-Game Data
-
-** Dungeon of the Endless:
-Game Data
-
-** EUIV:
-Game Data
+** fallout new vegas
+** Fallout4:
+https://github.com/niminuko/fo4-dialogue-analysis.git
+https://github.com/niminuko/fo4-dialogue-tables.git
 
 ** Fallout:
 Extracted Game Data
 https://github.com/robguilarr/parse_fallout_data.git
 https://github.com/sowcow/fallout-dialogs.git
 
-** Fallout4:
-https://github.com/niminuko/fo4-dialogue-analysis.git
-https://github.com/niminuko/fo4-dialogue-tables.git
-
-** fallout_shelter:
-decompiled game files
-
-** Invisible Inc:
-Game Data
-
-** kentucky_route_zero:
-decompiled game files
-
-** King of Dragon Pass:
-Game Data
-
-** oxygen_not_included:
-decompiled game files
-
-** prison_architect:
-Game Data
-
+** gods will be watching
+** gossip atari
+** pathologic
+** pillars of eternity
+** prison architect
 ** Red Shirt:
 Game Data
-** rimworld:
-decompiled game files
-
-** skyrim:
-Game Data
-
-** Spacebase DF9:
-Game Data
-** stellaris:
-Game Data
-
-** streets_of_rogue:
-decompiled game files
-
-** subsurface_circular:
-decompiled game files
-
-** the_guild_2:
-Game Data
+** reigns
+** rimworld
+** tacoma
 
 ** Tyranny:
 Decompiled Game Data
 
-** Unrest:
-Game Data
-
-** witcher3:
-Game Data
-https://github.com/Traderain/WitcherScript
-
-** Wow Wiki:
-https://wowpedia.fandom.com/wiki/Category:Quests_by_level
-
-** Micropolis
-https://github.com/SimHacker/micropolis
-https://github.com/dheid/micropolis
-https://www.donhopkins.com/home/micropolis/
-
-* Dialogue
-** Burn Notice
-https://burnnotice.fandom.com/
-** prom_week_dialogue_annotated_for_speech_acts.tsv:
-James Ryan, UCSC
-
-** Scotus Dialogue:
-https://confluence.cornell.edu/display/llresearch/Supreme+Court+Dialogs+Corpus
-
-** State of the Union Texts:
-http://www.c-span.org/executive/stateoftheunion.asp
-
-* Game Development
-** Dota patch notes:
-https://dota2.fandom.com/wiki/Patches
-
-** Dwarf fortress bugs
-https://www.bay12games.com/dwarves/mantisbt/view_all_bug_page.php
-
-** Dwarf Fortress Dev Logs:
-https://www.bay12games.com/dwarves/index.html
-
-** Dwarf Fortress patch notes:
-http://dwarffortresswiki.org/index.php/DF2014:Release_information/0.47.05
-
-** Game Spreadsheets:
-https://cannibalinteractive.itch.io/cannibal-interactive-press-kit
-
-* Real World
-** NYPD Data:
-https://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page
-https://www1.nyc.gov/site/nypd/stats/crime-statistics/crime-statistics-landing.page
-
-** Police Scorecard:
-https://www.policescorecard.org/
-
-** Police Shootings:
-https://github.com/washingtonpost/data-police-shootings.git
-
-** Social Physics Data:
-https://web.archive.org/web/*/socialphysics.media.mit.edu
-
-** AI Specification Gaming Examples
-https://vkrakovna.wordpress.com/2018/04/02/specification-gaming-examples-in-ai/
-https://docs.google.com/spreadsheets/d/e/2PACX-1vRPiprOaC3HsCf5Tuum8bRfzYUiKLRqJmbOoC-32JorNdfyTiRRsR7Ea5eWtvsWzuxo8bjOxCG84dAg/pubhtml
-** Ministerial resignations
-https://gavin-freeguard.medium.com/chart-hit-or-how-years-of-preparation-made-the-ministerial-resignation-chart-an-overnight-success-3f55f76e70de
-
 * Grammars
-** BBC Sound Effects:
-https://www.reddit.com/r/DataHoarder/comments/8dn03t/16000_bbc_sound_effects_wavs_now_available_online/
-http://bbcsfx.acropolis.org.uk/
+** CMU pronunciation dictionary
+http://www.speech.cs.cmu.edu/cgi-bin/cmudict
 
 ** Kantrowitz names:
 http://www-2.cs.cmu.edu/afs/cs/project/ai-repository/ai/areas/nlp/corpora/names/
 
+** nltk
+https://www.nltk.org/
+
 ** Opinion lexicon:
 http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#datasets
 
-** SWDA:
-http://compprag.christopherpotts.net/swda.html
-
-** CMU pronunciation dictionary
-http://www.speech.cs.cmu.edu/cgi-bin/cmudict
-
+** Thompson Motif Index
+https://sites.ualberta.ca/~urban/Projects/English/Motif_Index.htm
 ** Tracery Grammars:
 https://cheapbotsdonequick.com/
 https://cheapbotsdonequick.com/source/journalgen
@@ -373,34 +381,162 @@ https://github.com/zactopus/goosebumps
 https://glitch.com/edit/#!/showdown-bot
 https://pastebin.com/YYtZnzZ0
 
-** nltk
-https://www.nltk.org/
+* Json
+** caves of qud
+** cultist simulator
+** sunless sea
 
-** Thompson Motif Index
-https://sites.ualberta.ca/~urban/Projects/English/Motif_Index.htm
-* Time
-** CiF data:
-UCSC Prom Week Project
+* Logic
+** ASP:
+http://www.hakank.org/answer_set_programming/
+** ccalc
+** Ceptre:
+https://github.com/chrisamaphone/interactive-lp.git
 
-** NorthernLion Database:
-https://www.northernlion-db.com/Downloads
-https://www.northernlion-db.com/SqlDump/Description
+** cplus:
+https://github.com/azreasoners/Cplus2ASP.git
+** instal:
+https://github.com/instsuite/instal-stable.git
+** MAD:
+http://www.cs.utexas.edu/~tag/mad/
 
-** Trump Timeline:
-https://whatthefuckjusthappenedtoday.com/today/
+* MAS
+** Cartago:
+https://github.com/CArtAgO-lang/cartago.git
+** jacamo:
+https://github.com/jacamo-lang/jacamo.git
 
-** NYT Data
-https://developer.nytimes.com/apis
+** jason:
+https://github.com/jason-lang/jason.git
+** moise:
+https://github.com/moise-lang/moise.git
 
+
+
+
+* Misc
+** Gemrot Phd
+https://diana.ms.mff.cuni.cz/thesis/Gemrot-PhD-Thesis-Attachment.zip
+* Names
+** democracy
+** dins curse
+** distant worlds
+** fallout
+** kantrowitz
+** paradox
+** red shirt
+** rimworld
+
+* Patches
+** caves of qud
+** ck2
+** Dota patch notes:
+https://dota2.fandom.com/wiki/Patches
+
+** Dwarf Fortress patch notes:
+http://dwarffortresswiki.org/index.php/DF2014:Release_information/0.47.05
+
+
+** euIV
+** gladia bots
+** rimworld
+** stellaris
+** tf2
+
+* Quests
+** bethesda
+** pillars of eternity
+
+** tyranny
+** Wow Wiki:
+https://wowpedia.fandom.com/wiki/Category:Quests_by_level
+* Real World
+** AI Specification Gaming Examples
+https://vkrakovna.wordpress.com/2018/04/02/specification-gaming-examples-in-ai/
+https://docs.google.com/spreadsheets/d/e/2PACX-1vRPiprOaC3HsCf5Tuum8bRfzYUiKLRqJmbOoC-32JorNdfyTiRRsR7Ea5eWtvsWzuxo8bjOxCG84dAg/pubhtml
 ** Dolphins
 https://networkrepository.com/soc-dolphins.php
 https://figshare.com/articles/dataset/Dolphin_social_network/1149955
-* Text
-** Nomic Games:
-https://www.nomic.net/
+
+** EULAS
+From their respective companies
+
+
+** NYPD Data:
+https://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page
+https://www1.nyc.gov/site/nypd/stats/crime-statistics/crime-statistics-landing.page
+
+** Police Scorecard:
+https://www.policescorecard.org/
+
+** Police Shootings:
+https://github.com/washingtonpost/data-police-shootings.git
+
+** Python Bylaws
+https://www.python.org/psf/bylaws/
+
+
+** Social Physics Data:
+https://web.archive.org/web/*/socialphysics.media.mit.edu
 
 ** UDHR
 https://www.un.org/en/about-us/universal-declaration-of-human-rights
+
+
+** USCode:
+https://uscode.house.gov/download/download.shtml
+
+* Rules
+** Atomic
+** CiF data:
+UCSC Prom Week Project
+
+
+** Clips:
+https://github.com/smarr/CLIPS.git
+** drools
+
+** Nomic Games:
+https://www.nomic.net/
+
+** Soar:
+https://github.com/SoarGroup/Agents.git
+
+
+** Versu:
+Private Repo
+
+* simulation
+
+** distant world
+
+* Spreadsheets
+
+** cannibal interactive:
+https://cannibalinteractive.itch.io/cannibal-interactive-press-kit
+
+
+** nypd data
+
+* Time
+** NYT Data
+https://developer.nytimes.com/apis
+
+* Wiki
+** Burn Notice
+https://burnnotice.fandom.com/
+** Fallout
+
+* XML
+** dblp
+** Dungeon of the Endless:
+Game Data
+
+** Dwarf Fortress Dev Logs:
+https://www.bay12games.com/dwarves/index.html
+** King of Dragon Pass:
+Game Data
+
 
 ** KJB
 https://holy-bible.online/kjv_download.php
@@ -410,15 +546,8 @@ http://www.constitution.org/rror/rror--00.htm
 https://www.xml.com/pub/a/2000/04/10/oasis/rules.html
 http://metalab.unc.edu/bosak/rror/rror.zip
 
-** USCode:
-https://uscode.house.gov/download/download.shtml
+** Trump Timeline:
+https://whatthefuckjusthappenedtoday.com/today/
 
-** Python Bylaws
-https://www.python.org/psf/bylaws/
-
-* EULAS
-From their respective companies
-
-* Misc
-** Gemrot Phd
-https://diana.ms.mff.cuni.cz/thesis/Gemrot-PhD-Thesis-Attachment.zip
+** Unrest:
+Game Data

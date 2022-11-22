@@ -1,0 +1,484 @@
+@startuml
+
+class Alpaca {
+    +value                             : decimal
+}
+class Bear_Grizzly {
+    +value                             : decimal
+}
+class Bear_Polar {
+    +value                             : decimal
+}
+class BiomeDef {
+    +defName                           : NCName
+    +label                             : string
+    +description                       : string
+    +workerClass                       : NCName
+    +canAutoChoose                     : boolean
+    +canBuildBase                      : boolean
+    +allowRoads                        : boolean
+    +allowRivers                       : boolean
+    +animalDensity                     : decimal
+    +plantDensity                      : decimal
+    +hasVirtualPlants                  : boolean
+    +hasBedrock                        : boolean
+    +settlementSelectionWeight         : decimal
+    +movementDifficulty                : decimal
+    +forageability                     : decimal[]
+    +foragedFood                       : NCName[]
+    +texture                           : string[]
+    +wildPlantRegrowDays               : integer[]
+    +wildPlantsCareAboutLocalFertility : boolean[]
+    +impassable                        : boolean
+    +diseaseMtbDays                    : integer[]
+    +isExtremeBiome                    : boolean[]
+    +soundsAmbient                     : soundsAmbient[]
+    +diseases                          : diseases
+    +terrainsByFertility               : terrainsByFertility
+    +terrainPatchMakers                : terrainPatchMakers
+    +baseWeatherCommonalities          : baseWeatherCommonalities
+    +wildPlants                        : wildPlants
+    +wildAnimals                       : wildAnimals
+    +allowedPackAnimals                : allowedPackAnimals
+}
+class Bison {
+    +value                             : decimal
+}
+class Boomalope {
+    +value                             : decimal
+}
+class Boomrat {
+    +value                             : decimal
+}
+class Capybara {
+    +value                             : decimal
+}
+class Caribou {
+    +value                             : decimal
+}
+class Cassowary {
+    +value                             : decimal
+}
+class Chinchilla {
+    +value                             : decimal
+}
+class Clear {
+    +value                             : integer
+}
+class Cobra {
+    +value                             : decimal
+}
+class Cougar {
+    +value                             : decimal
+}
+class Deer {
+    +value                             : decimal
+}
+class Defs {
+    +BiomeDef                          : BiomeDef[]
+}
+class Donkey {
+    +value                             : decimal
+}
+class Dromedary {
+    +value                             : decimal
+}
+class DryThunderstorm {
+    +value                             : decimal
+}
+class Elephant {
+    +value                             : decimal
+}
+class Elk {
+    +value                             : decimal
+}
+class Emu {
+    +value                             : decimal
+}
+class Fog {
+    +value                             : integer
+}
+class FoggyRain {
+    +value                             : decimal
+}
+class Fox_Arctic {
+    +value                             : decimal
+}
+class Fox_Fennec {
+    +value                             : decimal
+}
+class Fox_Red {
+    +value                             : decimal
+}
+class Gazelle {
+    +value                             : decimal
+}
+class GuineaPig {
+    +value                             : decimal
+}
+class Hare {
+    +value                             : decimal
+}
+class Horse {
+    +value                             : decimal
+}
+class Ibex {
+    +value                             : decimal
+}
+class Iguana {
+    +value                             : decimal
+}
+class Lynx {
+    +value                             : decimal
+}
+class Megasloth {
+    +value                             : decimal
+}
+class Monkey {
+    +value                             : integer
+}
+class Muffalo {
+    +value                             : decimal
+}
+class Ostrich {
+    +value                             : decimal
+}
+class Panther {
+    +value                             : decimal
+}
+class Plant_Agave {
+    +value                             : decimal
+}
+class Plant_Alocasia {
+    +value                             : decimal
+}
+class Plant_Astragalus {
+    +value                             : decimal
+}
+class Plant_Berry {
+    +value                             : decimal
+}
+class Plant_Brambles {
+    +value                             : decimal
+}
+class Plant_Bush {
+    +value                             : decimal
+}
+class Plant_Chokevine {
+    +value                             : decimal
+}
+class Plant_Clivia {
+    +value                             : decimal
+}
+class Plant_Dandelion {
+    +value                             : decimal
+}
+class Plant_Grass {
+    +value                             : decimal
+}
+class Plant_HealrootWild {
+    +value                             : decimal
+}
+class Plant_Moss {
+    +value                             : decimal
+}
+class Plant_PincushionCactus {
+    +value                             : decimal
+}
+class Plant_Rafflesia {
+    +value                             : decimal
+}
+class Plant_SaguaroCactus {
+    +value                             : decimal
+}
+class Plant_ShrubLow {
+    +value                             : decimal
+}
+class Plant_TallGrass {
+    +value                             : decimal
+}
+class Plant_TreeBamboo {
+    +value                             : decimal
+}
+class Plant_TreeBirch {
+    +value                             : decimal
+}
+class Plant_TreeCecropia {
+    +value                             : decimal
+}
+class Plant_TreeCypress {
+    +value                             : decimal
+}
+class Plant_TreeDrago {
+    +value                             : decimal
+}
+class Plant_TreeMaple {
+    +value                             : decimal
+}
+class Plant_TreeOak {
+    +value                             : decimal
+}
+class Plant_TreePalm {
+    +value                             : decimal
+}
+class Plant_TreePine {
+    +value                             : decimal
+}
+class Plant_TreePoplar {
+    +value                             : decimal
+}
+class Plant_TreeTeak {
+    +value                             : decimal
+}
+class Plant_TreeWillow {
+    +value                             : decimal
+}
+class Raccoon {
+    +value                             : decimal
+}
+class Rain {
+    +value                             : integer
+}
+class RainyThunderstorm {
+    +value                             : decimal
+}
+class Rat {
+    +value                             : decimal
+}
+class Rhinoceros {
+    +value                             : decimal
+}
+class SnowGentle {
+    +value                             : decimal
+}
+class SnowHard {
+    +value                             : integer
+}
+class Snowhare {
+    +value                             : integer
+}
+class Squirrel {
+    +value                             : decimal
+}
+class Tortoise {
+    +value                             : decimal
+}
+class Turkey {
+    +value                             : decimal
+}
+class Warg {
+    +value                             : decimal
+}
+class WildBoar {
+    +value                             : decimal
+}
+class Wolf_Arctic {
+    +value                             : decimal
+}
+class Wolf_Timber {
+    +value                             : decimal
+}
+class Yak {
+    +value                             : decimal
+}
+class allowRivers {
+    +value                             : boolean
+}
+class allowRoads {
+    +value                             : boolean
+}
+class allowedPackAnimals {
+    +li                                : li[]
+}
+class animalDensity {
+    +value                             : decimal
+}
+class baseWeatherCommonalities {
+    +Clear                             : integer
+    +Fog                               : integer
+    +Rain                              : integer
+    +DryThunderstorm                   : decimal
+    +RainyThunderstorm                 : decimal
+    +FoggyRain                         : decimal
+    +SnowGentle                        : decimal
+    +SnowHard                          : integer
+}
+class canAutoChoose {
+    +value                             : boolean
+}
+class canBuildBase {
+    +value                             : boolean
+}
+class commonality {
+    +value                             : integer
+}
+class defName {
+    +value                             : NCName
+}
+class description {
+    +value                             : string
+}
+class diseaseInc {
+    +value                             : NCName
+}
+class diseaseMtbDays {
+    +value                             : integer
+}
+class diseases {
+    +li                                : li[]
+}
+class forageability {
+    +value                             : decimal
+}
+class foragedFood {
+    +value                             : NCName
+}
+class hasBedrock {
+    +value                             : boolean
+}
+class hasVirtualPlants {
+    +value                             : boolean
+}
+class impassable {
+    +value                             : boolean
+}
+class isExtremeBiome {
+    +value                             : boolean
+}
+class label {
+    +value                             : string
+}
+class li {
+    +content                           : anyType[]
+}
+class max {
+    +value                             : decimal
+}
+class maxFertility {
+    +value                             : decimal
+}
+class min {
+    +value                             : decimal
+}
+class minSize {
+    +value                             : integer
+}
+class movementDifficulty {
+    +value                             : decimal
+}
+class perlinFrequency {
+    +value                             : decimal
+}
+class plantDensity {
+    +value                             : decimal
+}
+class settlementSelectionWeight {
+    +value                             : decimal
+}
+class soundsAmbient {
+    +li                                : li[]
+}
+class terrain {
+    +value                             : NCName
+}
+class terrainPatchMakers {
+    +li                                : li[]
+}
+class terrainsByFertility {
+    +li                                : li[]
+}
+class texture {
+    +value                             : string
+}
+class thresholds {
+    +li                                : li[]
+}
+class wildAnimals {
+    +Donkey                            : decimal
+    +GuineaPig                         : decimal
+    +Yak                               : decimal
+    +Bison                             : decimal[]
+    +Horse                             : decimal[]
+    +Hare                              : decimal[]
+    +Rat                               : decimal[]
+    +Squirrel                          : decimal[]
+    +Iguana                            : decimal
+    +Snowhare                          : integer
+    +Monkey                            : integer
+    +Caribou                           : decimal[]
+    +Elk                               : decimal[]
+    +Alpaca                            : decimal[]
+    +Bear_Grizzly                      : decimal[]
+    +Bear_Polar                        : decimal[]
+    +Boomalope                         : decimal[]
+    +Boomrat                           : decimal[]
+    +Capybara                          : decimal[]
+    +Cassowary                         : decimal[]
+    +Chinchilla                        : decimal[]
+    +Cougar                            : decimal[]
+    +Deer                              : decimal[]
+    +Dromedary                         : decimal[]
+    +Elephant                          : decimal[]
+    +Emu                               : decimal[]
+    +Fox_Arctic                        : decimal[]
+    +Fox_Fennec                        : decimal[]
+    +Fox_Red                           : decimal[]
+    +Gazelle                           : decimal[]
+    +Ibex                              : decimal[]
+    +Lynx                              : decimal[]
+    +Megasloth                         : decimal[]
+    +Muffalo                           : decimal[]
+    +Ostrich                           : decimal[]
+    +Raccoon                           : decimal[]
+    +Rhinoceros                        : decimal[]
+    +Tortoise                          : decimal[]
+    +Turkey                            : decimal[]
+    +Warg                              : decimal[]
+    +WildBoar                          : decimal[]
+    +Wolf_Arctic                       : decimal[]
+    +Wolf_Timber                       : decimal[]
+    +Cobra                             : decimal
+    +Panther                           : decimal
+}
+class wildPlantRegrowDays {
+    +value                             : integer
+}
+class wildPlants {
+    +Plant_Grass                       : decimal
+    +Plant_Agave                       : decimal[]
+    +Plant_Alocasia                    : decimal[]
+    +Plant_Astragalus                  : decimal[]
+    +Plant_Brambles                    : decimal[]
+    +Plant_Bush                        : decimal[]
+    +Plant_Chokevine                   : decimal[]
+    +Plant_Dandelion                   : decimal[]
+    +Plant_Moss                        : decimal[]
+    +Plant_PincushionCactus            : decimal[]
+    +Plant_SaguaroCactus               : decimal[]
+    +Plant_ShrubLow                    : decimal[]
+    +Plant_TallGrass                   : decimal[]
+    +Plant_TreeBamboo                  : decimal[]
+    +Plant_TreeCecropia                : decimal[]
+    +Plant_TreeCypress                 : decimal[]
+    +Plant_TreeDrago                   : decimal[]
+    +Plant_TreeMaple                   : decimal[]
+    +Plant_TreePalm                    : decimal[]
+    +Plant_TreeTeak                    : decimal[]
+    +Plant_TreeWillow                  : decimal[]
+    +Plant_Clivia                      : decimal
+    +Plant_TreeOak                     : decimal
+    +Plant_TreePine                    : decimal
+    +Plant_TreeBirch                   : decimal
+    +Plant_TreePoplar                  : decimal
+    +Plant_Berry                       : decimal
+    +Plant_HealrootWild                : decimal
+    +Plant_Rafflesia                   : decimal
+}
+class wildPlantsCareAboutLocalFertility {
+    +value                             : boolean
+}
+class workerClass {
+    +value                             : NCName
+}
+
+@enduml

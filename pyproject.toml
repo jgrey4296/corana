@@ -1,5 +1,5 @@
 [project]
-name            = "code analysis"
+name            = "code-analysis"
 version         = "0.0.1"
 description     = "A Collection of miscellaneous ai and game script analysis routines"
 readme          = "README.md"
@@ -15,7 +15,7 @@ classifiers     = [
 ]
 
 dependencies   = [
-    "acab_config >= 0.0.1",
+    # "acab_config >= 0.0.1",
     # "acab_config @ git+https://github.com/jgrey4296/acab_config.git@0.0.1",
     "pyparsing >= 3.0.9"
 ]

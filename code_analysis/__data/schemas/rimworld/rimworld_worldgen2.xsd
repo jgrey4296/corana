@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="WorldGenStepDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorldGenStepDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="order"/>
+        <xs:element ref="worldGenStep"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="order" type="xs:integer"/>
+  <xs:element name="worldGenStep">
+    <xs:complexType>
+      <xs:choice minOccurs="0">
+        <xs:element ref="ancientSitesPer100kTiles"/>
+        <xs:sequence>
+          <xs:element ref="maximumSiteCurve"/>
+          <xs:element ref="minimumChain"/>
+          <xs:element ref="maximumSegmentCurviness"/>
+        </xs:sequence>
+      </xs:choice>
+      <xs:attribute name="Class" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ancientSitesPer100kTiles" type="xs:string"/>
+  <xs:element name="maximumSiteCurve" type="xs:integer"/>
+  <xs:element name="minimumChain" type="xs:integer"/>
+  <xs:element name="maximumSegmentCurviness" type="xs:decimal"/>
+</xs:schema>

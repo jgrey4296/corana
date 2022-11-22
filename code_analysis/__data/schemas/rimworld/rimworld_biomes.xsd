@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="BiomeDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BiomeDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="label"/>
+        <xs:element ref="description"/>
+        <xs:element ref="workerClass"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="canAutoChoose"/>
+          <xs:element ref="canBuildBase"/>
+        </xs:choice>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="allowRoads"/>
+          <xs:element ref="allowRivers"/>
+        </xs:sequence>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="animalDensity"/>
+          <xs:element ref="plantDensity"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" ref="hasVirtualPlants"/>
+        <xs:element minOccurs="0" ref="hasBedrock"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="settlementSelectionWeight"/>
+          <xs:element ref="movementDifficulty"/>
+        </xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="forageability"/>
+          <xs:element ref="foragedFood"/>
+          <xs:element ref="texture"/>
+          <xs:element ref="wildPlantRegrowDays"/>
+          <xs:element ref="wildPlantsCareAboutLocalFertility"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="impassable"/>
+        <xs:sequence minOccurs="0">
+          <xs:choice maxOccurs="unbounded">
+            <xs:element ref="diseaseMtbDays"/>
+            <xs:element ref="isExtremeBiome"/>
+            <xs:element ref="soundsAmbient"/>
+          </xs:choice>
+          <xs:element ref="diseases"/>
+          <xs:element ref="terrainsByFertility"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" ref="terrainPatchMakers"/>
+        <xs:element minOccurs="0" ref="baseWeatherCommonalities"/>
+        <xs:element minOccurs="0" ref="wildPlants"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="wildAnimals"/>
+          <xs:element ref="allowedPackAnimals"/>
+        </xs:sequence>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="workerClass" type="xs:NCName"/>
+  <xs:element name="canAutoChoose" type="xs:boolean"/>
+  <xs:element name="canBuildBase" type="xs:boolean"/>
+  <xs:element name="allowRoads" type="xs:boolean"/>
+  <xs:element name="allowRivers" type="xs:boolean"/>
+  <xs:element name="animalDensity" type="xs:decimal"/>
+  <xs:element name="plantDensity" type="xs:decimal"/>
+  <xs:element name="hasVirtualPlants" type="xs:boolean"/>
+  <xs:element name="hasBedrock" type="xs:boolean"/>
+  <xs:element name="settlementSelectionWeight" type="xs:decimal"/>
+  <xs:element name="movementDifficulty" type="xs:decimal"/>
+  <xs:element name="forageability" type="xs:decimal"/>
+  <xs:element name="foragedFood" type="xs:NCName"/>
+  <xs:element name="texture" type="xs:string"/>
+  <xs:element name="wildPlantRegrowDays" type="xs:integer"/>
+  <xs:element name="wildPlantsCareAboutLocalFertility" type="xs:boolean"/>
+  <xs:element name="impassable" type="xs:boolean"/>
+  <xs:element name="diseaseMtbDays" type="xs:integer"/>
+  <xs:element name="isExtremeBiome" type="xs:boolean"/>
+  <xs:element name="soundsAmbient">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="diseases">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="terrainsByFertility">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="terrainPatchMakers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="baseWeatherCommonalities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Clear"/>
+        <xs:element minOccurs="0" ref="Fog"/>
+        <xs:element ref="Rain"/>
+        <xs:element ref="DryThunderstorm"/>
+        <xs:element ref="RainyThunderstorm"/>
+        <xs:element minOccurs="0" ref="FoggyRain"/>
+        <xs:element ref="SnowGentle"/>
+        <xs:element ref="SnowHard"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Clear" type="xs:integer"/>
+  <xs:element name="Fog" type="xs:integer"/>
+  <xs:element name="Rain" type="xs:integer"/>
+  <xs:element name="DryThunderstorm" type="xs:decimal"/>
+  <xs:element name="RainyThunderstorm" type="xs:decimal"/>
+  <xs:element name="FoggyRain" type="xs:decimal"/>
+  <xs:element name="SnowGentle" type="xs:decimal"/>
+  <xs:element name="SnowHard" type="xs:integer"/>
+  <xs:element name="wildPlants">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Plant_Grass"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="Plant_Agave"/>
+          <xs:element ref="Plant_Alocasia"/>
+          <xs:element ref="Plant_Astragalus"/>
+          <xs:element ref="Plant_Brambles"/>
+          <xs:element ref="Plant_Bush"/>
+          <xs:element ref="Plant_Chokevine"/>
+          <xs:element ref="Plant_Dandelion"/>
+          <xs:element ref="Plant_Moss"/>
+          <xs:element ref="Plant_PincushionCactus"/>
+          <xs:element ref="Plant_SaguaroCactus"/>
+          <xs:element ref="Plant_ShrubLow"/>
+          <xs:element ref="Plant_TallGrass"/>
+          <xs:element ref="Plant_TreeBamboo"/>
+          <xs:element ref="Plant_TreeCecropia"/>
+          <xs:element ref="Plant_TreeCypress"/>
+          <xs:element ref="Plant_TreeDrago"/>
+          <xs:element ref="Plant_TreeMaple"/>
+          <xs:element ref="Plant_TreePalm"/>
+          <xs:element ref="Plant_TreeTeak"/>
+          <xs:element ref="Plant_TreeWillow"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="Plant_Clivia"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="Plant_TreeOak"/>
+          <xs:sequence>
+            <xs:element ref="Plant_TreePine"/>
+            <xs:element ref="Plant_TreeBirch"/>
+          </xs:sequence>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="Plant_TreePoplar"/>
+        <xs:element minOccurs="0" ref="Plant_Berry"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="Plant_HealrootWild"/>
+          <xs:element ref="Plant_Rafflesia"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Plant_Grass" type="xs:decimal"/>
+  <xs:element name="Plant_Agave" type="xs:decimal"/>
+  <xs:element name="Plant_Alocasia" type="xs:decimal"/>
+  <xs:element name="Plant_Astragalus" type="xs:decimal"/>
+  <xs:element name="Plant_Brambles" type="xs:decimal"/>
+  <xs:element name="Plant_Bush" type="xs:decimal"/>
+  <xs:element name="Plant_Chokevine" type="xs:decimal"/>
+  <xs:element name="Plant_Dandelion" type="xs:decimal"/>
+  <xs:element name="Plant_Moss" type="xs:decimal"/>
+  <xs:element name="Plant_PincushionCactus" type="xs:decimal"/>
+  <xs:element name="Plant_SaguaroCactus" type="xs:decimal"/>
+  <xs:element name="Plant_ShrubLow" type="xs:decimal"/>
+  <xs:element name="Plant_TallGrass" type="xs:decimal"/>
+  <xs:element name="Plant_TreeBamboo" type="xs:decimal"/>
+  <xs:element name="Plant_TreeCecropia" type="xs:decimal"/>
+  <xs:element name="Plant_TreeCypress" type="xs:decimal"/>
+  <xs:element name="Plant_TreeDrago" type="xs:decimal"/>
+  <xs:element name="Plant_TreeMaple" type="xs:decimal"/>
+  <xs:element name="Plant_TreePalm" type="xs:decimal"/>
+  <xs:element name="Plant_TreeTeak" type="xs:decimal"/>
+  <xs:element name="Plant_TreeWillow" type="xs:decimal"/>
+  <xs:element name="Plant_Clivia" type="xs:decimal"/>
+  <xs:element name="Plant_TreeOak" type="xs:decimal"/>
+  <xs:element name="Plant_TreePine" type="xs:decimal"/>
+  <xs:element name="Plant_TreeBirch" type="xs:decimal"/>
+  <xs:element name="Plant_TreePoplar" type="xs:decimal"/>
+  <xs:element name="Plant_Berry" type="xs:decimal"/>
+  <xs:element name="Plant_HealrootWild" type="xs:decimal"/>
+  <xs:element name="Plant_Rafflesia" type="xs:decimal"/>
+  <xs:element name="wildAnimals">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Donkey"/>
+        <xs:element minOccurs="0" ref="GuineaPig"/>
+        <xs:element minOccurs="0" ref="Yak"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="Bison"/>
+          <xs:element ref="Horse"/>
+        </xs:choice>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="Hare"/>
+          <xs:element ref="Rat"/>
+          <xs:element ref="Squirrel"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="Iguana"/>
+        <xs:element minOccurs="0" ref="Snowhare"/>
+        <xs:choice>
+          <xs:element ref="Monkey"/>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element ref="Caribou"/>
+            <xs:element ref="Elk"/>
+          </xs:choice>
+        </xs:choice>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="Alpaca"/>
+          <xs:element ref="Bear_Grizzly"/>
+          <xs:element ref="Bear_Polar"/>
+          <xs:element ref="Boomalope"/>
+          <xs:element ref="Boomrat"/>
+          <xs:element ref="Capybara"/>
+          <xs:element ref="Cassowary"/>
+          <xs:element ref="Chinchilla"/>
+          <xs:element ref="Cougar"/>
+          <xs:element ref="Deer"/>
+          <xs:element ref="Dromedary"/>
+          <xs:element ref="Elephant"/>
+          <xs:element ref="Emu"/>
+          <xs:element ref="Fox_Arctic"/>
+          <xs:element ref="Fox_Fennec"/>
+          <xs:element ref="Fox_Red"/>
+          <xs:element ref="Gazelle"/>
+          <xs:element ref="Ibex"/>
+          <xs:element ref="Lynx"/>
+          <xs:element ref="Megasloth"/>
+          <xs:element ref="Muffalo"/>
+          <xs:element ref="Ostrich"/>
+          <xs:element ref="Raccoon"/>
+          <xs:element ref="Rhinoceros"/>
+          <xs:element ref="Tortoise"/>
+          <xs:element ref="Turkey"/>
+          <xs:element ref="Warg"/>
+          <xs:element ref="WildBoar"/>
+          <xs:element ref="Wolf_Arctic"/>
+          <xs:element ref="Wolf_Timber"/>
+        </xs:choice>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="Cobra"/>
+          <xs:element ref="Panther"/>
+        </xs:sequence>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Donkey" type="xs:decimal"/>
+  <xs:element name="GuineaPig" type="xs:decimal"/>
+  <xs:element name="Yak" type="xs:decimal"/>
+  <xs:element name="Bison" type="xs:decimal"/>
+  <xs:element name="Horse" type="xs:decimal"/>
+  <xs:element name="Hare" type="xs:decimal"/>
+  <xs:element name="Rat" type="xs:decimal"/>
+  <xs:element name="Squirrel" type="xs:decimal"/>
+  <xs:element name="Iguana" type="xs:decimal"/>
+  <xs:element name="Snowhare" type="xs:integer"/>
+  <xs:element name="Monkey" type="xs:integer"/>
+  <xs:element name="Caribou" type="xs:decimal"/>
+  <xs:element name="Elk" type="xs:decimal"/>
+  <xs:element name="Alpaca" type="xs:decimal"/>
+  <xs:element name="Bear_Grizzly" type="xs:decimal"/>
+  <xs:element name="Bear_Polar" type="xs:decimal"/>
+  <xs:element name="Boomalope" type="xs:decimal"/>
+  <xs:element name="Boomrat" type="xs:decimal"/>
+  <xs:element name="Capybara" type="xs:decimal"/>
+  <xs:element name="Cassowary" type="xs:decimal"/>
+  <xs:element name="Chinchilla" type="xs:decimal"/>
+  <xs:element name="Cougar" type="xs:decimal"/>
+  <xs:element name="Deer" type="xs:decimal"/>
+  <xs:element name="Dromedary" type="xs:decimal"/>
+  <xs:element name="Elephant" type="xs:decimal"/>
+  <xs:element name="Emu" type="xs:decimal"/>
+  <xs:element name="Fox_Arctic" type="xs:decimal"/>
+  <xs:element name="Fox_Fennec" type="xs:decimal"/>
+  <xs:element name="Fox_Red" type="xs:decimal"/>
+  <xs:element name="Gazelle" type="xs:decimal"/>
+  <xs:element name="Ibex" type="xs:decimal"/>
+  <xs:element name="Lynx" type="xs:decimal"/>
+  <xs:element name="Megasloth" type="xs:decimal"/>
+  <xs:element name="Muffalo" type="xs:decimal"/>
+  <xs:element name="Ostrich" type="xs:decimal"/>
+  <xs:element name="Raccoon" type="xs:decimal"/>
+  <xs:element name="Rhinoceros" type="xs:decimal"/>
+  <xs:element name="Tortoise" type="xs:decimal"/>
+  <xs:element name="Turkey" type="xs:decimal"/>
+  <xs:element name="Warg" type="xs:decimal"/>
+  <xs:element name="WildBoar" type="xs:decimal"/>
+  <xs:element name="Wolf_Arctic" type="xs:decimal"/>
+  <xs:element name="Wolf_Timber" type="xs:decimal"/>
+  <xs:element name="Cobra" type="xs:decimal"/>
+  <xs:element name="Panther" type="xs:decimal"/>
+  <xs:element name="allowedPackAnimals">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="li">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="commonality"/>
+        <xs:element ref="diseaseInc"/>
+        <xs:element ref="max"/>
+        <xs:element ref="maxFertility"/>
+        <xs:element ref="min"/>
+        <xs:element ref="minSize"/>
+        <xs:element ref="perlinFrequency"/>
+        <xs:element ref="terrain"/>
+        <xs:element ref="thresholds"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="commonality" type="xs:integer"/>
+  <xs:element name="diseaseInc" type="xs:NCName"/>
+  <xs:element name="max" type="xs:decimal"/>
+  <xs:element name="maxFertility" type="xs:decimal"/>
+  <xs:element name="min" type="xs:decimal"/>
+  <xs:element name="minSize" type="xs:integer"/>
+  <xs:element name="perlinFrequency" type="xs:decimal"/>
+  <xs:element name="terrain" type="xs:NCName"/>
+  <xs:element name="thresholds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

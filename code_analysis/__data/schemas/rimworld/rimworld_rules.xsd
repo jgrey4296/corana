@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="RuleDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RuleDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="symbol"/>
+        <xs:element ref="resolvers"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="symbol" type="xs:NCName"/>
+  <xs:element name="resolvers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="li">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="minRectSize"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="interior"/>
+          <xs:element ref="selectionWeight"/>
+          <xs:sequence>
+            <xs:element ref="techprintChance"/>
+            <xs:element ref="bladelinkChance"/>
+            <xs:element ref="psychicChance"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="Class" use="required" type="xs:NCName"/>
+      <xs:attribute name="MayRequire" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="minRectSize" type="xs:string"/>
+  <xs:element name="interior" type="xs:NCName"/>
+  <xs:element name="selectionWeight" type="xs:decimal"/>
+  <xs:element name="techprintChance" type="xs:decimal"/>
+  <xs:element name="bladelinkChance" type="xs:decimal"/>
+  <xs:element name="psychicChance" type="xs:decimal"/>
+</xs:schema>

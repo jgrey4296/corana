@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="MentalBreakDef"/>
+        <xs:element ref="MentalStateDef"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MentalBreakDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element minOccurs="0" ref="label"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="workerClass"/>
+          <xs:element ref="baseCommonality"/>
+          <xs:element ref="intensity"/>
+          <xs:element ref="mentalState"/>
+        </xs:choice>
+        <xs:choice minOccurs="0">
+          <xs:element ref="commonalityFactorPerPopulationCurve"/>
+          <xs:element ref="requiredTrait"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="Name" type="xs:NCName"/>
+      <xs:attribute name="ParentName" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="baseCommonality" type="xs:decimal"/>
+  <xs:element name="intensity" type="xs:NCName"/>
+  <xs:element name="mentalState" type="xs:NCName"/>
+  <xs:element name="commonalityFactorPerPopulationCurve">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="points"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="points">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="requiredTrait" type="xs:NCName"/>
+  <xs:element name="MentalStateDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defName"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="label"/>
+          <xs:element ref="workerClass"/>
+          <xs:element ref="stateClass"/>
+        </xs:choice>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="allowBeatfire"/>
+          <xs:element ref="baseInspectLine"/>
+          <xs:element ref="beginLetter"/>
+          <xs:element ref="beginLetterDef"/>
+          <xs:element ref="beginLetterLabel"/>
+          <xs:element ref="blockInteractionInitiationExcept"/>
+          <xs:element ref="blockInteractionRecipientExcept"/>
+          <xs:element ref="blockNormalThoughts"/>
+          <xs:element ref="blockRandomInteraction"/>
+          <xs:element ref="category"/>
+          <xs:element ref="colonistsOnly"/>
+          <xs:element ref="maxTicksBeforeRecovery"/>
+          <xs:element ref="minTicksBeforeRecovery"/>
+          <xs:element ref="moodRecoveryThought"/>
+          <xs:element ref="nameColor"/>
+          <xs:element ref="prisonersCanDo"/>
+          <xs:element ref="recoverFromSleep"/>
+          <xs:element ref="recoveryMessage"/>
+          <xs:element ref="recoveryMtbDays"/>
+          <xs:element ref="requiredCapacities"/>
+          <xs:element ref="stateEffecter"/>
+          <xs:element ref="tale"/>
+          <xs:element ref="unspawnedCanDo"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="drugCategory"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="escapingPrisonersIgnore"/>
+          <xs:element ref="ignoreDrugPolicy"/>
+          <xs:sequence>
+            <xs:element ref="recoverFromDowned"/>
+            <xs:element ref="recoverFromCollapsingExhausted"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="Abstract" type="xs:NCName"/>
+      <xs:attribute name="Name" type="xs:NCName"/>
+      <xs:attribute name="ParentName" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stateClass" type="xs:NCName"/>
+  <xs:element name="allowBeatfire" type="xs:boolean"/>
+  <xs:element name="baseInspectLine" type="xs:string"/>
+  <xs:element name="beginLetter" type="xs:string"/>
+  <xs:element name="beginLetterDef" type="xs:NCName"/>
+  <xs:element name="beginLetterLabel" type="xs:string"/>
+  <xs:element name="blockInteractionInitiationExcept">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="blockInteractionRecipientExcept">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="blockNormalThoughts" type="xs:boolean"/>
+  <xs:element name="blockRandomInteraction" type="xs:boolean"/>
+  <xs:element name="category" type="xs:NCName"/>
+  <xs:element name="colonistsOnly" type="xs:boolean"/>
+  <xs:element name="maxTicksBeforeRecovery" type="xs:integer"/>
+  <xs:element name="minTicksBeforeRecovery" type="xs:integer"/>
+  <xs:element name="moodRecoveryThought" type="xs:NCName"/>
+  <xs:element name="nameColor" type="xs:string"/>
+  <xs:element name="prisonersCanDo" type="xs:boolean"/>
+  <xs:element name="recoverFromSleep" type="xs:boolean"/>
+  <xs:element name="recoveryMessage">
+    <xs:complexType mixed="true">
+      <xs:attribute name="IsNull" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="recoveryMtbDays" type="xs:decimal"/>
+  <xs:element name="requiredCapacities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stateEffecter" type="xs:NCName"/>
+  <xs:element name="tale" type="xs:NCName"/>
+  <xs:element name="unspawnedCanDo" type="xs:boolean"/>
+  <xs:element name="drugCategory" type="xs:NCName"/>
+  <xs:element name="escapingPrisonersIgnore" type="xs:boolean"/>
+  <xs:element name="ignoreDrugPolicy" type="xs:boolean"/>
+  <xs:element name="recoverFromDowned" type="xs:boolean"/>
+  <xs:element name="recoverFromCollapsingExhausted" type="xs:boolean"/>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="workerClass" type="xs:NCName"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="li" type="xs:string"/>
+</xs:schema>

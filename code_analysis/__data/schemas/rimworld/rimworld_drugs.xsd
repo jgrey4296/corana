@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="RecipeDef"/>
+          <xs:element ref="ThingDef"/>
+        </xs:choice>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="HediffDef"/>
+          <xs:element ref="ChemicalDef"/>
+          <xs:element ref="NeedDef"/>
+          <xs:element ref="ThoughtDef"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RecipeDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="label"/>
+        <xs:element ref="description"/>
+        <xs:element ref="jobString"/>
+        <xs:element ref="workSpeedStat"/>
+        <xs:element ref="workSkill"/>
+        <xs:element ref="effectWorking"/>
+        <xs:element ref="soundWorking"/>
+        <xs:element ref="allowMixingIngredients"/>
+        <xs:element ref="workAmount"/>
+        <xs:element ref="targetCountAdjustment"/>
+        <xs:element ref="ingredients"/>
+        <xs:element ref="fixedIngredientFilter"/>
+        <xs:element ref="products"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="jobString" type="xs:string"/>
+  <xs:element name="allowMixingIngredients" type="xs:boolean"/>
+  <xs:element name="workAmount" type="xs:integer"/>
+  <xs:element name="targetCountAdjustment" type="xs:integer"/>
+  <xs:element name="ingredients">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fixedIngredientFilter" type="thingDefs"/>
+  <xs:element name="products">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Wort"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Wort" type="xs:integer"/>
+  <xs:element name="ThingDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="thingClass"/>
+          <xs:element ref="category"/>
+          <xs:element ref="useHitPoints"/>
+        </xs:sequence>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="defName"/>
+          <xs:element ref="label"/>
+          <xs:element ref="description"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" ref="descriptionHyperlinks"/>
+        <xs:element minOccurs="0" ref="tradeability"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="comps"/>
+          <xs:element ref="altitudeLayer"/>
+          <xs:element ref="alwaysHaulable"/>
+          <xs:element ref="burnableByRecipe"/>
+          <xs:element ref="costList"/>
+          <xs:element ref="drawGUIOverlay"/>
+          <xs:element ref="equipmentType"/>
+          <xs:element ref="equippedAngleOffset"/>
+          <xs:element ref="graphicData"/>
+          <xs:element ref="healthAffectsPrice"/>
+          <xs:element ref="ingestible"/>
+          <xs:element ref="minRewardCount"/>
+          <xs:element ref="pathCost"/>
+          <xs:element ref="recipeMaker"/>
+          <xs:element ref="resourceReadoutPriority"/>
+          <xs:element ref="rotatable"/>
+          <xs:element ref="selectable"/>
+          <xs:element ref="socialPropernessMatters"/>
+          <xs:element ref="stackLimit"/>
+          <xs:element ref="statBases"/>
+          <xs:element ref="techLevel"/>
+          <xs:element ref="thingCategories"/>
+          <xs:element ref="tickerType"/>
+          <xs:element ref="tradeTags"/>
+        </xs:choice>
+        <xs:choice minOccurs="0">
+          <xs:element ref="storedConceptLearnOpportunity"/>
+          <xs:element ref="thingSetMakerTags"/>
+          <xs:element ref="tools"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="Abstract" type="xs:NCName"/>
+      <xs:attribute name="Name" type="xs:NCName"/>
+      <xs:attribute name="ParentName" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="thingClass" type="xs:NCName"/>
+  <xs:element name="category" type="xs:NCName"/>
+  <xs:element name="useHitPoints" type="xs:boolean"/>
+  <xs:element name="descriptionHyperlinks">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="HediffDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tradeability" type="xs:NCName"/>
+  <xs:element name="altitudeLayer" type="xs:NCName"/>
+  <xs:element name="alwaysHaulable" type="xs:boolean"/>
+  <xs:element name="burnableByRecipe" type="xs:boolean"/>
+  <xs:element name="costList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="Neutroamine"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="PsychoidLeaves"/>
+          <xs:element ref="SmokeleafLeaves"/>
+          <xs:element ref="Yayo"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Neutroamine" type="xs:integer"/>
+  <xs:element name="PsychoidLeaves" type="xs:integer"/>
+  <xs:element name="SmokeleafLeaves" type="xs:integer"/>
+  <xs:element name="Yayo" type="xs:integer"/>
+  <xs:element name="drawGUIOverlay" type="xs:boolean"/>
+  <xs:element name="equipmentType" type="xs:NCName"/>
+  <xs:element name="equippedAngleOffset" type="xs:integer"/>
+  <xs:element name="graphicData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="texPath"/>
+        <xs:element ref="graphicClass"/>
+        <xs:element minOccurs="0" ref="color"/>
+        <xs:element minOccurs="0" ref="drawSize"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="texPath" type="xs:string"/>
+  <xs:element name="graphicClass" type="xs:NCName"/>
+  <xs:element name="color" type="xs:string"/>
+  <xs:element name="drawSize" type="xs:decimal"/>
+  <xs:element name="healthAffectsPrice" type="xs:boolean"/>
+  <xs:element name="ingestible">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="baseIngestTicks"/>
+          <xs:element ref="chairSearchRadius"/>
+          <xs:element ref="drugCategory"/>
+          <xs:element ref="foodType"/>
+          <xs:element ref="ingestCommandString"/>
+          <xs:element ref="ingestEffect"/>
+          <xs:element ref="ingestEffectEat"/>
+          <xs:element ref="ingestHoldOffsetStanding"/>
+          <xs:element ref="ingestHoldUsesTable"/>
+          <xs:element ref="ingestReportString"/>
+          <xs:element ref="ingestReportStringEat"/>
+          <xs:element ref="ingestSound"/>
+          <xs:element ref="joy"/>
+          <xs:element ref="joyKind"/>
+          <xs:element ref="maxNumToIngestAtOnce"/>
+          <xs:element ref="nurseable"/>
+          <xs:element ref="preferability"/>
+          <xs:element ref="tasteThought"/>
+          <xs:element ref="useEatingSpeedStat"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="canAutoSelectAsFoodForCaravan"/>
+        <xs:element minOccurs="0" ref="outcomeDoers"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="baseIngestTicks" type="xs:integer"/>
+  <xs:element name="chairSearchRadius" type="xs:integer"/>
+  <xs:element name="drugCategory" type="xs:NCName"/>
+  <xs:element name="foodType" type="xs:string"/>
+  <xs:element name="ingestCommandString" type="xs:string"/>
+  <xs:element name="ingestEffect" type="xs:NCName"/>
+  <xs:element name="ingestEffectEat" type="xs:NCName"/>
+  <xs:element name="ingestHoldOffsetStanding">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="northDefault"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="east"/>
+          <xs:element ref="south"/>
+          <xs:element ref="west"/>
+        </xs:sequence>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="northDefault">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="offset"/>
+        <xs:element minOccurs="0" ref="behind"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="behind" type="xs:boolean"/>
+  <xs:element name="east">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="offset"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="south">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="offset"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="west">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="offset"/>
+        <xs:element ref="flip"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="flip" type="xs:boolean"/>
+  <xs:element name="ingestHoldUsesTable" type="xs:boolean"/>
+  <xs:element name="ingestReportString" type="xs:string"/>
+  <xs:element name="ingestReportStringEat" type="xs:string"/>
+  <xs:element name="ingestSound" type="xs:NCName"/>
+  <xs:element name="joy" type="xs:decimal"/>
+  <xs:element name="joyKind" type="xs:NCName"/>
+  <xs:element name="maxNumToIngestAtOnce" type="xs:integer"/>
+  <xs:element name="nurseable" type="xs:boolean"/>
+  <xs:element name="preferability" type="xs:NCName"/>
+  <xs:element name="tasteThought">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="useEatingSpeedStat" type="xs:boolean"/>
+  <xs:element name="canAutoSelectAsFoodForCaravan" type="xs:boolean"/>
+  <xs:element name="outcomeDoers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="minRewardCount" type="xs:integer"/>
+  <xs:element name="pathCost" type="xs:integer"/>
+  <xs:element name="recipeMaker">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="researchPrerequisite"/>
+        <xs:element minOccurs="0" ref="recipeUsers"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="workSpeedStat"/>
+          <xs:element ref="workSkill"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" ref="effectWorking"/>
+        <xs:element minOccurs="0" ref="soundWorking"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="bulkRecipeCount"/>
+          <xs:sequence>
+            <xs:element ref="skillRequirements"/>
+            <xs:element ref="requiredGiverWorkType"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="researchPrerequisite" type="xs:NCName"/>
+  <xs:element name="recipeUsers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="bulkRecipeCount" type="xs:integer"/>
+  <xs:element name="skillRequirements">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Cooking"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Cooking" type="xs:integer"/>
+  <xs:element name="requiredGiverWorkType" type="xs:NCName"/>
+  <xs:element name="resourceReadoutPriority" type="xs:NCName"/>
+  <xs:element name="rotatable" type="xs:boolean"/>
+  <xs:element name="selectable" type="xs:boolean"/>
+  <xs:element name="socialPropernessMatters" type="xs:boolean"/>
+  <xs:element name="stackLimit" type="xs:integer"/>
+  <xs:element name="statBases">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="WorkToMake"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="DeteriorationRate"/>
+          <xs:element ref="Flammability"/>
+          <xs:element ref="MarketValue"/>
+          <xs:element ref="Mass"/>
+          <xs:element ref="MaxHitPoints"/>
+        </xs:choice>
+        <xs:choice minOccurs="0">
+          <xs:element ref="Beauty"/>
+          <xs:element ref="Nutrition"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkToMake" type="xs:integer"/>
+  <xs:element name="DeteriorationRate" type="xs:decimal"/>
+  <xs:element name="Flammability" type="xs:decimal"/>
+  <xs:element name="MarketValue" type="xs:decimal"/>
+  <xs:element name="Mass" type="xs:decimal"/>
+  <xs:element name="MaxHitPoints" type="xs:integer"/>
+  <xs:element name="Beauty" type="xs:integer"/>
+  <xs:element name="Nutrition" type="xs:decimal"/>
+  <xs:element name="techLevel" type="xs:NCName"/>
+  <xs:element name="thingCategories">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tickerType" type="xs:NCName"/>
+  <xs:element name="tradeTags">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="storedConceptLearnOpportunity" type="xs:NCName"/>
+  <xs:element name="thingSetMakerTags">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="tools">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChemicalDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="label"/>
+        <xs:element ref="addictionHediff"/>
+        <xs:element minOccurs="0" ref="canBinge"/>
+        <xs:sequence minOccurs="0">
+          <xs:element ref="toleranceHediff"/>
+          <xs:element ref="onGeneratedAddictedToleranceChance"/>
+        </xs:sequence>
+        <xs:element minOccurs="0" ref="onGeneratedAddictedEvents"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addictionHediff" type="xs:NCName"/>
+  <xs:element name="canBinge" type="xs:boolean"/>
+  <xs:element name="toleranceHediff" type="xs:NCName"/>
+  <xs:element name="onGeneratedAddictedToleranceChance" type="xs:decimal"/>
+  <xs:element name="onGeneratedAddictedEvents">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NeedDef">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element ref="onlyIfCausedByHediff"/>
+          <xs:element ref="tutorHighlightTag"/>
+          <xs:element ref="showForCaravanMembers"/>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element ref="defName"/>
+          <xs:element ref="needClass"/>
+          <xs:element ref="label"/>
+          <xs:element ref="description"/>
+          <xs:choice maxOccurs="unbounded">
+            <xs:element ref="fallPerDay"/>
+            <xs:element ref="listPriority"/>
+          </xs:choice>
+        </xs:sequence>
+      </xs:choice>
+      <xs:attribute name="Abstract" type="xs:NCName"/>
+      <xs:attribute name="Name" type="xs:NCName"/>
+      <xs:attribute name="ParentName" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="onlyIfCausedByHediff" type="xs:boolean"/>
+  <xs:element name="tutorHighlightTag" type="xs:NCName"/>
+  <xs:element name="showForCaravanMembers" type="xs:boolean"/>
+  <xs:element name="needClass" type="xs:NCName"/>
+  <xs:element name="fallPerDay" type="xs:decimal"/>
+  <xs:element name="listPriority" type="xs:integer"/>
+  <xs:element name="ThoughtDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="workerClass"/>
+        <xs:element ref="hediff"/>
+        <xs:element ref="validWhileDespawned"/>
+        <xs:element ref="stages"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="workerClass" type="xs:NCName"/>
+  <xs:element name="validWhileDespawned" type="xs:boolean"/>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="HediffDef">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="comps"/>
+        <xs:element ref="defName"/>
+        <xs:element ref="description"/>
+        <xs:element ref="hediffGivers"/>
+        <xs:element ref="label"/>
+        <xs:element ref="stages"/>
+        <xs:element ref="causesNeed"/>
+        <xs:element ref="defaultLabelColor"/>
+        <xs:element ref="everCurableByItem"/>
+        <xs:element ref="hediffClass"/>
+        <xs:element ref="initialSeverity"/>
+        <xs:element ref="isBad"/>
+        <xs:element ref="labelNoun"/>
+        <xs:element ref="maxSeverity"/>
+        <xs:element ref="removeOnRedressChanceByDaysCurve"/>
+        <xs:element ref="scenarioCanAdd"/>
+      </xs:choice>
+      <xs:attribute name="Abstract" type="xs:NCName"/>
+      <xs:attribute name="Name" type="xs:NCName"/>
+      <xs:attribute name="ParentName" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="causesNeed" type="xs:NCName"/>
+  <xs:element name="defaultLabelColor" type="xs:string"/>
+  <xs:element name="everCurableByItem" type="xs:boolean"/>
+  <xs:element name="hediffClass" type="xs:NCName"/>
+  <xs:element name="initialSeverity" type="xs:decimal"/>
+  <xs:element name="isBad" type="xs:boolean"/>
+  <xs:element name="labelNoun" type="xs:string"/>
+  <xs:element name="maxSeverity" type="xs:decimal"/>
+  <xs:element name="removeOnRedressChanceByDaysCurve">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="points"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="points">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="scenarioCanAdd" type="xs:boolean"/>
+  <xs:element name="li">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="description"/>
+        <xs:element ref="hediff"/>
+        <xs:element ref="hediffGivers"/>
+        <xs:element ref="label"/>
+        <xs:element ref="offset"/>
+        <xs:element ref="addictiveness"/>
+        <xs:element ref="baseMoodEffect"/>
+        <xs:element ref="baseMtbDays"/>
+        <xs:element ref="capMods"/>
+        <xs:element ref="capacities"/>
+        <xs:element ref="capacity"/>
+        <xs:element ref="chance"/>
+        <xs:element ref="chemical"/>
+        <xs:element ref="compClass"/>
+        <xs:element ref="cooldownTime"/>
+        <xs:element ref="count"/>
+        <xs:element ref="countToAffect"/>
+        <xs:element ref="daysToRotStart"/>
+        <xs:element ref="deathMtbDays"/>
+        <xs:element ref="divideByBodySize"/>
+        <xs:element ref="doToGeneratedPawnIfAddicted"/>
+        <xs:element ref="existingAddictionSeverityOffset"/>
+        <xs:element ref="filter"/>
+        <xs:element ref="hediffDef"/>
+        <xs:element ref="hungerRateFactorOffset"/>
+        <xs:element ref="isCombatEnhancingDrug"/>
+        <xs:element ref="largeOverdoseChance"/>
+        <xs:element ref="lifeThreatening"/>
+        <xs:element ref="listOrder"/>
+        <xs:element ref="makeImmuneTo"/>
+        <xs:element ref="mentalState"/>
+        <xs:element ref="mentalStateGivers"/>
+        <xs:element ref="minSeverity"/>
+        <xs:element ref="minToleranceToAddict"/>
+        <xs:element ref="mtbDays"/>
+        <xs:element ref="need"/>
+        <xs:element ref="needLevelOffset"/>
+        <xs:element ref="overdoseSeverityOffset"/>
+        <xs:element ref="painFactor"/>
+        <xs:element ref="painOffset"/>
+        <xs:element ref="partsToAffect"/>
+        <xs:element ref="postFactor"/>
+        <xs:element ref="power"/>
+        <xs:element ref="restFallFactor"/>
+        <xs:element ref="restFallFactorOffset"/>
+        <xs:element ref="rotDestroys"/>
+        <xs:element ref="setMax"/>
+        <xs:element ref="severity"/>
+        <xs:element ref="severityIndices"/>
+        <xs:element ref="severityPerDay"/>
+        <xs:element ref="showDaysToRecover"/>
+        <xs:element ref="showHoursToRecover"/>
+        <xs:element ref="socialFightChanceFactor"/>
+        <xs:element ref="statOffsets"/>
+        <xs:element ref="stateEffecter"/>
+        <xs:element ref="tale"/>
+        <xs:element ref="toleranceChemical"/>
+        <xs:element ref="visible"/>
+        <xs:element ref="vomitMtbDays"/>
+      </xs:choice>
+      <xs:attribute name="Class" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addictiveness" type="xs:decimal"/>
+  <xs:element name="baseMoodEffect" type="xs:integer"/>
+  <xs:element name="baseMtbDays" type="xs:integer"/>
+  <xs:element name="capMods">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capacities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="capacity" type="xs:NCName"/>
+  <xs:element name="chance" type="xs:decimal"/>
+  <xs:element name="chemical" type="xs:NCName"/>
+  <xs:element name="compClass" type="xs:NCName"/>
+  <xs:element name="cooldownTime" type="xs:integer"/>
+  <xs:element name="count" type="xs:integer"/>
+  <xs:element name="countToAffect" type="xs:integer"/>
+  <xs:element name="daysToRotStart" type="xs:integer"/>
+  <xs:element name="deathMtbDays" type="xs:integer"/>
+  <xs:element name="divideByBodySize" type="xs:boolean"/>
+  <xs:element name="doToGeneratedPawnIfAddicted" type="xs:boolean"/>
+  <xs:element name="existingAddictionSeverityOffset" type="xs:decimal"/>
+  <xs:element name="filter" type="thingDefs"/>
+  <xs:element name="hediffDef" type="xs:NCName"/>
+  <xs:element name="hungerRateFactorOffset" type="xs:decimal"/>
+  <xs:element name="isCombatEnhancingDrug" type="xs:boolean"/>
+  <xs:element name="largeOverdoseChance" type="xs:decimal"/>
+  <xs:element name="lifeThreatening" type="xs:boolean"/>
+  <xs:element name="listOrder" type="xs:integer"/>
+  <xs:element name="makeImmuneTo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="mentalState" type="xs:NCName"/>
+  <xs:element name="mentalStateGivers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="minSeverity" type="xs:decimal"/>
+  <xs:element name="minToleranceToAddict" type="xs:decimal"/>
+  <xs:element name="mtbDays" type="xs:decimal"/>
+  <xs:element name="need" type="xs:NCName"/>
+  <xs:element name="needLevelOffset" type="xs:decimal"/>
+  <xs:element name="overdoseSeverityOffset" type="xs:string"/>
+  <xs:element name="painFactor" type="xs:decimal"/>
+  <xs:element name="painOffset" type="xs:decimal"/>
+  <xs:element name="partsToAffect">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="postFactor" type="xs:decimal"/>
+  <xs:element name="power" type="xs:integer"/>
+  <xs:element name="restFallFactor" type="xs:decimal"/>
+  <xs:element name="restFallFactorOffset" type="xs:decimal"/>
+  <xs:element name="rotDestroys" type="xs:boolean"/>
+  <xs:element name="setMax" type="xs:decimal"/>
+  <xs:element name="severity" type="xs:decimal"/>
+  <xs:element name="severityIndices" type="xs:string"/>
+  <xs:element name="severityPerDay" type="xs:decimal"/>
+  <xs:element name="showDaysToRecover" type="xs:boolean"/>
+  <xs:element name="showHoursToRecover" type="xs:boolean"/>
+  <xs:element name="socialFightChanceFactor" type="xs:decimal"/>
+  <xs:element name="statOffsets">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="WorkSpeedGlobal"/>
+        <xs:element ref="MeditationFocusGain"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkSpeedGlobal" type="xs:decimal"/>
+  <xs:element name="MeditationFocusGain">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:decimal">
+          <xs:attribute name="MayRequire" use="required" type="xs:NCName"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="stateEffecter" type="xs:NCName"/>
+  <xs:element name="tale" type="xs:NCName"/>
+  <xs:element name="toleranceChemical" type="xs:NCName"/>
+  <xs:element name="visible" type="xs:boolean"/>
+  <xs:element name="vomitMtbDays" type="xs:decimal"/>
+  <xs:element name="workSpeedStat" type="xs:NCName"/>
+  <xs:element name="workSkill" type="xs:NCName"/>
+  <xs:element name="effectWorking" type="xs:NCName"/>
+  <xs:element name="soundWorking" type="xs:NCName"/>
+  <xs:element name="comps">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="offset" type="xs:string"/>
+  <xs:complexType name="thingDefs">
+    <xs:sequence>
+      <xs:element ref="thingDefs"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="thingDefs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hediff" type="xs:NCName"/>
+  <xs:element name="stages">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hediffGivers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

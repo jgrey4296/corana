@@ -1,0 +1,12 @@
+Defs
+Defs/ThoughtDef
+Defs/ThoughtDef/defName
+Defs/ThoughtDef/hediff
+Defs/ThoughtDef/stages
+Defs/ThoughtDef/stages/li
+Defs/ThoughtDef/stages/li/baseMoodEffect
+Defs/ThoughtDef/stages/li/description
+Defs/ThoughtDef/stages/li/label
+Defs/ThoughtDef/stages/li/visible
+Defs/ThoughtDef/validWhileDespawned
+Defs/ThoughtDef/workerClass

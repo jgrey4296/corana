@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<CENTER><TABLE BORDER=2 CELLSPACING=2 CELLPADDING=2>
+<tr> <th>DAMSL </th> <th>SWBD</th></tr>
+<tr><td colspan=2 align=center><i><big>Backwards-Communicative-Function</big></i><br></td><td><br></td>
+<tr><td>       Agreement</td><td><br></td>
+<tr><td align=right>            Accept                          </td><td>aa</td>
+<tr><td align=right>            Accept-part                     </td><td>aap</td>
+<tr><td align=right>            Maybe                           </td><td>am</td>
+<tr><td align=right>            Reject-part                     </td><td>arp</td>
+<tr><td align=right>            Reject                          </td><td>ar</td>
+<tr><td align=right>            Hold before answer/agreement                      </td><td>^h</td>
+<tr><td>       Understanding</td><td><br></td>
+<tr><td align=right>            Signal-non-understanding        </td><td>br, br^m</td>
+<tr><td align=right>            Signal-understanding</td>
+<tr><td align=right>                 Acknowledge                </td><td>b,bh</td>
+<tr><td align=right>                 <b>Acknowledge-answer</b>         </td><td>bk</td>
+<tr><td align=right>                 Repeat-phrase              </td><td>^m</td>
+<tr><td align=right>                 Completion                 </td><td>^2</td>
+<tr><td align=right>                 <b>Summarize/reformulate</b>      </td><td>bf</td>
+<tr><td align=right>       	         <b>Appreciation</b>          </td><td>ba</td>
+<tr><td align=right>       	         <b>Sympathy</b>          </td><td>by</td>
+<tr><td align=right>       	         <b>Downplayer</b>          </td><td>bd</td>
+<tr><td align=right>                 Correct-misspeaking        </td><td>bc</td>
+<tr><td>       Answer                               </td><td>DEFAULT-for-qw,ny,nn,na,nd,ng,no,sd^e,sv^e,^h</td>
+<tr><td align=right>      		 <b>Yes answers</b>         </td><td>ny </td>
+<tr><td align=right>      		 <b>No answers</b>         </td><td>nn</td>
+<tr><td align=right>                 <b>Affirmative non-yes answers</b>  </td><td>na </td>
+<tr><td align=right>                 <b>Negative non-no answers</b>      </td><td>ng </td>
+<tr><td align=right>                 <b>Other answers</b>               </td><td>no   </td>
+<tr><td align=right>                 <b>Expansions of y/n answers</b>    </td><td>^e</td>
+<tr><td align=right>                 <b>Dispreferred answers</b>         </td><td>nd </td>
+</table></center>

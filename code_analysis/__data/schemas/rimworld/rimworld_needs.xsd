@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="NeedDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="NeedDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="needClass"/>
+        <xs:element ref="label"/>
+        <xs:element minOccurs="0" ref="description"/>
+        <xs:element minOccurs="0" ref="showOnNeedList"/>
+        <xs:element minOccurs="0" ref="minIntelligence"/>
+        <xs:element minOccurs="0" ref="colonistAndPrisonersOnly"/>
+        <xs:element minOccurs="0" ref="baseLevel"/>
+        <xs:choice minOccurs="0">
+          <xs:sequence>
+            <xs:element ref="colonistsOnly"/>
+            <xs:element ref="neverOnPrisoner"/>
+          </xs:sequence>
+          <xs:sequence>
+            <xs:element ref="seekerRisePerHour"/>
+            <xs:element ref="seekerFallPerHour"/>
+          </xs:sequence>
+        </xs:choice>
+        <xs:element ref="listPriority"/>
+        <xs:element minOccurs="0" ref="major"/>
+        <xs:element minOccurs="0" ref="freezeWhileSleeping"/>
+        <xs:element minOccurs="0" ref="freezeInMentalState"/>
+        <xs:element minOccurs="0" ref="showForCaravanMembers"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="fallPerDay"/>
+          <xs:element ref="scaleBar"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="needClass" type="xs:NCName"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="showOnNeedList" type="xs:boolean"/>
+  <xs:element name="minIntelligence" type="xs:NCName"/>
+  <xs:element name="colonistAndPrisonersOnly" type="xs:boolean"/>
+  <xs:element name="baseLevel" type="xs:decimal"/>
+  <xs:element name="colonistsOnly" type="xs:boolean"/>
+  <xs:element name="neverOnPrisoner" type="xs:boolean"/>
+  <xs:element name="seekerRisePerHour" type="xs:decimal"/>
+  <xs:element name="seekerFallPerHour" type="xs:decimal"/>
+  <xs:element name="listPriority" type="xs:integer"/>
+  <xs:element name="major" type="xs:boolean"/>
+  <xs:element name="freezeWhileSleeping" type="xs:boolean"/>
+  <xs:element name="freezeInMentalState" type="xs:boolean"/>
+  <xs:element name="showForCaravanMembers" type="xs:boolean"/>
+  <xs:element name="fallPerDay" type="xs:decimal"/>
+  <xs:element name="scaleBar" type="xs:boolean"/>
+</xs:schema>

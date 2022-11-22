@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="DutyDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DutyDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element minOccurs="0" ref="label"/>
+        <xs:element minOccurs="0" ref="hook"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="alwaysShowWeapon"/>
+          <xs:element ref="socialModeMax"/>
+        </xs:choice>
+        <xs:element ref="thinkNode"/>
+        <xs:element minOccurs="0" ref="constantThinkNode"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="label" type="xs:NCName"/>
+  <xs:element name="hook" type="xs:NCName"/>
+  <xs:element name="alwaysShowWeapon" type="xs:boolean"/>
+  <xs:element name="socialModeMax" type="xs:NCName"/>
+  <xs:element name="thinkNode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defaultLocomotion"/>
+        <xs:element minOccurs="0" ref="tagToGive"/>
+        <xs:element minOccurs="0" ref="subNodes"/>
+      </xs:sequence>
+      <xs:attribute name="Class" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="constantThinkNode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="tagToGive"/>
+        <xs:element ref="subNodes"/>
+      </xs:sequence>
+      <xs:attribute name="Class" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defaultLocomotion" type="xs:NCName"/>
+  <xs:element name="tagToGive" type="xs:NCName"/>
+  <xs:element name="subNodes">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="li">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="defaultLocomotion"/>
+        <xs:element ref="subNodes"/>
+        <xs:element ref="tagToGive"/>
+        <xs:element ref="attackAllInert"/>
+        <xs:element ref="canMineNonMineables"/>
+        <xs:element ref="chance"/>
+        <xs:element ref="chaseTarget"/>
+        <xs:element ref="exactCell"/>
+        <xs:element ref="expiryInterval"/>
+        <xs:element ref="forceCanDig"/>
+        <xs:element ref="forceCanDigIfAnyHostileActiveThreat"/>
+        <xs:element ref="forceCanDigIfCantReachMapEdge"/>
+        <xs:element ref="invert"/>
+        <xs:element ref="jobMaxDuration"/>
+        <xs:element ref="locomotionUrgency"/>
+        <xs:element ref="maxDanger"/>
+        <xs:element ref="maxDistFromPoint"/>
+        <xs:element ref="maxDistToDutyTarget"/>
+        <xs:element ref="maxDistToSquadFlag"/>
+        <xs:element ref="min"/>
+        <xs:element ref="minCategory"/>
+        <xs:element ref="mtbHours"/>
+        <xs:element ref="needLOSToAcquireNonPawnTargets"/>
+        <xs:element ref="onlyIfDamagingState"/>
+        <xs:element ref="onlyIfInDanger"/>
+        <xs:element ref="preferBuildingDestroyers"/>
+        <xs:element ref="targetAcquireRadius"/>
+        <xs:element ref="targetKeepRadius"/>
+        <xs:element ref="ticks"/>
+        <xs:element ref="ticksBetweenWandersRange"/>
+        <xs:element ref="ticksRange"/>
+        <xs:element ref="treeDef"/>
+        <xs:element ref="wanderRadius"/>
+        <xs:element ref="workTags"/>
+      </xs:choice>
+      <xs:attribute name="Class" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="attackAllInert" type="xs:boolean"/>
+  <xs:element name="canMineNonMineables" type="xs:boolean"/>
+  <xs:element name="chance" type="xs:decimal"/>
+  <xs:element name="chaseTarget" type="xs:boolean"/>
+  <xs:element name="exactCell" type="xs:boolean"/>
+  <xs:element name="expiryInterval" type="xs:integer"/>
+  <xs:element name="forceCanDig" type="xs:boolean"/>
+  <xs:element name="forceCanDigIfAnyHostileActiveThreat" type="xs:boolean"/>
+  <xs:element name="forceCanDigIfCantReachMapEdge" type="xs:boolean"/>
+  <xs:element name="invert" type="xs:boolean"/>
+  <xs:element name="jobMaxDuration" type="xs:integer"/>
+  <xs:element name="locomotionUrgency" type="xs:NCName"/>
+  <xs:element name="maxDanger" type="xs:NCName"/>
+  <xs:element name="maxDistFromPoint" type="xs:integer"/>
+  <xs:element name="maxDistToDutyTarget" type="xs:integer"/>
+  <xs:element name="maxDistToSquadFlag" type="xs:integer"/>
+  <xs:element name="min" type="xs:decimal"/>
+  <xs:element name="minCategory" type="xs:NCName"/>
+  <xs:element name="mtbHours" type="xs:decimal"/>
+  <xs:element name="needLOSToAcquireNonPawnTargets" type="xs:boolean"/>
+  <xs:element name="onlyIfDamagingState" type="xs:boolean"/>
+  <xs:element name="onlyIfInDanger" type="xs:boolean"/>
+  <xs:element name="preferBuildingDestroyers" type="xs:boolean"/>
+  <xs:element name="targetAcquireRadius" type="xs:integer"/>
+  <xs:element name="targetKeepRadius" type="xs:integer"/>
+  <xs:element name="ticks" type="xs:integer"/>
+  <xs:element name="ticksBetweenWandersRange" type="xs:string"/>
+  <xs:element name="ticksRange" type="xs:string"/>
+  <xs:element name="treeDef" type="xs:NCName"/>
+  <xs:element name="wanderRadius" type="xs:integer"/>
+  <xs:element name="workTags">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

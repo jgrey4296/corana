@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="ThoughtDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ThoughtDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defName"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="durationDays"/>
+          <xs:element ref="effectMultiplyingStat"/>
+          <xs:element ref="gameCondition"/>
+          <xs:element ref="hediff"/>
+          <xs:element ref="icon"/>
+          <xs:element ref="invert"/>
+          <xs:element ref="maxCumulatedOpinionOffset"/>
+          <xs:element ref="nextThought"/>
+          <xs:element ref="nullifyingTraits"/>
+          <xs:element ref="requiredTraits"/>
+          <xs:element ref="requiredTraitsDegree"/>
+          <xs:element ref="showBubble"/>
+          <xs:element ref="stackLimit"/>
+          <xs:element ref="stackLimitForSameOtherPawn"/>
+          <xs:element ref="stackedEffectMultiplier"/>
+          <xs:element ref="stages"/>
+          <xs:element ref="taleDef"/>
+          <xs:element ref="thoughtClass"/>
+          <xs:element ref="validWhileDespawned"/>
+          <xs:element ref="workerClass"/>
+        </xs:choice>
+        <xs:choice minOccurs="0">
+          <xs:element ref="nullifiedIfNotColonist"/>
+          <xs:element ref="nullifyingOwnTales"/>
+          <xs:element ref="thoughtToMake"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="Abstract" type="xs:NCName"/>
+      <xs:attribute name="Name" type="xs:NCName"/>
+      <xs:attribute name="ParentName" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="durationDays" type="xs:decimal"/>
+  <xs:element name="effectMultiplyingStat" type="xs:NCName"/>
+  <xs:element name="gameCondition" type="xs:NCName"/>
+  <xs:element name="hediff" type="xs:NCName"/>
+  <xs:element name="icon" type="xs:string"/>
+  <xs:element name="invert" type="xs:boolean"/>
+  <xs:element name="maxCumulatedOpinionOffset" type="xs:integer"/>
+  <xs:element name="nextThought" type="xs:NCName"/>
+  <xs:element name="nullifyingTraits">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="requiredTraits">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="requiredTraitsDegree" type="xs:integer"/>
+  <xs:element name="showBubble" type="xs:boolean"/>
+  <xs:element name="stackLimit" type="xs:integer"/>
+  <xs:element name="stackLimitForSameOtherPawn" type="xs:integer"/>
+  <xs:element name="stackedEffectMultiplier" type="xs:decimal"/>
+  <xs:element name="stages">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="taleDef" type="xs:NCName"/>
+  <xs:element name="thoughtClass" type="xs:NCName"/>
+  <xs:element name="validWhileDespawned" type="xs:boolean"/>
+  <xs:element name="workerClass" type="xs:NCName"/>
+  <xs:element name="nullifiedIfNotColonist" type="xs:boolean"/>
+  <xs:element name="nullifyingOwnTales">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="thoughtToMake" type="xs:NCName"/>
+  <xs:element name="li">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="baseMoodEffect"/>
+        <xs:element ref="baseOpinionOffset"/>
+        <xs:element ref="description"/>
+        <xs:element ref="label"/>
+        <xs:element ref="labelSocial"/>
+        <xs:element ref="visible"/>
+      </xs:choice>
+      <xs:attribute name="IsNull" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="baseMoodEffect" type="xs:integer"/>
+  <xs:element name="baseOpinionOffset" type="xs:decimal"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="labelSocial" type="xs:string"/>
+  <xs:element name="visible" type="xs:boolean"/>
+</xs:schema>

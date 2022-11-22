@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="GatheringDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GatheringDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="label"/>
+        <xs:choice>
+          <xs:element ref="respectTimetable"/>
+          <xs:sequence>
+            <xs:element ref="randomSelectionWeight"/>
+            <xs:element ref="letterTitle"/>
+            <xs:element ref="letterText"/>
+            <xs:element ref="calledOffMessage"/>
+            <xs:element ref="finishedMessage"/>
+            <xs:element ref="duty"/>
+          </xs:sequence>
+        </xs:choice>
+        <xs:element ref="workerClass"/>
+        <xs:element minOccurs="0" ref="gatherSpotDefs"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="respectTimetable" type="xs:boolean"/>
+  <xs:element name="randomSelectionWeight" type="xs:integer"/>
+  <xs:element name="letterTitle" type="xs:NCName"/>
+  <xs:element name="letterText" type="xs:string"/>
+  <xs:element name="calledOffMessage" type="xs:string"/>
+  <xs:element name="finishedMessage" type="xs:string"/>
+  <xs:element name="duty" type="xs:NCName"/>
+  <xs:element name="workerClass" type="xs:NCName"/>
+  <xs:element name="gatherSpotDefs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="li" type="xs:NCName"/>
+</xs:schema>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="DamageDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DamageDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="defName"/>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="label"/>
+          <xs:element ref="workerClass"/>
+        </xs:choice>
+        <xs:choice minOccurs="0">
+          <xs:element ref="additionalHediffs"/>
+          <xs:element ref="execution"/>
+          <xs:element ref="externalViolenceForMechanoids"/>
+        </xs:choice>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="hediff"/>
+          <xs:element ref="armorCategory"/>
+          <xs:element ref="buildingDamageFactor"/>
+          <xs:element ref="canInterruptJobs"/>
+          <xs:element ref="deathMessage"/>
+          <xs:element ref="defaultArmorPenetration"/>
+          <xs:element ref="defaultDamage"/>
+          <xs:element ref="defaultStoppingPower"/>
+          <xs:element ref="explosionAffectOutsidePartsOnly"/>
+          <xs:element ref="explosionCellMote"/>
+          <xs:element ref="explosionColorCenter"/>
+          <xs:element ref="explosionColorEdge"/>
+          <xs:element ref="explosionHeatEnergyPerCell"/>
+          <xs:element ref="explosionInteriorMote"/>
+          <xs:element ref="explosionSnowMeltAmount"/>
+          <xs:element ref="externalViolence"/>
+          <xs:element ref="harmAllLayersUntilOutside"/>
+          <xs:element ref="harmsHealth"/>
+          <xs:element ref="hasForcefulImpact"/>
+          <xs:element ref="hediffSkin"/>
+          <xs:element ref="hediffSolid"/>
+          <xs:element ref="impactSoundType"/>
+          <xs:element ref="isExplosive"/>
+          <xs:element ref="makesBlood"/>
+          <xs:element ref="minDamageToFragment"/>
+          <xs:element ref="overkillPctToDestroyPart"/>
+          <xs:element ref="plantDamageFactor"/>
+          <xs:element ref="soundExplosion"/>
+          <xs:element ref="stabChanceOfForcedInternal"/>
+        </xs:choice>
+        <xs:choice minOccurs="0">
+          <xs:element ref="damageEffecter"/>
+          <xs:element ref="scratchSplitPercentage"/>
+          <xs:sequence>
+            <xs:element ref="bluntStunDuration"/>
+            <xs:element ref="bluntInnerHitChance"/>
+            <xs:element ref="bluntInnerHitDamageFractionToConvert"/>
+            <xs:element ref="bluntInnerHitDamageFractionToAdd"/>
+            <xs:element ref="bluntStunChancePerDamagePctOfCorePartToHeadCurve"/>
+            <xs:element ref="bluntStunChancePerDamagePctOfCorePartToBodyCurve"/>
+          </xs:sequence>
+          <xs:sequence>
+            <xs:element ref="isRanged"/>
+            <xs:element ref="makesAnimalsFlee"/>
+          </xs:sequence>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="combatLogRules"/>
+        <xs:choice minOccurs="0">
+          <xs:element ref="canUseDeflectMetalEffect"/>
+          <xs:sequence>
+            <xs:element ref="cutExtraTargetsCurve"/>
+            <xs:element ref="cutCleaveBonus"/>
+          </xs:sequence>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="Abstract" type="xs:NCName"/>
+      <xs:attribute name="Name" type="xs:NCName"/>
+      <xs:attribute name="ParentName" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="workerClass" type="xs:NCName"/>
+  <xs:element name="additionalHediffs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="execution" type="xs:boolean"/>
+  <xs:element name="externalViolenceForMechanoids" type="xs:boolean"/>
+  <xs:element name="armorCategory" type="xs:string"/>
+  <xs:element name="buildingDamageFactor" type="xs:decimal"/>
+  <xs:element name="canInterruptJobs" type="xs:boolean"/>
+  <xs:element name="deathMessage" type="xs:string"/>
+  <xs:element name="defaultArmorPenetration" type="xs:decimal"/>
+  <xs:element name="defaultDamage" type="xs:integer"/>
+  <xs:element name="defaultStoppingPower" type="xs:decimal"/>
+  <xs:element name="explosionAffectOutsidePartsOnly" type="xs:boolean"/>
+  <xs:element name="explosionCellMote" type="xs:NCName"/>
+  <xs:element name="explosionColorCenter" type="xs:string"/>
+  <xs:element name="explosionColorEdge" type="xs:string"/>
+  <xs:element name="explosionHeatEnergyPerCell" type="xs:integer"/>
+  <xs:element name="explosionInteriorMote" type="xs:NCName"/>
+  <xs:element name="explosionSnowMeltAmount" type="xs:integer"/>
+  <xs:element name="externalViolence" type="xs:boolean"/>
+  <xs:element name="harmAllLayersUntilOutside" type="xs:boolean"/>
+  <xs:element name="harmsHealth" type="xs:boolean"/>
+  <xs:element name="hasForcefulImpact" type="xs:boolean"/>
+  <xs:element name="hediffSkin" type="xs:NCName"/>
+  <xs:element name="hediffSolid" type="xs:NCName"/>
+  <xs:element name="impactSoundType" type="xs:string"/>
+  <xs:element name="isExplosive" type="xs:boolean"/>
+  <xs:element name="makesBlood" type="xs:boolean"/>
+  <xs:element name="minDamageToFragment" type="xs:integer"/>
+  <xs:element name="overkillPctToDestroyPart" type="xs:string"/>
+  <xs:element name="plantDamageFactor" type="xs:integer"/>
+  <xs:element name="soundExplosion" type="xs:NCName"/>
+  <xs:element name="stabChanceOfForcedInternal" type="xs:decimal"/>
+  <xs:element name="damageEffecter" type="xs:NCName"/>
+  <xs:element name="scratchSplitPercentage" type="xs:decimal"/>
+  <xs:element name="bluntStunDuration" type="xs:decimal"/>
+  <xs:element name="bluntInnerHitChance" type="xs:decimal"/>
+  <xs:element name="bluntInnerHitDamageFractionToConvert" type="xs:string"/>
+  <xs:element name="bluntInnerHitDamageFractionToAdd" type="xs:string"/>
+  <xs:element name="bluntStunChancePerDamagePctOfCorePartToHeadCurve" type="points"/>
+  <xs:element name="bluntStunChancePerDamagePctOfCorePartToBodyCurve" type="points"/>
+  <xs:element name="isRanged" type="xs:boolean"/>
+  <xs:element name="makesAnimalsFlee" type="xs:boolean"/>
+  <xs:element name="combatLogRules" type="xs:NCName"/>
+  <xs:element name="canUseDeflectMetalEffect" type="xs:boolean"/>
+  <xs:element name="cutExtraTargetsCurve" type="points"/>
+  <xs:element name="cutCleaveBonus" type="xs:decimal"/>
+  <xs:element name="li">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="hediff"/>
+        <xs:element ref="severityPerDamageDealt"/>
+        <xs:element ref="victimSeverityScaling"/>
+        <xs:element ref="victimSeverityScalingByInvBodySize"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="severityPerDamageDealt" type="xs:decimal"/>
+  <xs:element name="victimSeverityScaling" type="xs:NCName"/>
+  <xs:element name="victimSeverityScalingByInvBodySize" type="xs:boolean"/>
+  <xs:element name="hediff" type="xs:NCName"/>
+  <xs:complexType name="points">
+    <xs:sequence>
+      <xs:element ref="points"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="points">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="WeatherDef"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WeatherDef">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="defName"/>
+        <xs:element ref="label"/>
+        <xs:element minOccurs="0" ref="isBad"/>
+        <xs:element ref="description"/>
+        <xs:element minOccurs="0" ref="temperatureRange"/>
+        <xs:element minOccurs="0" ref="snowRate"/>
+        <xs:element minOccurs="0" ref="repeatable"/>
+        <xs:element minOccurs="0" ref="windSpeedFactor"/>
+        <xs:element minOccurs="0" ref="windSpeedOffset"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="accuracyMultiplier"/>
+          <xs:element ref="exposedThought"/>
+          <xs:element ref="favorability"/>
+          <xs:element ref="perceivePriority"/>
+        </xs:choice>
+        <xs:element minOccurs="0" ref="rainRate"/>
+        <xs:element minOccurs="0" ref="moveSpeedMultiplier"/>
+        <xs:choice maxOccurs="unbounded">
+          <xs:element ref="ambientSounds"/>
+          <xs:element ref="commonalityRainfallFactor"/>
+          <xs:element ref="durationRange"/>
+          <xs:element ref="eventMakers"/>
+          <xs:element ref="overlayClasses"/>
+        </xs:choice>
+        <xs:element ref="skyColorsDay"/>
+        <xs:element ref="skyColorsDusk"/>
+        <xs:element ref="skyColorsNightEdge"/>
+        <xs:element ref="skyColorsNightMid"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="defName" type="xs:NCName"/>
+  <xs:element name="label" type="xs:string"/>
+  <xs:element name="isBad" type="xs:boolean"/>
+  <xs:element name="description" type="xs:string"/>
+  <xs:element name="temperatureRange" type="xs:string"/>
+  <xs:element name="snowRate" type="xs:decimal"/>
+  <xs:element name="repeatable" type="xs:boolean"/>
+  <xs:element name="windSpeedFactor" type="xs:decimal"/>
+  <xs:element name="windSpeedOffset" type="xs:decimal"/>
+  <xs:element name="accuracyMultiplier" type="xs:decimal"/>
+  <xs:element name="exposedThought" type="xs:NCName"/>
+  <xs:element name="favorability" type="xs:NCName"/>
+  <xs:element name="perceivePriority" type="xs:integer"/>
+  <xs:element name="rainRate" type="xs:integer"/>
+  <xs:element name="moveSpeedMultiplier" type="xs:decimal"/>
+  <xs:element name="ambientSounds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="commonalityRainfallFactor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="points"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="points">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="durationRange" type="xs:string"/>
+  <xs:element name="eventMakers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="overlayClasses">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="li"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="skyColorsDay">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="sky"/>
+        <xs:element ref="shadow"/>
+        <xs:element ref="overlay"/>
+        <xs:element ref="saturation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="skyColorsDusk">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="sky"/>
+        <xs:element ref="shadow"/>
+        <xs:element ref="overlay"/>
+        <xs:element ref="saturation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="skyColorsNightEdge">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="sky"/>
+        <xs:element ref="shadow"/>
+        <xs:element ref="overlay"/>
+        <xs:element ref="saturation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="skyColorsNightMid">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="sky"/>
+        <xs:element ref="shadow"/>
+        <xs:element ref="overlay"/>
+        <xs:element ref="saturation"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="li">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="averageInterval"/>
+        <xs:element ref="eventClass"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="averageInterval" type="xs:integer"/>
+  <xs:element name="eventClass" type="xs:NCName"/>
+  <xs:element name="sky" type="xs:string"/>
+  <xs:element name="shadow" type="xs:string"/>
+  <xs:element name="overlay" type="xs:string"/>
+  <xs:element name="saturation" type="xs:decimal"/>
+</xs:schema>

@@ -1,8 +1,0 @@
-#+TITLE:eulas notes
-* Counts
-|          | Avg | Total |
-|----------+-----+-------|
-| Length   |     |       |
-| Mentions |     |       |
-* N-Grams
-* Sentence Structures
