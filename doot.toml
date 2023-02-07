@@ -3,7 +3,7 @@ default_tasks            = ["locs::report"]
 action_string_formatting = "new"
 
 [tool.doot]
-say-on-exit   = true
+say-on-exit   = false
 glob_ignores  = ['.git', '.DS_Store', "__pycache__"]
 subtask-sleep = 1
 batch-sleep   = 1
@@ -16,4 +16,4 @@ build       = "build"
 docs        = "docs"
 data        = "data/raw"
 backup      = "data/backups"
-SD_backup   = "/volumes/BackupSD/Archive/code_backups"
+SD_backup   = "/volumes/BackupSD/Archive/new_code_backups"
