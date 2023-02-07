@@ -14,6 +14,7 @@ classifiers     = [
     "Programming Language :: Python :: 3.10"
 ]
 
+##-- dependencies
 dependencies   = [
     # "acab_config >= 0.0.1",
     # "acab_config @ git+https://github.com/jgrey4296/acab_config.git@0.0.1",
@@ -41,12 +42,15 @@ docs = [
     "sphinx > 4.4.0"
 ]
 
+##-- end dependencies
+
 [project.urls]
 homepage      = "https://github.com/jgrey4296/code_analysis"
 documentation = "https://readthedocs.org/code_analysis"
 repository    = "https://github.com/jgrey4296/code_analysis"
 changelog     = "https://github.com/jgrey4296/code_analysis/blob/master/CHANGELOG.md"
 
+##-- scripts
 [project.scripts]
 # todo: add template generation scripts
 
@@ -56,12 +60,18 @@ changelog     = "https://github.com/jgrey4296/code_analysis/blob/master/CHANGELO
 [project.entry-points."nothing"]
 # tomatoes      = "spam:main_tomatoes"
 
+##-- end scripts
+
+##-- pytest
 [tool.pytest.ini_options]
 log_cli       = false
 log_level     = "INFO"
 log_cli_level = "WARN"
 log_format    = "%(levelname)s %(name)s : %(message)s"
 
+##-- end pytest
+
+##-- build system
 [build-system]
 requires = [
          "setuptools >= 63.1.0",
@@ -84,7 +94,9 @@ where = ["."]
 [tool.setuptools.exclude-package-data]
 
 
+##-- end build system
 
+##-- pyright
 [tool.pyright]
 # strict = code_analysis.*
 verboseOutput               = true
@@ -101,3 +113,5 @@ reportUnknownParameterType  = "information"
 reportUnknownVariableType   = "warning"
 reportUnnecessaryCast       = "information"
 reportUnnecessaryIsInstance = "warning"
+
+##-- end pyright
