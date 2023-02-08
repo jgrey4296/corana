@@ -26,6 +26,7 @@ if __name__ == "dooter":
     zip_data       = data_tasks.ZipData(locs=doot.locs)
     pop_sum        = data_tasks.PopulateSummaries(locs=doot.locs)
     toml_adjust    = data_tasks.TomlAdjust(locs=doot.locs, processor=data_tasks.TomlAdjust.adjust_listing)
+    toml_zip_hash  = data_tasks.TomlAdjust("data::ziphash", locs=doot.locs, processor=data_tasks.TomlAdjust.add_zip_hash)
     toml_concat    = data_tasks.TomlConcat(locs=doot.locs)
     backup_zips    = data_tasks.BackupZips(locs=doot.locs)
     data_listings  = data_tasks.DataListing(locs=doot.locs)

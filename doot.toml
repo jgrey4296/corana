@@ -3,10 +3,18 @@ default_tasks            = ["locs::report"]
 action_string_formatting = "new"
 
 [tool.doot]
-say-on-exit   = false
-glob_ignores  = ['.git', '.DS_Store', "__pycache__"]
-subtask-sleep = 1
-batch-sleep   = 1
+
+[tool.doot.notify]
+say-on-exit  = false
+
+[tool.doot.globbing]
+glob_ignores = ['.git', '.DS_Store', "__pycache__"]
+
+[tool.doot.subtask]
+sleep        = 1
+
+[tool.doot.batch]
+sleep        = 1
 
 [tool.doot.directories]
 src         = "code_analysis"
@@ -15,5 +23,6 @@ temp        = ".temp"
 build       = "build"
 docs        = "docs"
 data        = "data/raw"
+scraped     = "data/scraped"
 backup      = "data/backups"
 SD_backup   = "/volumes/BackupSD/Archive/new_code_backups"

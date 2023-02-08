@@ -46,73 +46,25 @@ from doot.taskslib.files.backup import BackupTask
 
 zip_marker = doot.config.on_fail(".zipthis.toml", str).tool.doot.zipper.marker()
 
-class PopulateSummaries(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DirGlobMixin, globber.DootEagerGlobber, task_mixins.ActionsMixin):
+class BackupZips(BackupTask):
     """
-    Find all zip markers, and add the basic toml structure for them
+    Copy all zipped data to external sd card
     """
 
-    def __init__(self, name="data::tomlise", locs=None, roots=None):
-        super().__init__(name, locs, roots or [locs.data], rec=True)
+    def __init__(self, name="data::backup", locs=None):
+        super().__init__(name, locs, [locs.backup], output=locs.SD_backup)
 
-    def task_detail(self, task):
-        task.update({
-            "actions" : [
-                self.prepare_tomls,
-            ]
-        })
-        return task
-
-    def filter(self, fpath):
-        if (fpath / zip_marker).exists():
-            return self.control.keep
-        return self.control.discard
-
-    def prepare_tomls(self):
-        globbed = super(globber.LazyGlobMixin, self).glob_all()
-        chunks  = self.chunk(globbed, 1)
-        self.run_batches(*chunks)
-
-    def batch(self, data) :
-        name, fpath = data[0]
-        existing_text : str           = (fpath / zip_marker).read_text().strip()
-        files         : list[pl.Path] = [f.relative_to(fpath) for f in fpath.rglob("*") if f.is_file() and f.name not in (zip_marker, ".DS_Store")]
-        exts          : set[str]      = set(f"\"{x.suffix}\"" for x in files if bool(x.suffix))
-        toml_lines    : list[str]     = []
-        now           : str           = datetime.datetime.now().isoformat()
-
-        toml_lines.append("[dataset] # A Data Summary for integrity")
-        toml_lines.append(f"name         = \"{fpath.stem}\" # A Name to refer to this data. Default: directory name")
-        toml_lines.append("tags          = [] # Tags to collect different datasets together")
-        toml_lines.append("source        = [] # Where its from")
-        toml_lines.append(f"count         = {len(files)} # Number of files in dataset")
-        toml_lines.append("file_types    = [ " + ", ".join(exts) + " ] # Extensions of files in dataset")
-        toml_lines.append("")
-        toml_lines.append("# Every single file below this summary in the dataset")
-        toml_lines.append("listing       = [ " + ", ".join(f"\"{x}\"" for x in files) + " ]")
-        toml_lines.append("data-zip-hash = \"TODO\" # md5 hash of the files in listing zipped together")
-        toml_lines.append("")
-        toml_lines.append(f"[dataset.log] # Recording things done to this data")
-        toml_lines.append(f"initial-date = \"{now}\" # When this summary was created")
-        toml_lines.append("preprocessing = [] # Things done to data before it was added")
-        toml_lines.append("")
-        toml_lines.append("# Subgroups of the files of particular interest")
-        toml_lines.append("[[dataset.subgroup]]")
-
-        toml_lines.append("# Additional")
-        toml_lines.append(existing_text)
-        text = "\n".join(toml_lines)
-        self.verify_toml(text)
-        (fpath / zip_marker).write_text(text)
-
-    def verify_toml(self, text):
-        # TODO
-        pass
-
-class ZipData(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DirGlobMixin, globber.DootEagerGlobber, task_mixins.ZipperMixin, task_mixins.ActionsMixin):
+class ZipData(globber.LazyGlobMixin, globber.DirGlobMixin, globber.DootEagerGlobber, task_mixins.ZipperMixin, task_mixins.ActionsMixin, task_mixins.BatchMixin, task_mixins.TargetParams):
+    """
+    For each zipmarker, create a zipfile for it
+    """
 
     def __init__(self, name="data::zip", locs=None, roots=None):
         super().__init__(name, locs, roots or [locs.data], rec=True)
         self.output = locs.backup
+
+    def set_params(self):
+        return self.target_params()
 
     def task_detail(self, task):
         task.update({
@@ -128,24 +80,85 @@ class ZipData(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DirGlobMixi
         return self.control.discard
 
     def zip_all(self):
-        globbed = super(globber.LazyGlobMixin, self).glob_all()
-        chunks  = self.chunk(globbed, 1)
+        chunks = self.target_chunks(base=globber.LazyGlobMixin)
         self.run_batches(*chunks)
 
     def batch(self, data):
-        fpath       = data[0]
-        target_path = self.calc_zip_path(fpath)
-        self.mkdirs(target_path.parent)
-        self.zip_set_root(fpath)
-        self.zip_create(target_path)
-        self.zip_globs(target_path, str(fpath / "**/*"))
+        for name, fpath in data:
+            target_path = self.calc_zip_path(fpath)
+            self.mkdirs(target_path.parent)
+            self.zip_set_root(fpath)
+            self.zip_create(target_path)
+            self.zip_globs(target_path, str(fpath / "**/*"))
 
     def calc_zip_path(self, fpath):
         root = self.locs.data
         base = self.output / fpath.relative_to(root).with_suffix(".zip")
         return base
 
-class TomlConcat(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DootEagerGlobber):
+
+class PopulateSummaries(globber.LazyGlobMixin, globber.DirGlobMixin, globber.DootEagerGlobber, task_mixins.ActionsMixin, task_mixins.BatchMixin, task_mixins.TargetedMixin):
+    """
+    Find all zip markers, and add the basic toml structure for them
+    """
+
+    def __init__(self, name="data::tomlise", locs=None, roots=None):
+        super().__init__(name, locs, roots or [locs.data], rec=True)
+
+    def set_params(self):
+        return self.target_params()
+
+    def task_detail(self, task):
+        task.update({
+            "actions" : [
+                self.prepare_tomls,
+            ]
+        })
+        return task
+
+    def filter(self, fpath):
+        if (fpath / zip_marker).exists():
+            return self.control.keep
+        return self.control.discard
+
+    def prepare_tomls(self):
+        chunks = self.target_chunks(base=globber.LazyGlobMixin)
+        self.run_batches(*chunks)
+
+    def batch(self, data) :
+        for name, fpath in data:
+            existing_text : str           = (fpath / zip_marker).read_text().strip()
+            files         : list[pl.Path] = list(fpath.rglob("*"))
+            exts          : set[str]      = set(f"\"{x.suffix}\"" for x in files if bool(x.suffix))
+            toml_lines    : list[str]     = []
+            now           : str           = datetime.datetime.now().isoformat()
+
+            toml_lines.append("[dataset.instance] # A Data Summary for integrity")
+            toml_lines.append(f"name         = \"{fpath.stem}\" # A Name to refer to this data. Default: directory name")
+            toml_lines.append("tags          = [] # Tags to collect different datasets together")
+            toml_lines.append("source        = [] # Where its from")
+            toml_lines.append(f"count         = {len(files)} # Number of files in dataset")
+            toml_lines.append("file_types    = [ " + ", ".join(exts) + " ] # Extensions of files in dataset")
+            toml_lines.append("data-zip-hash = \"TODO\" # md5 hash of the files in listing zipped together")
+            toml_lines.append("")
+            toml_lines.append(f"[dataset.log] # Recording things done to this data")
+            toml_lines.append(f"initial-date = \"{now}\" # When this summary was created")
+            toml_lines.append("preprocessing = [] # Things done to data before it was added")
+            toml_lines.append("")
+            toml_lines.append("# Subgroups of the files of particular interest")
+            toml_lines.append("[[dataset.subgroup]]")
+
+            toml_lines.append("# Additional")
+            toml_lines.append(existing_text)
+            text = "\n".join(toml_lines)
+            self.verify_toml(text)
+            (fpath / zip_marker).write_text(text)
+
+    def verify_toml(self, text):
+        # TODO
+        pass
+
+class TomlConcat(globber.LazyGlobMixin, globber.DootEagerGlobber, task_mixins.BatchMixin):
     """
     Combine all zip_markers
     """
@@ -167,7 +180,7 @@ class TomlConcat(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DootEage
 
     def append_all_dataset_summaries(self):
         globbed = super(globber.LazyGlobMixin, self).glob_all()
-        chunks  = self.chunk(globbed, 10)
+        chunks  = self.chunk(globbed)
         self.run_batches(*chunks)
 
     def batch(self, data):
@@ -178,7 +191,7 @@ class TomlConcat(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DootEage
                 f.write("[[dataset]]\n")
                 f.write(data)
 
-class TomlAdjust(task_mixins.BatchMixin, tasker.DootTasker):
+class TomlAdjust(globber.LazyGlobMixin, globber.DootEagerGlobber, task_mixins.BatchMixin, task_mixins.TargetedMixin):
 
     def __init__(self, name="data::adjust", locs=None, processor=None):
         assert(processor is not None)
@@ -187,6 +200,9 @@ class TomlAdjust(task_mixins.BatchMixin, tasker.DootTasker):
         self.listing_re = re.compile(r"^listing\s+=\s+(\[.+?\])")
         self.hash_re    = re.compile(r"^data-zip-hash")
         self.processor  = processor
+
+    def set_params(self):
+        return self.target_params()
 
     def task_detail(self, task):
         task.update({
@@ -197,15 +213,15 @@ class TomlAdjust(task_mixins.BatchMixin, tasker.DootTasker):
         return task
 
     def adjust_tomls(self):
-        globbed = list(self.locs.data.rglob(zip_marker))
-        if not bool(globbed):
-            return
-        print(f"Found {len(globbed)} files")
-        chunks  = self.chunk(globbed, 10)
+        chunks = self.target_chunks(base=globber.LazyGlobMixin)
         self.run_batches(*chunks)
 
     def batch(self, data):
-        for line in fileinput.input(files=data, inplace=True):
+        files = [x[1] for x in data]
+        if not bool(files):
+            return
+
+        for line in fileinput.input(files=files, inplace=True):
             if not self.processor(self, line):
                 print(line, end="")
 
@@ -224,10 +240,6 @@ class TomlAdjust(task_mixins.BatchMixin, tasker.DootTasker):
             return False
 
         print("")
-        # compressed = str(zlib.compress(maybe_match[1].encode()))
-        # print(line, end="")
-        # print("# Zlib Compressed File Listing, decompress with python json.loads(zlib.decompress(ast.literal_eval($)))")
-        # print(f"compressed_listing = \"{compressed}\"")
         return True
 
     @staticmethod
@@ -245,15 +257,13 @@ class TomlAdjust(task_mixins.BatchMixin, tasker.DootTasker):
         print(f"data-zip-sha256 = \"{digest}\"")
         return True
 
-class BackupZips(BackupTask):
-
-    def __init__(self, name="data::backup", locs=None):
-        super().__init__(name, locs, [locs.backup], output=locs.SD_backup)
-
-class DataListing(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DirGlobMixin, globber.DootEagerGlobber):
+class DataListing(globber.LazyGlobMixin, globber.DirGlobMixin, globber.DootEagerGlobber, task_mixins.BatchMixin, task_mixins.TargetedMixin):
 
     def __init__(self, name="data::listings", locs=None, roots=None):
         super().__init__(name, locs, roots or [locs.data], rec=True)
+
+    def set_params(self):
+        return self.target_params()
 
     def task_detail(self, task):
         task.update({
@@ -268,8 +278,7 @@ class DataListing(task_mixins.BatchMixin, globber.LazyGlobMixin, globber.DirGlob
         return self.control.discard
 
     def generate_all_listings(self):
-        globbed = super(globber.LazyGlobMixin, self).glob_all()
-        chunks  = self.chunk(globbed, 10)
+        chunks = self.target_chunks(base=globber.LazyGlobMixin)
         self.run_batches(*chunks)
 
     def batch(self, data):
