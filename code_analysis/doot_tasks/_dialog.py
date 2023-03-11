@@ -30,8 +30,14 @@ logging = logmod.getLogger(__name__)
 # logging.setLevel(logmod.NOTSET)
 ##-- end logging
 
+import shutil
 import doot
-from doot import globber, tasker
+from doot import globber, tasker, task_mixins
+
+weidu_exec   = doot.config.on_fail(shutil.which("weidu"), None|str).tool.doot.dialog.bioware.infinity.weidu.path(wrapper=pl.Path)
+weidu_d_opts = doot.config.on_fail([],list).tool.doot.dialog.bioware.infinity.weidu.d_opts()
+game_lang    = doot.config.on_fail("en", str).tool.doot.dialog.bioware.infinity.weidu.lang()
+# ./data/usable_code/weidu/weidu
 
 class DialogTreeSummary(globber.EagerFileGlobber):
     """
@@ -49,3 +55,5 @@ class DialogTreeSummary(globber.EagerFileGlobber):
             "actions" : []
         })
         return task
+
+

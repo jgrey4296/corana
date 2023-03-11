@@ -1,8 +1,0 @@
-#+TITLE:dev_logs notes
-* Counts
-|          | Avg | Total |
-|----------+-----+-------|
-| Size     |     |       |
-| Mentions |     |       |
-* Dwarf Fortress
-** Individual Entries

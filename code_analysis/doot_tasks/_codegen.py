@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+Tasks for generating code, such as XML and Json interfaces
 
 """
 ##-- imports
