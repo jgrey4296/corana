@@ -49,7 +49,7 @@ from doot.mixins.zipper import ZipperMixin
 from doot.mixins.batch import BatchMixin
 from doot.mixins.targeted import TargetedMixin
 
-zip_marker = doot.config.on_fail(".zipthis.toml", str).tool.doot.zipper.marker()
+zip_marker = doot.config.on_fail(".zipthis.toml", str).zipper.marker()
 
 class BackupZips(BackupTask):
     """
@@ -64,9 +64,9 @@ class ZipData(DelayedMixin, TargetedMixin, globber.DootEagerGlobber, ZipperMixin
     For each zipmarker, create a zipfile for it
     """
 
-    def __init__(self, name="data::zip", locs=None, roots=None):
+    def __init__(self, name="data::zip", locs=None, roots=None, output=None):
         super().__init__(name, locs, roots or [locs.data], rec=True)
-        self.output = locs.backup
+        self.output = output or locs.backup
 
     def set_params(self):
         return self.target_params()
@@ -262,6 +262,9 @@ class TomlAdjust(tasker.DootTasker):
         return True
 
 class TomlAge(tasker.DootTasker):
+    """
+    List the datasets, sorted by last modification time
+    """
 
     def __init__(self, name="data::age", locs=None):
         super().__init__(name, locs)
@@ -297,6 +300,9 @@ class TomlAge(tasker.DootTasker):
         (self.locs.build / "data_desc_age.sort").write_text("\n".join(report))
 
 class TomlTagless(tasker.DootTasker):
+    """
+    List datasets that aren't tagged
+    """
 
     def __init__(self, name="data::tagless", locs=None):
         super().__init__(name, locs)
@@ -388,16 +394,3 @@ class DataListing(DelayedMixin, TargetedMixin, globber.DootEagerGlobber, BatchMi
             else:
                 print(line, end="")
 
-class DataCrawl(DelayedMixin, globber.DootEagerGlobber):
-    """
-    Scraper for raw directories (ie:steam, gog, origin installs)
-
-    walks directories, looking for tool.doot.data.raw.key files
-
-    origin: looks for __Installer/installerdata.xml
-    steam: looks for appmanifest_*.acf, gets {name, installdir, SizeOnDisk}, uses common/{installdir}/
-    misc: specific exe's ["Viva Pinata.exe"...]
-
-    creates a listing of each game directory
-    """
-    pass

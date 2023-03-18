@@ -101,3 +101,19 @@ def build_key_format() -> C.Struct:
                           "res_descs" / resource_desc[C.this.header.res_num]
                           )
     return chitin_key
+
+
+def TODO_build_biff_format() -> C.Struct:
+    raise NotImplementedError()
+
+def TODO_build_tlk_format() -> C.Struct:
+    raise NotImplementedError()
+
+def TODO_build_gff_format() -> C.Struct:
+    raise NotImplementedError()
+
+def TODO_build_d_format() -> C.Struct:
+    raise NotImplementedError()
+
+def TODO_build_2da_format() -> C.Struct():
+    raise NotImplementedError()
