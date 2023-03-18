@@ -35,7 +35,7 @@ from doot.spiders.spiders import DootBasicSpider
 class DevLogSpider(DootBasicSpider):
 
     def parse(self, response):
-        yield response.follow_all(xpath="//p/a/@href[contains(self::node(), 'dwarves/dev')]", callback=self.parse_bay12)
+        yield from response.follow_all(xpath="//p/a/@href[contains(self::node(), 'dwarves/dev')]", callback=self.parse_bay12)
 
         for dev_entry in response.css(".dev_progress").getall():
             yield {

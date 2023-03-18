@@ -39,7 +39,7 @@ class FacebookPolicySpider(DootBasicSpider):
     def parse(self, response):
         policies = response.xpath("//a/@href").re("policies.community-standards..+")
         for link in policies;
-            yield response.follow_all(link, callback=self.parse_facebook_policy)
+            yield from response.follow_all(link, callback=self.parse_facebook_policy)
 
     def parse_facebook_policy(self, response):
         curl_request = "curl 'https://transparency.fb.com/async/change_log/content/' -X POST -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/110.0' -H 'Accept: */*' -H 'Accept-Language: en-GB,en;q=0.5' -H 'Accept-Encoding: gzip, deflate, br' -H 'Referer: https://transparency.fb.com/en-gb/policies/community-standards/violence-incitement/' -H 'Content-Type: application/x-www-form-urlencoded' -H 'X-FB-LSD: _pxAU1TVQ0T0qCO7WA5ZR6' -H 'X-ASBD-ID: 198387' -H 'Origin: https://transparency.fb.com' -H 'DNT: 1' -H 'Alt-Used: transparency.fb.com' -H 'Connection: keep-alive' -H 'Cookie: cb=3_2023_03_04_' -H 'Sec-Fetch-Dest: empty' -H 'Sec-Fetch-Mode: cors' -H 'Sec-Fetch-Site: same-origin' -H 'Sec-GPC: 1' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' --data-raw 'cms_id={}&__user=0&__a=1&__dyn=7xe6E5aQ1PyUbFuC1swgE98nwgU6C7UW3q327E2vwXw5ux60Vo1upE4W0OE2WxO0FE2aw7BKdwnU1e42C220qu0ny0RE2Jw8W1uwc-0pa0h-0Lo6-0iq&__csr=&__req=o&__hs=19425.BP%3ADEFAULT.2.0.0.0.0&dpr=1&__ccg=UNKNOWN&__rev=1007081754&__s=lrqoq2%3A16f2x4%3Ag5dzbs&__hsi=7208571118460813206&__comet_req=0&lsd=_pxAU1TVQ0T0qCO7WA5ZR6&jazoest=21702&__spin_r=1007081754&__spin_b=trunk&__spin_t=1678376253'"

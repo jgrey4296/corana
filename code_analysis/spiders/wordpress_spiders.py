@@ -38,11 +38,11 @@ class WordpressSpider(DootBasicSpider):
     def parse(self, response):
         assert(isinstance(response, XmlResponse))
         response.selector.remove_namespaces()
-        yield response.follow_all(xpath="//loc/text()", callback=self.parse_wordpress_post)
+        yield from response.follow_all(xpath="//loc/text()", callback=self.parse_wordpress_post)
 
     def parse_wordpress_post(self, response):
         yield {
             "source_url"     : response.url,
-            "data"           : response.css(".post")
+            "data"           : response.css(".post"),
             "needs_subsplit" : True,
         }

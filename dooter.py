@@ -19,6 +19,7 @@ from doot.tasks.groups import *
 from doot.tasks.groups_secondary import *
 from doot.tasks.files import listing
 from code_analysis.doot_tasks import data as data_tasks
+from code_analysis.doot_tasks import spider as spider_tasks
 
 if __name__ == "dooter":
     # the equivalent of main
@@ -32,3 +33,4 @@ if __name__ == "dooter":
     data_listings  = data_tasks.DataListing(locs=doot.locs)
     data_ages      = data_tasks.TomlAge(locs=doot.locs)
     data_tagless   = data_tasks.TomlTagless(locs=doot.locs)
+    run_spider     = spider_tasks.RunSpider(locs=doot.locs)

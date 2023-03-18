@@ -38,15 +38,15 @@ class MediaWikiSpider(DootBasicSpider):
         pass
 
     def parse_mw_multi_page(self, response):
-        yield response.follow_all(xpath="//a[contains(text(), 'next page')]", callback=self.parse_mw_multi_page)
-        yield response.follow_all(response.css(".mw-category").xpath(".//a/@href").get_all(), callback=self.parse_mw_multi_page)
-        yield response.follow_all(response.css("#mw-pages").xpath(".//a/@href").get_all(), callback=self.parse_mw_content_page)
+        yield from response.follow_all(xpath="//a[contains(text(), 'next page')]", callback=self.parse_mw_multi_page)
+        yield from response.follow_all(response.css(".mw-category").xpath(".//a/@href").get_all(), callback=self.parse_mw_multi_page)
+        yield from response.follow_all(response.css("#mw-pages").xpath(".//a/@href").get_all(), callback=self.parse_mw_content_page)
 
     def parse_mw_content_page(self, response):
         data = response.css(".mw-parser-output").get()
         yield {
             "source_url"     : response.url,
-            "data"           : data
+            "data"           : data,
             "needs_subsplit" : True,
         }
 
@@ -77,22 +77,22 @@ class MediaWikiSpider(DootBasicSpider):
 
 class DwarfFortressWikiSpider(MediaWikiSpider):
 
-    def parse(self, responsec]:
+    def parse(self, response):
         links = response.xpath("//a/@href").re(r".+?Release_information/[.0-9a-m]+")
-        yield response.follow_all(links, callback=self.parse_mw_content_page)
+        yield from response.follow_all(links, callback=self.parse_mw_content_page)
 
 
 class QudWikiSpider(MediaWikiSpider):
 
     def parse(self, response):
-        yield response.follow_all(xpath="//a[contains(@title, 'Version')]/@href"), callback=self.parse_mw_content_page)
+        yield from response.follow_all(xpath="//a[contains(@title, 'Version')]/@href", callback=self.parse_mw_content_page)
 
 
 class ParadoxWikiSpider(MediaWikiSpider):
 
     def parse(self, response):
         links = response.css(".mw-parser-output").css("table").css("a::attr(href)").re(".+Patch.+")
-        yield response.follow_all(links, callback=self.parse_mw_content_page)
+        yield from response.follow_all(links, callback=self.parse_mw_content_page)
 
 class WowPediaSpider(MediaWikiSpider):
 
@@ -109,15 +109,15 @@ class RimworldWikiSpider(MediaWikiSpider):
 class TF2WikiSpider(MediaWikiSpider):
 
     def parse(self, response):
-        yield response.follow_all(xpath="//a[contains(text(), 'next page')]/", callback=self.parse_tf2)
-        yield response.follow_all(xpath="//ul/li/a[contains(text(), 'Patch')]/@href", callback=self.parse_mw_content_page)
+        yield from response.follow_all(xpath="//a[contains(text(), 'next page')]/", callback=self.parse_tf2)
+        yield from response.follow_all(xpath="//ul/li/a[contains(text(), 'Patch')]/@href", callback=self.parse_mw_content_page)
 
 
 class OxygenNotIncludedSpider(MediaWikiSpider):
 
     def parse(self, response):
         links = response.css(".mw-parser-output").xpath(".//a/@href").getall()
-        yield response.follow_all(links, callback=self.parse_mw_content_page)
+        yield from response.follow_all(links, callback=self.parse_mw_content_page)
 
 
 class SimsWikiSpider(MediaWikiSpider):
@@ -125,7 +125,7 @@ class SimsWikiSpider(MediaWikiSpider):
     def parse(self, response):
         yield response.follow(css=".category-page__pagination-next", callback=self.parse_sims)
         patches = response.css(".category-page__members").xpath(".//a[contains(text(), 'Patch')]").getall()
-        yield response.follow_all(patches, callback=self.parse_mw_content_page)
+        yield from response.follow_all(patches, callback=self.parse_mw_content_page)
 
 
 class StardewWikiSpider(MediaWikiSpider):
@@ -138,16 +138,18 @@ class DotaWikiSpider(MediaWikiSpider):
 
     def parse(self, response):
         links = response.css(".mw-parser-output").xpath(".//a[contains(@href, 'wiki')]").getall()
-        yield .response.follow_all(links, callback=self.parse_mw_content_page)
+        yield from response.follow_all(links, callback=self.parse_mw_content_page)
 
 
 class ZeroPunctuationSpider(MediaWikiSpider):
 
     def parse(self, response):
-        links = response.css(".mw-parser-output").xpath(".//a[contains(@href, 'wiki')]/@href").getall()
-        yield response.follow_all( callback=self.parse_zero_punctuation)
+        links = response.css(".mw-parser-output").css(".wikitable").xpath(".//a[contains(@href, 'wiki')]/@href").getall()
+        logging.info("Found %s links", len(links))
+        yield from response.follow_all(links, callback=self.parse_zero_punctuation, dont_filter=True)
 
     def parse_zero_punctuation(self ,response):
+        logging.info("Parsing video response")
         data = []
         for item in response.css(".mw-parser-output").xpath("./*"):
             if not bool(data) and item.xpath("self::node()[not(self::h2)]"):
@@ -157,11 +159,13 @@ class ZeroPunctuationSpider(MediaWikiSpider):
             else:
                 data.append(item.get())
 
+        logging.info("Yielding data for: %s", response.url)
         yield {
             "source_url"     : response.url,
             "data"           : data,
             "needs_subsplit" : True
         }
+
 
 
 class ArcenWikiSpider(MediaWikiSpider):

@@ -9,7 +9,7 @@ zip                      = { level = 5 }
 
 [logging]
 stream = { level = "INFO", format  = "{levelname:<8} : {message}", filters = ["doot", "bkmkorg", "code_analysis"] }
-file   = { level = "DEBUG", format = "{levelname:<8} : {message:<20} : ({module}.{lineno}.{funcName})", filters =  ["doot", "bkmkorg", "code_analysis"] }
+file   = { level = "DEBUG", format = "{levelname:<8} : {message:<20} :|: ({module}.{lineno}.{funcName})", filters =  ["doot", "bkmkorg", "code_analysis"] }
 
 [[directories]] # Core
 src         = "code_analysis"
@@ -20,7 +20,7 @@ docs        = "docs"
 
 [[directories]] # Data
 data        = "data/raw"
-scraped     = "data/scraped"
+crawled     = "data/crawled"
 
 [[directories]] # backups
 backup      = "/volumes/BackupSD/Archive/datasets"
