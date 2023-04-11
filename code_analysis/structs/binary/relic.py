@@ -30,15 +30,22 @@ from weakref import ref
 logging = logmod.getLogger(__name__)
 ##-- end logging
 
-from doot.spiders.spiders import DootBasicSpider
+import construct as C
 
-class DevLogSpider(DootBasicSpider):
 
-    def parse(self, response):
-        yield from response.follow_all(xpath="//p/a/@href[contains(self::node(), 'dwarves/dev')]", callback=self.parse)
+class RelicBinaryMixin:
+    """
 
-        yield {
-            "source_url"     : response.url,
-            "data"           : response.css(".dev_progress").getall(),
-            "needs_subsplit" : False,
-        }
+    """
+    Word   = C.Int16ul
+    DWord  = C.Int32ul
+    # Offset string
+    OffStr = C.Struct(
+        "_pos" / C.Tell,
+        C.Seek(C.this._.name_offset),
+        "str"    / C.CString("ascii"),
+        C.Seek(C.this._pos)
+        )
+
+    def build_package_format(self):
+        raise NotImplementedError()

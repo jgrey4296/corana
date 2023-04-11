@@ -2,14 +2,14 @@ verbosity                = 2
 default_tasks            = ["locs::report"]
 action_string_formatting = "new"
 notify                   = { say-on-exit = false }
-globbing                 = { ignores = ['.git', '.DS_Store', "__pycache__"] }
+globbing                 = { ignores = ['.doot_ignore', '.git', '.DS_Store', "__pycache__"] }
 subtask                  = { sleep = 1 }
 batch                    = { sleep = 1 }
 zip                      = { level = 5 }
 
 [logging]
-stream = { level = "INFO", format  = "{levelname:<8} : {message}", filters = ["doot", "bkmkorg", "code_analysis"] }
-file   = { level = "DEBUG", format = "{levelname:<8} : {message:<20} :|: ({module}.{lineno}.{funcName})", filters =  ["doot", "bkmkorg", "code_analysis"] }
+stream = { level = "INFO", format  = "{levelname:<8} : {message}", filters = ["doot", "bkmkorg", "code_analysis", "scrapy"] }
+file   = { level = "DEBUG", format = "{levelname:<8} : {message:<20} :|: ({module}.{lineno}.{funcName})", filters =  ["doot", "bkmkorg", "code_analysis", "scrapy"] }
 
 [[directories]] # Core
 src         = "code_analysis"
@@ -19,8 +19,10 @@ build       = "build"
 docs        = "docs"
 
 [[directories]] # Data
-data        = "data/raw"
+data        = "data"
+raw         = "data/raw"
 crawled     = "data/crawled"
+extractions = "build/extractions"
 
 [[directories]] # backups
 backup      = "/volumes/BackupSD/Archive/datasets"
@@ -36,3 +38,5 @@ SD_backup   = "/volumes/BackupSD/Archive/datasets"
 # viva_pinata = "/volumes/Viva Pinata"
 
 [group.hashing]
+[group.pip]
+[group.python]

@@ -46,7 +46,7 @@ class MediaWikiSpider(DootBasicSpider):
         data = response.css(".mw-parser-output").get()
         yield {
             "source_url"     : response.url,
-            "data"           : data,
+            "data"           : [data],
             "needs_subsplit" : True,
         }
 
@@ -69,9 +69,9 @@ class MediaWikiSpider(DootBasicSpider):
             grouped      = current_data[:]
             current_data = []
             yield {
-                "source_url": response.url,
-                "data" : grouped,
-                "needs_subsplit": True,
+                "source_url"     : response.url,
+                "data"           : grouped,
+                "needs_subsplit" : True,
             }
 
 
@@ -142,24 +142,27 @@ class DotaWikiSpider(MediaWikiSpider):
 
 
 class ZeroPunctuationSpider(MediaWikiSpider):
+    custom_settings = {
+        "DUPEFILTER_CLASS" : "doot.spiders.caching.CacheDupeFilter",
+    }
+
 
     def parse(self, response):
         links = response.css(".mw-parser-output").css(".wikitable").xpath(".//a[contains(@href, 'wiki')]/@href").getall()
         logging.info("Found %s links", len(links))
-        yield from response.follow_all(links, callback=self.parse_zero_punctuation, dont_filter=True)
+        yield from response.follow_all(links, callback=self.parse_zero_punctuation)
 
-    def parse_zero_punctuation(self ,response):
-        logging.info("Parsing video response")
+    def parse_zero_punctuation(self, response):
+        logging.debug("Parsing video response for: %s", response.url)
         data = []
         for item in response.css(".mw-parser-output").xpath("./*"):
             if not bool(data) and item.xpath("self::node()[not(self::h2)]"):
                 continue
-            elif bool(data) and item.xpath("self::node()[self::h2]"):
-                break
+            # elif bool(data) and item.xpath("self::node()[self::h2]"):
+            #     break
             else:
                 data.append(item.get())
 
-        logging.info("Yielding data for: %s", response.url)
         yield {
             "source_url"     : response.url,
             "data"           : data,

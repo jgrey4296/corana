@@ -32,15 +32,12 @@ logging = logmod.getLogger(__name__)
 
 import doot
 from doot import globber, tasker
-from doot.mixins.delayed import DelayedMixin
 from doot.mixins.importer import ImporterMixin
 from doot.mixins.toml_reader import TomlReaderMixin
-from doot.mixins.targeted import TargetedMixin
 from doot.mixins.spider import SpiderMixin
+from code_analysis.mixins.dataset_globber import CADatasetGlobber
 
-zip_marker = doot.config.on_fail(".zipthis.toml", str).zipper.marker()
-
-class DataCrawl(DelayedMixin, globber.DootEagerGlobber):
+class DataCrawl(CADatasetGlobber):
     """
     Scraper for raw directories (ie:steam, gog, origin installs)
 
@@ -55,7 +52,7 @@ class DataCrawl(DelayedMixin, globber.DootEagerGlobber):
     pass
 
 
-class RunSpider(SpiderMixin, TargetedMixin, DelayedMixin, globber.DootEagerGlobber, ImporterMixin, TomlReaderMixin):
+class RunSpider(SpiderMixin, CADatasetGlobber, ImporterMixin, TomlReaderMixin):
     """
     Run a spider from a zip marker toml,
     spider class is set in dataset.crawl.spider
@@ -63,32 +60,37 @@ class RunSpider(SpiderMixin, TargetedMixin, DelayedMixin, globber.DootEagerGlobb
 
     """
 
-
-    def __init__(self, name="data::spider", locs=None, roots=None):
+    def __init__(self, name="spider::data", locs=None, roots=None):
         super().__init__(name, locs, roots=roots or [locs.data])
         self.current_spider = None
-
-    def set_params(self):
-        return self.target_params()
-
-    def filter(self, fpath):
-        return (fpath / zip_marker).exists()
+        self.data_dir       = None
+        self.select_tags.append("spider")
 
     def subtask_detail(self, task, fpath):
-        data = self.read_toml(fpath / zip_marker)
+        data = self.read_toml(fpath / self.dataset_marker)
         if not data.on_fail(False).dataset.crawl():
             # Not a spider dataset
             return None
         spider_cls      = self.import_class(data.dataset.crawl.spider)
-        spider_settings = data.flatten_on().dataset.crawl.settings()
+        spider_settings = dict(data.flatten_on().dataset.crawl.settings())
 
         task.update({
             "actions": [
-                (self.run_spider, [data.dataset.instance.name,
-                                   spider_cls,
-                                   data.dataset.instance.source,
-                                   dict(spider_settings)
-                                   ])
+                (self.set_data_dir, [fpath]),
+                (self.run_spider, [
+                    data.dataset.instance.name,
+                    spider_cls,
+                    data.dataset.instance.source,
+                ],
+                 {
+                     "settings": spider_settings,
+                     "auto_limit" : True,
+                 }
+                 )
             ]
         })
         return task
+
+
+    def set_data_dir(self, fpath):
+        self.data_dir = self.to_mirro(fpath, "crawl")

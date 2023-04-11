@@ -29,16 +29,3 @@ from weakref import ref
 ##-- logging
 logging = logmod.getLogger(__name__)
 ##-- end logging
-
-from doot.spiders.spiders import DootBasicSpider
-
-class DevLogSpider(DootBasicSpider):
-
-    def parse(self, response):
-        yield from response.follow_all(xpath="//p/a/@href[contains(self::node(), 'dwarves/dev')]", callback=self.parse)
-
-        yield {
-            "source_url"     : response.url,
-            "data"           : response.css(".dev_progress").getall(),
-            "needs_subsplit" : False,
-        }

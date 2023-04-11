@@ -1,6 +1,0 @@
-
-* TODO [[/Volumes/documents/github/languageLearning/python/code_analysis/coref_resolution.py::5][Implement Coreference resolution]]
-  <2020-03-26 Thu>
-  
-def resolve_coreferences(text, candidates):
-

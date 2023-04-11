@@ -1,0 +1,58 @@
+* Data Notes
+look at [[https://www.lyonwj.com/2016/06/26/graph-of-thrones-neo4j-social-network-analysis/][Graph of Thrones]]
+http://useofforceproject.org/database
+
+* Multi-Pass Sieve for Coreference Resolution Notes (cite:Raghunathan2010)
+** Candidate Selection
+Sort list of candidates by:
+1) Same Sentence, Left-To-Right BFS of trees
+   (L2R favours subjects, BFS favours salience)
+   (Repeat for each clause)
+   2a) For nominal mentions:  Previous Sentence, Right-To-Left, BFS
+   (Favours salience, and proximity)
+   2b) For pronominal mentionals: Left-To-Right
+   (Favours subjects)
+** Attribute Union
+Union all detected attributes of mentions
+** Mention Selection
+Per layer, Resolve only mentions first in textual order for cluster
+** Search Pruning
+Disable mentions starting with indefinite articles and pronouns
+*Except* in the first pass
+** Layers:
+*** Exact Match
+Including modifiers and determiners
+*** Precise Constructs
+1) Appositive constructions
+   eg: [Israel's Deputy Defense Minister], [Ephraim Sneh], said...
+2) Predicate nominative: copulative subject-object relation
+   eg: [The New York-based College Board] is [a non profit organization]...
+3) Role Appositive: Antecedent is headed by a noun and appears as a modifier in a NP
+   eg: [[actress] Rebecca Schaeffer]
+   Only if antecedent is animate, a person, and gender is defined.
+4) Relative Pronoun
+   eg: [the finance street [which] has already formed]
+5) Acronym: Both mentions tagged as NNP and one is an acronym of the other
+   eg: [Agence France Presse]... [AFP]
+6) Demonym:
+   eg: [Israel]... [Israeli]
+*** Strict Head Matching
+Match all in order to yield a link:
+1) Match any head in antecedent cluster
+2) Word Inclusion (all non-stop words)
+   eg: intervene in the [Florida Supreme Court]'s move... by [the Florida court]...
+3) Compatible modifiers only
+   mentions modifiers are all included in modifiers of antecedent candidate
+   only modifiers that are nouns or adjectives
+4) Not I within I : Cannot be a child NP in the others NP constituent
+*** Variants of Strict Head removing select constraints
+*** Relaxed Head Matching
+Allow mention head to match any word in the cluster of the candidate antecedent
+eg: Sanders matches to cluster { Sauls, the judge, Circuit Judge N. Sanders Sauls }
+Requires Mention and Antecedent be named entities of matching type
+*** Pronouns
+Enforce agreement on attributes:
+1) Number / Plurality
+2) Gender
+3) Person (apart from within quotes)
+4) Animacy
