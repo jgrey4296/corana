@@ -23,16 +23,14 @@ from typing import (TYPE_CHECKING, Any, Callable, ClassVar, Final, Generic,
                     cast, final, overload, runtime_checkable)
 from uuid import UUID, uuid1
 from weakref import ref
-
+from importlib.resources import files
 ##-- end imports
 
 ##-- logging
 logging = logmod.getLogger(__name__)
 ##-- end logging
 
-import re
 import fileinput
-import datetime
 import zlib
 import ast
 import hashlib
@@ -69,44 +67,11 @@ class TomlSummary(CADatasetGlobber, BatchMixin):
     def subtask_detail(self, task, fpath):
         task.update({
             "actions" : [
-                (self.prepare_toml, [fpath]),
+                (self.make_marker, [fpath]),
             ]
         })
         return task
 
-    def prepare_toml(self, fpath):
-        logging.info(f"Preparing Dataset Toml: {fpath}")
-        existing_text : str           = (fpath / self.dataset_marker).read_text().strip()
-        files         : list[pl.Path] = list(fpath.rglob("*"))
-        exts          : set[str]      = set(f"\"{x.suffix}\"" for x in files if bool(x.suffix))
-        toml_lines    : list[str]     = []
-        now           : str           = datetime.datetime.now().isoformat()
-
-        # Hand write the toml... for now
-        toml_lines.append("[dataset.instance] # A Data Summary for integrity")
-        toml_lines.append(f"name         = \"{fpath.stem}\" # A Name to refer to this data. Default: directory name")
-        toml_lines.append("tags          = [] # Tags to collect different datasets together")
-        toml_lines.append("source        = [] # Where its from")
-        toml_lines.append(f"count         = {len(files)} # Number of files in dataset")
-        toml_lines.append("file_types    = [ " + ", ".join(exts) + " ] # Extensions of files in dataset")
-        toml_lines.append("data-zip-hash = \"TODO\" # md5 hash of the files in listing zipped together")
-        toml_lines.append("")
-        toml_lines.append(f"[dataset.log] # Recording things done to this data")
-        toml_lines.append(f"initial-date = \"{now}\" # When this summary was created")
-        toml_lines.append("preprocessing = [] # Things done to data before it was added")
-        toml_lines.append("")
-        toml_lines.append("# Subgroups of the files of particular interest")
-        toml_lines.append("[[dataset.subgroup]]")
-
-        toml_lines.append("# Additional")
-        toml_lines.append(existing_text)
-        text = "\n".join(toml_lines)
-        self.verify_toml(text)
-        (fpath / self.dataset_marker).write_text(text)
-
-    def verify_toml(self, text):
-        # TODO
-        pass
 
 class TomlConcat(tasker.DootTasker):
     """

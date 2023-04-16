@@ -36,19 +36,17 @@ from doot import globber
 from doot.mixins.delayed import DelayedMixin
 from doot.mixins.targeted import TargetedMixin
 from code_analysis.structs.binary import infinity
-from code_analysis.mixins.path_mirror import PathMirrorMixin
+from code_analysis.mixins.marker_manip import MarkerManipulationMixin
 from doot.mixins.filer import FilerMixin
 from doot.mixins.zipper import ZipperMixin
 
-dataset_marker = doot.config.on_fail(".zipthis.toml", str).dataset.marker()
 
-class CADatasetGlobber(DelayedMixin, TargetedMixin, PathMirrorMixin, FilerMixin, ZipperMixin, globber.DootEagerGlobber):
+class CADatasetGlobber(DelayedMixin, TargetedMixin, FilerMixin, ZipperMixin, globber.DootEagerGlobber, MarkerManipulationMixin):
     """
     Specialised globber for use with CA_datasets
     """
     select_tags      = []
     select_directory = False
-    dataset_marker   = dataset_marker
 
     def set_params(self):
         return self.target_params() + [
@@ -56,22 +54,23 @@ class CADatasetGlobber(DelayedMixin, TargetedMixin, PathMirrorMixin, FilerMixin,
         ]
 
     def filter(self, fpath):
-        maybe_marker  = fpath / self.dataset_marker
-        parent_marker = self.is_toml_tagged(self.parent_toml(fpath))
+        parent_marker = self.find_marker(fpath)
 
-        if not (maybe_marker.exists() or parent_marker.exists()):
+        # no markers found
+        if not (parent_marker and parent_marker.exists()):
             return self.globc.noBut
 
-        if maybe_marker.exists() and not self.is_toml_tagged(maybe_marker, *self.args['tags']):
+        # in subdir of datase, but wrong tag
+        if parent_marker and parent_marker.exists() and not self.is_marker_tagged(parent_marker, *self.args['tags']):
             return self.globc.no
 
-        if parent_marker.exists() and not self.is_toml_tagged(parent_marker, *self.args['tags']):
-            return self.globc.no
-
-        if self.select_directory and fpath.is_file():
-            return self.globc.no
+        if (self.select_directory and fpath.is_file()) or (not self.select_directory and fpath.is_dir()):
+            return self.globc.noBut
 
         if fpath.is_file() and fpath.suffix not in self.exts:
             return self.globc.no
 
-        return self.globc.yes
+        if self.select_directory and fpath.is_dir():
+            return self.globc.yes
+
+        return self.globc.yesAnd

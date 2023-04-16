@@ -30,7 +30,7 @@ from weakref import ref
 logging = logmod.getLogger(__name__)
 ##-- end logging
 
-import tomler
+from collections import defaultdict
 import doot
 from doot import globber
 

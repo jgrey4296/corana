@@ -122,9 +122,9 @@ class UnzipData(CADatasetGlobber):
         ]
 
     def filter(self, fpath):
-        if fpath.is_file() and fpath.suffix == ".zip" and self.zip_contains(fpath, self.dataset_marker):
+        if fpath.is_file() and fpath.suffix == ".zip": # and self.zip_contains(fpath, self.dataset_marker):
             return self.globc.yes
-        return self.globc.no
+        return self.globc.noBut
 
     def subtask_detail(self, task, fpath):
         fn = None
