@@ -30,3 +30,7 @@ from weakref import ref
 ##-- logging
 logging = logmod.getLogger(__name__)
 ##-- end logging
+
+class PygmentRunnerMixin:
+
+    pass

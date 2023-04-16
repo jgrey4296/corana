@@ -22,7 +22,6 @@ docs        = "docs"
 data        = "data"
 raw         = "data/raw"
 crawled     = "data/crawled"
-extractions = "build/extractions"
 
 [[directories]] # backups
 backup      = "/volumes/BackupSD/Archive/datasets"

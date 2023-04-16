@@ -26,9 +26,9 @@ if __name__ == "dooter":
     data_report    = data_zip.ReportData(locs=doot.locs)
     data_test      = data_zip.ZipCheck(locs=doot.locs)
     unzip_data     = data_zip.UnzipData("zip::extract.raw",     locs=doot.locs, roots=[doot.locs.SD_backup / "raw"], output=doot.locs.raw)
-    zip_data       = data_zip.ZipData("zip::compress.raw",         locs=doot.locs, roots=[doot.locs.raw], output=doot.locs.SD_backup / "raw")
+    zip_data       = data_zip.ZipData("zip::compress.raw",      locs=doot.locs, roots=[doot.locs.raw], output=doot.locs.SD_backup / "raw")
     unzip_crawled  = data_zip.UnzipData("zip::extract.crawled", locs=doot.locs, roots=[doot.locs.SD_backup / "crawled"], output=doot.locs.crawled)
-    zip_crawled    = data_zip.ZipData("zip::compress.crawled",     locs=doot.locs, roots=[doot.locs.crawled], output=doot.locs.SD_backup / "crawled")
+    zip_crawled    = data_zip.ZipData("zip::compress.crawled",  locs=doot.locs, roots=[doot.locs.crawled], output=doot.locs.SD_backup / "crawled")
 
     pop_sum        = data_toml.TomlSummary(locs=doot.locs)
     toml_adjust    = data_toml.TomlAdjust(locs=doot.locs, processor=data_toml.TomlAdjust.adjust_listing)
@@ -39,4 +39,5 @@ if __name__ == "dooter":
 
     run_spider     = spider_tasks.RunSpider(locs=doot.locs)
 
-    bioware_bin    = binary.BiowareInfinityBinaryGlobber(locs=doot.locs)
+    bioware_extract = binary.BiowareInfinityBinaryGlobber("binary::bioware.extract", locs=doot.locs, roots=[doot.locs.data / "raw"], exts=[".key", ".bif", ".tlk"], result_tag="binary")
+    bioware_parse   = binary.BiowareInfinityBinaryGlobber("binary::bioware.parse",   locs=doot.locs, roots=[doot.locs.data / "binary"], exts=[".dlg"], result_tag="parsed")
