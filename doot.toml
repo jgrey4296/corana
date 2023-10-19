@@ -8,20 +8,20 @@ batch                    = { sleep = 1 }
 zip                      = { level = 5 }
 
 [logging]
-stream = { level = "INFO", format  = "{levelname:<8} : {message}", filters = ["doot", "bkmkorg", "code_analysis", "scrapy"] }
-file   = { level = "DEBUG", format = "{levelname:<8} : {message:<20} :|: ({module}.{lineno}.{funcName})", filters =  ["doot", "bkmkorg", "code_analysis", "scrapy"] }
+stream = { level = "INFO", format  = "{levelname:<8} : {message}", filters = ["doot", "bkmkorg", "provenance", "scrapy"] }
+file   = { level = "DEBUG", format = "{levelname:<8} : {message:<20} :|: ({module}.{lineno}.{funcName})", filters =  ["doot", "bkmkorg", "provenance", "scrapy"] }
 
 [[directories]] # Core
-src         = "code_analysis"
-codegen     = "code_analysis/_codegen"
+src         = "provenance"
+codegen     = "{src}/_codegen"
 temp        = ".temp"
 build       = "build"
 docs        = "docs"
 
 [[directories]] # Data
 data        = "data"
-raw         = "data/raw"
-crawled     = "data/crawled"
+raw         = "{data}/raw"
+crawled     = "{data}/crawled"
 
 [[directories]] # backups
 backup      = "/volumes/BackupSD/Archive/datasets"

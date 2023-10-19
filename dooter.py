@@ -17,9 +17,9 @@ import doot
 
 from doot.tasks.groups import *
 from doot.tasks.groups_secondary import *
-from code_analysis.doot_tasks import data_listing, data_toml, data_zip
-from code_analysis.doot_tasks import spider as spider_tasks
-from code_analysis.doot_tasks import binary
+from provenance.doot_tasks import data_listing, data_toml, data_zip
+from provenance.doot_tasks import spider as spider_tasks
+from provenance.doot_tasks import binary
 
 if __name__ == "dooter":
     # the equivalent of main

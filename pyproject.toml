@@ -1,11 +1,11 @@
 [project]
-name            = "code-analysis"
+name            = "provenance"
 version         = "0.0.1"
-description     = "A Collection of miscellaneous ai and game script analysis routines"
+description     = "A library to pipeline analysis code and data"
 readme          = "README.md"
 requires-python = ">=3.10"
 license         = {file = "LICENSE"}
-keywords        = ["games", "ai", "code_analysis"]
+keywords        = ["games", "ai", "provenance"]
 authors         = [
     {email = "jgrey4296@gmail.com"},
     {name  = "J Grey"}
@@ -45,10 +45,10 @@ docs = [
 ##-- end dependencies
 
 [project.urls]
-homepage      = "https://github.com/jgrey4296/code_analysis"
-documentation = "https://readthedocs.org/code_analysis"
-repository    = "https://github.com/jgrey4296/code_analysis"
-changelog     = "https://github.com/jgrey4296/code_analysis/blob/master/CHANGELOG.md"
+homepage      = "https://github.com/jgrey4296/provenance"
+documentation = "https://readthedocs.org/provenance"
+repository    = "https://github.com/jgrey4296/provenance"
+changelog     = "https://github.com/jgrey4296/provenance/blob/master/CHANGELOG.md"
 
 ##-- scripts
 [project.scripts]
@@ -98,7 +98,7 @@ where = ["."]
 
 ##-- pyright
 [tool.pyright]
-# strict = code_analysis.*
+# strict = provenance.*
 verboseOutput               = true
 typeCheckingMode            = "strict"
 pythonVersion               = "3.10"
