@@ -30,7 +30,7 @@ from weakref import ref
 logging = logmod.getLogger(__name__)
 ##-- end logging
 
-import tomler
+import tomlguard
 import doot
 from doot import globber
 from doot.mixins.delayed import DelayedMixin

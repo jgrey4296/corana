@@ -31,7 +31,7 @@ logging = logmod.getLogger(__name__)
 ##-- end logging
 
 from os.path import commonpath
-import tomler
+import tomlguard as TG
 from string import Template
 import doot
 
@@ -125,7 +125,7 @@ class MarkerManipulationMixin:
 
     def verify_toml(self, text) -> bool:
         try:
-            data = tomler.read(text)
+            data = TG.read(text)
             return True
         except Exception as err:
             logging.error("TOML text failed to parse: %s", err)
@@ -136,7 +136,7 @@ class MarkerManipulationMixin:
             return False
 
         assert(fpath.exists())
-        data = tomler.load(fpath)
+        data = TG.load(fpath)
         toml_tags = data.on_fail([], list).dataset.instance.tags()
         return not bool(tags) or all([x in toml_tags for x in tags])
 
