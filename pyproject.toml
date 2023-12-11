@@ -16,14 +16,14 @@ classifiers     = [
 
 ##-- dependencies
 dependencies   = [
-    # "acab_config >= 0.0.1",
-    # "acab_config @ git+https://github.com/jgrey4296/acab_config.git@0.0.1",
-    "pyparsing >= 3.0.9"
+    "pyparsing >= 3.0.9",
+    "doot",
 ]
 
 [project.optional-dependencies]
 test = [
     "pytest > 7.0.0",
+    "pytest-mock",
 ]
 color = [
     "sty > 1.0.0",
