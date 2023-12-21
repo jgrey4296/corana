@@ -9,4 +9,4 @@ pygment_lexers - for bolting into pygments to do syntax processing
 structs        - data structures to represent loaded data
 """
 
-__version__ = "0.0.1"
+__version__ = "0.1.1"

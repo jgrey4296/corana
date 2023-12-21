@@ -1,6 +1,6 @@
 [project]
 name            = "provenance"
-version         = "0.0.1"
+version         = "0.1.1"
 description     = "A library to pipeline analysis code and data"
 readme          = "README.md"
 requires-python = ">=3.10"
@@ -117,7 +117,7 @@ reportUnnecessaryIsInstance = "warning"
 ##-- end pyright
 
 [tool.bumpver]
-current_version    = "0.1.0"
+current_version    = "0.1.1"
 version_pattern    = "MAJOR.MINOR.PATCH"
 commit_message     = "[bump]: version {old_version} -> {new_version}"
 tag_message        = "{new_version}"
