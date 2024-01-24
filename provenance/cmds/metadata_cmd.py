@@ -31,14 +31,13 @@ logging = logmod.getLogger(__name__)
 printer = logmod.getLogger("doot._printer")
 ##-- end logging
 
+from collections import defaultdict
+import tomlguard
 import doot
 from doot._abstract import Command_i
-from doot.structs import TaskStub, DootStructuredName
-from collections import defaultdict
+from doot.structs import TaskStub, DootTaskName
 
-##-- data
-data_path = doot.constants.TOML_TEMPLATE
-##-- end data
+from provenance.mixins.marker_manip import MarkerManipulationMixin
 
 class ProvenanceMetaDataCmd(Command_i):
     """
@@ -53,3 +52,64 @@ class ProvenanceMetaDataCmd(Command_i):
 
     def __call__(self, tasks:TomlGuard, plugins:TomlGuard):
         printer.info("This is an Example Cmd edited")
+
+
+class ProvenanceMetaStubCmd(Command_i, MarkerManipulationMixin):
+    """
+      For modifying provenance metadata from the command line
+    """
+    _name      = "prov-stub"
+    _help      = [ "Provenance Metadata Marker File Stub generation" ]
+
+    @property
+    def param_specs(self) -> list:
+        return super().param_specs + [
+            self.make_param("target", type=str,          default="", positional=True),
+            self.make_param("suppress-header",           default=True, invisible=True)
+            ]
+
+    def __call__(self, tasks:TomlGuard, plugins:TomlGuard):
+        """
+        This creates a toml stub using default values, as best it can
+        """
+        printer.info("Generating Stub Provenance Toml")
+        target                     = pl.Path(doot.args.cmd.args.target)
+        match self.make_marker(target):
+            case False:
+                return False
+            case { "marker": fpath }:
+                printer.info("Stub Generated in: %s", fpath)
+                # TODO stub a .provenance directory
+
+
+
+class ProvenanceMetaPrintCmd(Command_i, MarkerManipulationMixin):
+    """
+      For modifying provenance metadata from the command line
+    """
+    _name      = "prov-print"
+    _help      = [ "Provenance Metadata Marker File Stub generation" ]
+
+    @property
+    def param_specs(self) -> list:
+        return super().param_specs + [
+            self.make_param("target", type=str,          default="", positional=True),
+            self.make_param("suppress-header",           default=True, invisible=True)
+            ]
+
+    def __call__(self, tasks:TomlGuard, plugins:TomlGuard):
+        """
+        This creates a toml stub using default values, as best it can
+        """
+        printer.info("Generating Stub Provenance Toml")
+        target                     = pl.Path(doot.args.cmd.args.target)
+        match self.find_marker(target):
+            case None:
+                printer.warning("No Provenance Metadata found in target or it's parents: %s", target)
+                return False
+            case pl.Path() as marker:
+                loaded = tomlguard.load(marker)
+                text = marker.read_text()
+
+                printer.info("-- Dataset: %s", loaded.dataset.instance.name)
+                printer.info(text)

@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
 """
-The Provenance metadata structures:
-  1) provenance.toml     - Source dataset provenance.
-  2) transforms.toml     - transforms from the source data to get this data
-  3) masks.toml          - filters to subselect data
-  4) provenance.env.toml - doot/package/task/dataset version record
-
 See EOF for license/metadata/notes as applicable
 """
 
@@ -41,12 +35,49 @@ import more_itertools as mitz
 logging = logmod.getLogger(__name__)
 ##-- end logging
 
+import tomlguard
+import doot
+import doot.errors
+
+@dataclass
+class ProvenanceMetadata:
+
+    name         : str                     = field()
+    tags         : set[str]                = field()
+    source       : set[str]                = field()
+    count        : int                     = field()
+    file_types   : set[str]                = field()
+    notes        : list[str]               = field()
+    initial_date : datetime.datetime       = field()
+
+    log          : list[ProvenanceLog]     = field()
+    subgroups    : list[ProvenanceSubData] = field()
+
+    @staticmethod
+    def from_dict(data:dict|TomlGuard) -> ProvenanceMetadata:
+        raise NotImplementedError()
+
+@dataclass
+class ProvenanceLog:
+    @staticmethod
+    def from_dict(data:dict|TomlGuard) -> ProvenanceMetadata:
+        raise NotImplementedError()
+
+@dataclass
+class ProvenanceDataTransformLog:
+
+    @staticmethod
+    def from_dict(data:dict|TomlGuard) -> ProvenanceDataTransformLog:
+        raise NotImplementedError()
 
 
+@dataclass
+class ProvenanceEnvironment:
 
+    @staticmethod
+    def from_dict(data:dict|TomlGuard) -> ProvenanceEnvironment:
+        raise NotImplementedError()
 
-
-"""
-
-
-"""
+@dataclass
+class ProvenanceListing:
+    pass

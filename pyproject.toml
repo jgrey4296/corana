@@ -18,6 +18,11 @@ classifiers     = [
 dependencies   = [
     "pyparsing >= 3.0.9",
     "doot",
+    "tomlguard",
+    "numpy",
+    "seaborn",
+    "railroad-diagrams",
+    # "dootle"
 ]
 
 [project.optional-dependencies]
@@ -27,13 +32,6 @@ test = [
 ]
 color = [
     "sty > 1.0.0",
-]
-visual = [
-    "seaborn > 61.2.0",
-    "railroad-diagrams >= 1.1.1"
-]
-numbers = [
-    "numpy > 1.22.0",
 ]
 exceptions = [
     "rich",
@@ -57,7 +55,9 @@ changelog     = "https://github.com/jgrey4296/provenance/blob/master/CHANGELOG.m
 [project.gui-scripts]
 # spam-gui      = "spam:main_gui"
 
-[project.entry-points."nothing"]
+[project.entry-points."doot.plugins.command"]
+"prov-stub" = "provenance.cmds.metadata_cmd:ProvenanceMetaStubCmd"
+"prov-print" = "provenance.cmds.metadata_cmd:ProvenanceMetaPrintCmd"
 # tomatoes      = "spam:main_tomatoes"
 
 ##-- end scripts

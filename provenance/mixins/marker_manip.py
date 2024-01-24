@@ -37,11 +37,11 @@ import doot
 
 ##-- data
 data_path = files("provenance.__data")
-data_file = data_path.joinpath("zip_marker_template")
+data_file = data_path.joinpath("dataset_marker_template")
 dataset_marker_template : Final[Template] = Template(data_file.read_text())
 ##-- end data
 
-dataset_marker = doot.config.on_fail(".zipthis.toml", str).dataset.marker()
+dataset_marker = doot.config.on_fail(".provenance-meta.toml", str).dataset.marker()
 
 class MarkerManipulationMixin:
 
@@ -109,7 +109,7 @@ class MarkerManipulationMixin:
         exts       : set[str]      = set(f"\"{x.suffix}\"" for x in files if bool(x.suffix))
         now        : str           = datetime.datetime.now().isoformat()
 
-        text = zip_marker_template.substitute(name=fpath.stem,
+        text = dataset_marker_template.substitute(name=fpath.stem,
                                               count=len(files),
                                               exts=" ".join(exts),
                                               date=now,

@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
-TODO
-  Tree shadowing separates transforms of data into similarly structured directoy trees,
-  while symlinking their provenance.toml metadata,
-  and copying+appending to the transforms.toml to record how to make this tree set
+
 
 See EOF for license/metadata/notes as applicable
 """
@@ -40,24 +37,6 @@ import more_itertools as mitz
 logging = logmod.getLogger(__name__)
 ##-- end logging
 
-
-class ShadowData:
-    """ Shadow an Existing Dataset as {name},
-      symlink the provenance toml, copy the transform log
-      """
-    pass
-
-class ShadowAddTransform:
-    """ Add a transform to the task log for this shadow """
-    pass
-
-class ShadowMask:
-    """ Add a file mask for this shadow tree to subselect files """
-    pass
-
-
-
-"""
-
-
-"""
+METADATA_DIRECTORY_NAME     = ".provenance"
+METDATA_FILE_NAME           = ".provenance.toml"
+METADATA_DIRECTORY_CONTENTS = ["files.jsonl", "history.jsonl", "notes.txt", "readme.txt", "tasks.toml", "environment.jsonl"]
