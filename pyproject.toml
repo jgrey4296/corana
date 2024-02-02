@@ -1,11 +1,11 @@
 [project]
-name            = "provenance"
-version         = "0.0.1"
+name            = "corana"
+version         = "0.1.1"
 description     = "A library to pipeline analysis code and data"
 readme          = "README.md"
 requires-python = ">=3.10"
 license         = {file = "LICENSE"}
-keywords        = ["games", "ai", "provenance"]
+keywords        = ["games", "ai", "corana"]
 authors         = [
     {email = "jgrey4296@gmail.com"},
     {name  = "J Grey"}
@@ -16,24 +16,23 @@ classifiers     = [
 
 ##-- dependencies
 dependencies   = [
-    # "acab_config >= 0.0.1",
-    # "acab_config @ git+https://github.com/jgrey4296/acab_config.git@0.0.1",
-    "pyparsing >= 3.0.9"
+    "pyparsing >= 3.0.9",
+    "doot",
+    "tomlguard",
+    "numpy",
+    "seaborn",
+    "railroad-diagrams",
+    "doot",
+    # "dootle"
 ]
 
 [project.optional-dependencies]
 test = [
     "pytest > 7.0.0",
+    "pytest-mock",
 ]
 color = [
     "sty > 1.0.0",
-]
-visual = [
-    "seaborn > 61.2.0",
-    "railroad-diagrams >= 1.1.1"
-]
-numbers = [
-    "numpy > 1.22.0",
 ]
 exceptions = [
     "rich",
@@ -45,10 +44,10 @@ docs = [
 ##-- end dependencies
 
 [project.urls]
-homepage      = "https://github.com/jgrey4296/provenance"
-documentation = "https://readthedocs.org/provenance"
-repository    = "https://github.com/jgrey4296/provenance"
-changelog     = "https://github.com/jgrey4296/provenance/blob/master/CHANGELOG.md"
+homepage      = "https://github.com/jgrey4296/corana"
+documentation = "https://readthedocs.org/corana"
+repository    = "https://github.com/jgrey4296/corana"
+changelog     = "https://github.com/jgrey4296/corana/blob/master/CHANGELOG.md"
 
 ##-- scripts
 [project.scripts]
@@ -57,7 +56,9 @@ changelog     = "https://github.com/jgrey4296/provenance/blob/master/CHANGELOG.m
 [project.gui-scripts]
 # spam-gui      = "spam:main_gui"
 
-[project.entry-points."nothing"]
+[project.entry-points."doot.plugins.command"]
+"prov-stub" = "corana.cmds.metadata_cmd:CoranaMetaStubCmd"
+"prov-print" = "corana.cmds.metadata_cmd:CoranaMetaPrintCmd"
 # tomatoes      = "spam:main_tomatoes"
 
 ##-- end scripts
@@ -98,7 +99,7 @@ where = ["."]
 
 ##-- pyright
 [tool.pyright]
-# strict = provenance.*
+# strict = corana.*
 verboseOutput               = true
 typeCheckingMode            = "strict"
 pythonVersion               = "3.10"
@@ -115,3 +116,22 @@ reportUnnecessaryCast       = "information"
 reportUnnecessaryIsInstance = "warning"
 
 ##-- end pyright
+
+[tool.bumpver]
+current_version    = "0.1.1"
+version_pattern    = "MAJOR.MINOR.PATCH"
+commit_message     = "[bump]: version {old_version} -> {new_version}"
+tag_message        = "{new_version}"
+tag_scope          = "default"
+# commit             = true
+# tag                = true
+# pre_commit_hook  = ""
+# post_commit_hook = ""
+# push             = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml"   = [
+                   '^version\s+=\s+"{version}"',
+                   '^current_version\s+=\s+"{version}"'
+]
+"corana/__init__.py" = ['^__version__\s+=\s+"{version}"']

@@ -1,0 +1,14 @@
+# -*- mode:conf-toml; -*-
+[dataset.instance]     # A Data Summary for integrity
+name         = "$name"   # A Name to refer to this data. Default: directory name
+tags         = []        # Tags to collect different datasets together
+source       = []        # Where its from
+count        = $count
+file_types   = [$exts]
+notes        = [$notes]
+initial-date = "$date" # When this summary was created
+
+[dataset.log]          # Recording things done to this data
+preprocessing = []     # Things done to data before it was added
+
+[[dataset.subgroup]]   # Subgroups of the files of particular interest
