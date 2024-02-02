@@ -1,11 +1,11 @@
 [project]
-name            = "provenance"
+name            = "corana"
 version         = "0.1.1"
 description     = "A library to pipeline analysis code and data"
 readme          = "README.md"
 requires-python = ">=3.10"
 license         = {file = "LICENSE"}
-keywords        = ["games", "ai", "provenance"]
+keywords        = ["games", "ai", "corana"]
 authors         = [
     {email = "jgrey4296@gmail.com"},
     {name  = "J Grey"}
@@ -43,10 +43,10 @@ docs = [
 ##-- end dependencies
 
 [project.urls]
-homepage      = "https://github.com/jgrey4296/provenance"
-documentation = "https://readthedocs.org/provenance"
-repository    = "https://github.com/jgrey4296/provenance"
-changelog     = "https://github.com/jgrey4296/provenance/blob/master/CHANGELOG.md"
+homepage      = "https://github.com/jgrey4296/corana"
+documentation = "https://readthedocs.org/corana"
+repository    = "https://github.com/jgrey4296/corana"
+changelog     = "https://github.com/jgrey4296/corana/blob/master/CHANGELOG.md"
 
 ##-- scripts
 [project.scripts]
@@ -56,8 +56,8 @@ changelog     = "https://github.com/jgrey4296/provenance/blob/master/CHANGELOG.m
 # spam-gui      = "spam:main_gui"
 
 [project.entry-points."doot.plugins.command"]
-"prov-stub" = "provenance.cmds.metadata_cmd:ProvenanceMetaStubCmd"
-"prov-print" = "provenance.cmds.metadata_cmd:ProvenanceMetaPrintCmd"
+"prov-stub" = "corana.cmds.metadata_cmd:CoranaMetaStubCmd"
+"prov-print" = "corana.cmds.metadata_cmd:CoranaMetaPrintCmd"
 # tomatoes      = "spam:main_tomatoes"
 
 ##-- end scripts
@@ -98,7 +98,7 @@ where = ["."]
 
 ##-- pyright
 [tool.pyright]
-# strict = provenance.*
+# strict = corana.*
 verboseOutput               = true
 typeCheckingMode            = "strict"
 pythonVersion               = "3.10"
@@ -133,4 +133,4 @@ tag_scope          = "default"
                    '^version\s+=\s+"{version}"',
                    '^current_version\s+=\s+"{version}"'
 ]
-"provenance/__init__.py" = ['^__version__\s+=\s+"{version}"']
+"corana/__init__.py" = ['^__version__\s+=\s+"{version}"']

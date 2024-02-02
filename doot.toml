@@ -17,7 +17,7 @@ printer = { level="INFO", colour=true}
 
 
 [[locations]] # Core
-src         = "provenance"
+src         = "corana"
 codegen     = "{src}/_codegen"
 temp        = ".temp"
 build       = "build"
