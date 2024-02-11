@@ -57,8 +57,8 @@ changelog     = "https://github.com/jgrey4296/corana/blob/master/CHANGELOG.md"
 # spam-gui      = "spam:main_gui"
 
 [project.entry-points."doot.plugins.command"]
-"prov-stub" = "corana.cmds.metadata_cmd:CoranaMetaStubCmd"
-"prov-print" = "corana.cmds.metadata_cmd:CoranaMetaPrintCmd"
+"corana-stub" = "corana.cmds.metadata_cmd:CoranaMetaStubCmd"
+"corana-print" = "corana.cmds.metadata_cmd:CoranaMetaPrintCmd"
 # tomatoes      = "spam:main_tomatoes"
 
 ##-- end scripts

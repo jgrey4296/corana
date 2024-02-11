@@ -20,7 +20,6 @@ printer = { level="INFO", colour=true}
 src         = "corana"
 codegen     = "{src}/_codegen"
 temp        = ".temp"
-build       = "build"
 docs        = "docs"
 
 [[locations]] # Data

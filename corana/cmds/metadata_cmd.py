@@ -58,7 +58,7 @@ class CoranaMetaStubCmd(Command_i, MarkerManipulationMixin):
     """
       For modifying corana metadata from the command line
     """
-    _name      = "prov-stub"
+    _name      = "corana-stub"
     _help      = [ "Corana Metadata Marker File Stub generation" ]
 
     @property
@@ -87,7 +87,7 @@ class CoranaMetaPrintCmd(Command_i, MarkerManipulationMixin):
     """
       For modifying corana metadata from the command line
     """
-    _name      = "prov-print"
+    _name      = "corana-print"
     _help      = [ "Corana Metadata Marker File Stub generation" ]
 
     @property
