@@ -1,6 +1,8 @@
 #+TITLE: Corana Todos
+#+STARTUP: agenda
 
-* Corana
+* TODO Corana
+- State "TODO"       from              [2024-06-03 Mon 05:18]
 ** Tasks
 *** Pack Dataset
 *** Verify data layer hashes
