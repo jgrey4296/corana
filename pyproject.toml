@@ -45,7 +45,7 @@ docs = [
 
 [project.urls]
 homepage      = "https://github.com/jgrey4296/corana"
-documentation = "https://readthedocs.org/corana"
+documentation = "https:://corana.readthedocs.io/en/latest"
 repository    = "https://github.com/jgrey4296/corana"
 changelog     = "https://github.com/jgrey4296/corana/blob/master/CHANGELOG.md"
 
