@@ -1,0 +1,158 @@
+#+TITLE: Corana Todos
+#+STARTUP: agenda
+
+* TODO Corana
+- State "TODO"       from              [2024-06-03 Mon 05:18]
+** Tasks
+*** Pack Dataset
+*** Verify data layer hashes
+*** Metadata
+**** Update
+
+**** Copy
+
+*** Clean old data
+*** Spiders
+*** Reports
+**** List Packed Datasets
+**** List Unpacked Datasets
+
+**** Dataset Dates
+
+**** Dataset Tags
+
+**** Dataset Hashes
+
+*** Replay File History
+** Cmds
+*** Enable only in a provenance directory
+
+** Code                                           :code:
+*** metadata structs
+Metadata needs to be able to show:
+1) where a dataset came from
+2) what has been done to it
+3) what the contents of the dataset are
+4) how to check the above
+
+**** .provenance.toml
+name, tags, source, file_count, file_types,
+notes, initial_date, distance_from_raw_data
+**** .provenance dir
+files/history/environment jsonl files should match
+so line 1 in files -> line 1 in history -> line 1 in environment
+files will always have 1 more line than the others, the head.
+***** files.jsonl
+map files in this data layer to their hashes
+both current and previous layers
+one layer per line, as a dict of relative path -> hash
+#+begin_example
+{ "id": "...", "files": { "a/b/c.txt" : "...", "a/b/d.txt": ..." } }
+{ "id": "...", "files": { "a/b/c.json" : "...", "a/b/d.json": ..." } }
+{ "id": "...", "files": { "a/b/c.dot" : "...", "a/b/d.dot": ..." } }
+#+end_example
+***** history.jsonl
+track the full history of {raw} -> {current}
+of form:
+#+begin_example
+{ "id": "...", from_ids: ["..."], "date": "2023-12-26", "task": "basic::unpack", "sources": ["80977aab0bcb30cb2812b2f604f203e2"], "files_ids": ["..."], "env_id": "..." }
+{ "date": "2023-12-27", "task": "infinity::binary.parse"}
+#+end_example
+***** environment.jsonl
+env summaries of versions used.
+history.jsonl references these
+#+begin_example
+{"id": "...", "versions": {"python": "3.10.2", "doot": "0.0.1", "provenance": "0.0.1", "dootle": "..."} }
+#+end_example
+***** readme.txt
+explain each file format
+***** notes.txt
+***** tasks.toml
+add toml definitions of all tasks to this
+*** Actions
+
+**** copy_provenance_directory
+handle updating the logs
+update .provenance.toml
+**** build_provenance_directory
+don't just touch files, insert templates into them
+**** compress_provenance_files
+**** verify_provenance_files
+*** Spiders
+bay 12
+facebook
+media wiki
+worpress
+uesp
+wtfht
+
+*** Binary Structs
+**** aurora.py
+**** bethesda.py
+**** cd_project_red.py
+**** fallout.py
+**** heroes_2.py
+**** infinity.py
+**** rare.py
+**** relic.py
+**** sims.py
+**** telltale.py
+**** unity.py
+**** unreal.py
+**** valve.py
+*** DSLs
+**** abl.py
+**** asl.py
+**** asp.py
+**** ceptre.py
+**** cplus.py
+**** lua.py
+**** netlogo.py
+**** paradox.py
+**** skyrim.py
+**** soar.py
+**** versu.py
+**** witcher.py
+*** JSON
+**** Obsidian
+*** Lexers
+**** abl.py
+**** asl.py
+**** cartago.py
+**** ccalc.py
+**** ceptre.py
+**** clips.py
+**** instal.py
+**** jacamo.py
+**** kentuckyr0_blocking.py
+**** neverwinter_script.py
+**** papyrus.py
+**** paradox.py
+**** smt.py
+**** soar.py
+**** spiderweb_script.py
+**** unreal.py
+**** versu.py
+**** witcher_script.py
+*** Spreadsheets
+**** CSV
+**** Excel
+*** SWDA
+*** Text
+*** XML
+**** Obsidian
+
+** Datasets                                       :dataset:
+** Design                                         :design:
+adapt scrapy's design?
+
+** misc
+*** archiving
+*** binary
+*** json
+*** metadata
+*** spiders
+*** swda
+*** xml
+*** docs
+* Links
